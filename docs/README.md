@@ -1,6 +1,6 @@
-# 强化学习学习手册（CartPole 主线）
+# Awesome RL Handbook
 
-由 `RL_Handbook_CartPole.html` 单页文件切分而成的多页版本，正文内容逐字未改，
+由 `awesome_rl_handbook.html` 单页文件切分而成的多页版本，正文内容逐字未改，
 只增加了侧边栏目录、章节索引与上一章/下一章导航。
 
 从 [`index.html`](index.html) 开始阅读；目录见 [`SUMMARY.md`](SUMMARY.md)。

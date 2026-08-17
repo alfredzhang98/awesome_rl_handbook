@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-"""Split RL_Handbook_CartPole.html into a GitBook-style multi-page book.
+"""Split awesome_rl_handbook.html into a GitBook-style multi-page book.
 Content of each section is copied verbatim; only navigation/index is added."""
 import os, re, io, shutil
 
-SRC = r"C:\Users\alfred\Desktop\RL\RL_Handbook_CartPole.html"
-OUT = r"C:\Users\alfred\Desktop\RL\docs"
+SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "awesome_rl_handbook.html")
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs")
 
 src = io.open(SRC, encoding="utf-8").read()
 
@@ -78,8 +78,8 @@ def rewrite(html, cur_sid):
 # ---------- 5. page shell ----------
 def sidebar(cur_sid):
     out = ['<aside class="sidebar" id="sidebar">',
-           '  <div class="sb-brand"><a href="index.html">强化学习 · 学习手册</a>'
-           '<span class="sb-sub">数学优先 · 面向 robotics · CartPole 主线</span></div>',
+           '  <div class="sb-brand"><a href="index.html">Awesome RL Handbook</a>'
+           '<span class="sb-sub">数学优先 · 面向 robotics · 一个例子跑到底</span></div>',
            '  <nav class="sb-nav">']
     for label, sids in GROUPS:
         out.append('    <div class="sb-group">%s</div>' % label)
@@ -131,7 +131,7 @@ TPL = u"""<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title} · 强化学习学习手册</title>
+<title>{title} · Awesome RL Handbook</title>
 <link rel="stylesheet" href="assets/book.css">
 </head>
 <body data-page="{page}">
@@ -378,9 +378,9 @@ for label, sids in GROUPS[1:]:
         sm.append(u"* [第 %s 课 · %s](%s)" % (nums[sid], titles[sid], file_of[sid]))
 io.open(os.path.join(OUT, "SUMMARY.md"), "w", encoding="utf-8", newline="\n").write("\n".join(sm) + "\n")
 
-readme = u"""# 强化学习学习手册（CartPole 主线）
+readme = u"""# Awesome RL Handbook
 
-由 `RL_Handbook_CartPole.html` 单页文件切分而成的多页版本，正文内容逐字未改，
+由 `awesome_rl_handbook.html` 单页文件切分而成的多页版本，正文内容逐字未改，
 只增加了侧边栏目录、章节索引与上一章/下一章导航。
 
 从 [`index.html`](index.html) 开始阅读；目录见 [`SUMMARY.md`](SUMMARY.md)。

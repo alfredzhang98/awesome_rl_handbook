@@ -1,8 +1,8 @@
-# 强化学习学习手册 · 以 CartPole 为主线
+# Awesome RL Handbook
 
-数学优先、面向 robotics 的一份强化学习讲义：从 MDP 与 Bellman 算子（Stage 0–1），到无模型表格法（Stage 2）、函数逼近与致命三角（Stage 3）、DQN 家族（Stage 4）、策略梯度（Stage 5），全程用同一个 CartPole 例子跑到底，公式都能在页面里直接看到数字。
+数学优先、面向 robotics 的一份强化学习讲义：从 MDP 与 Bellman 算子（Stage 0–1），到无模型表格法（Stage 2）、函数逼近与致命三角（Stage 3）、DQN 家族（Stage 4）、策略梯度（Stage 5），全程用同一个例子从头跑到尾，公式都能在页面里直接看到数字。
 
-**在线阅读**：https://alfredzhang98.github.io/rl-handbook-cartpole/
+**在线阅读**：https://alfredzhang98.github.io/awesome_rl_handbook/
 
 ## 目录
 
@@ -24,7 +24,7 @@
 ## 仓库结构
 
 ```
-RL_Handbook_CartPole.html   讲义原稿（单文件版，可直接双击打开）
+awesome_rl_handbook.html   讲义原稿（单文件版，可直接双击打开）
 split_book.py               切分脚本：把原稿拆成多页 + 生成侧边栏目录
 docs/                       多页版（GitHub Pages 站点根目录）
   index.html                路线图
@@ -57,7 +57,7 @@ docs/                       多页版（GitHub Pages 站点根目录）
 在任意项目里打开 Claude Code，把下面这段整个粘进去：
 
 ```text
-把 https://github.com/alfredzhang98/rl-handbook-cartpole 里的 .claude/skills/handbook-style
+把 https://github.com/alfredzhang98/awesome_rl_handbook 里的 .claude/skills/handbook-style
 安装成我的个人 skill：
 
 1. 用 git clone --depth 1 把仓库拉到临时目录（或用 curl 拿 tar 包解压）；

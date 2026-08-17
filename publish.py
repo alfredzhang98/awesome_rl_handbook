@@ -71,7 +71,7 @@ def main():
 
     sha = run(["git", "rev-parse", "--short", "HEAD"]).stdout.strip()
     say(u"publish: 已发布 %s · %d 个文件 · %s" % (sha, len(files), msg))
-    say(u"          https://alfredzhang98.github.io/rl-handbook-cartpole/")
+    say(u"          https://alfredzhang98.github.io/awesome_rl_handbook/")
     return 0
 
 

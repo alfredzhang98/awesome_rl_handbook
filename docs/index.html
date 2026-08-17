@@ -78,9 +78,7 @@
 <h3 class="grouping">第一部分 · 基础（必须扎实，后面全部建立在这上面）</h3>
 
 <section class="stage" id="s0" data-status="done">
-  <div class="stage-head"><span class="num">STAGE 0</span><h2>形式化：MDP 与 Bellman 算子</h2>
-    <a class="lref" href="ch3.html">第 3 课（深入） →</a>
-    <a class="lref" href="ch1.html">第 1 课 →</a></div>
+  <div class="stage-head"><span class="num">STAGE 0</span><h2>形式化：MDP 与 Bellman 算子</h2></div>
   <p class="why">这一阶段不学任何"算法"，只建立语言。90% 的 RL 论文看不懂，是因为这一层没有推熟，而不是因为网络结构没见过。</p>
 
   <div class="block">
@@ -106,12 +104,12 @@
     <p>写出<strong>单个关节</strong>的连续动力学 <code>I θ̈ = τ − b θ̇ + m g l sin θ</code>（协作臂的肘关节量级：I = 0.075 kg·m²、mgl = 2.94 N·m、50 Hz、τ 限 ±2 N·m），把它<strong>离散化成一个真正的表格 MDP</strong>：状态 (θ, θ̇) 分箱，动作是力矩档位。这个离散 MDP 会一直用到 Stage 3。<br>
     <strong>可视化：</strong>在 (θ, θ̇) 平面上画 V⋆ 的热力图——你会看到一条清晰的"还救得回来"的边界，这就是控制里的 <strong>viability kernel</strong>；它的右边界正好落在 arcsin(τ_max/mgl) = 42.8°，因为再远静止时连重力都顶不住。</p></div>
   <div class="pitfall"><b>容易跳过但不该跳的：</b>折扣因子 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> 不是超参数而是问题定义的一部分。robotics 里 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> 与 episode 长度、与 average-reward 形式的关系，值得单独想清楚。</div>
+
+  <div class="stage-links"><span class="lb">讲义</span><a href="ch1.html">第 1 课 · MDP、算子与 LQR 之桥</a><a href="ch3.html">第 3 课 · 值函数的数学直觉（深入）</a></div>
 </section>
 
 <section class="stage" id="s1" data-status="done">
-  <div class="stage-head"><span class="num">STAGE 1</span><h2>已知模型：动态规划 ↔ LQR</h2>
-    <a class="lref" href="ch1.html">第 1 课 →</a>
-    <a class="lref" href="ch2.html">第 2 课 →</a></div>
+  <div class="stage-head"><span class="num">STAGE 1</span><h2>已知模型：动态规划 ↔ LQR</h2></div>
   <p class="why">你做 robotics，这一阶段是最容易建立直觉的桥：<strong>LQR 就是线性-二次 MDP 的解析解，RL 是它在非线性、未知模型下的推广。</strong>把这条线打通，后面所有算法都有落脚点。</p>
 
   <div class="block">
@@ -136,15 +134,15 @@
     <h4>机械臂落点</h4>
     <p>在离散化的关节上跑值迭代到收敛，得到"上帝视角"的 V⋆ 与 π⋆。<strong>这个解在后面每个阶段都作为 ground truth 用来量误差。</strong><br>
     然后在举直位形线性化，解折扣 Riccati 得到 LQR 增益 K = [5.68, 0.82]，把 xᵀPx 与 V⋆ 叠在同一张图上——<strong>小角度区两者压在一起（网格加密一倍，中位偏差从 44.6% 降到 4.7%），大角度区力矩饱和，线性律的假设失效</strong>。这一张图基本说明了 RL 该在哪一端接手。</p></div>
+
+  <div class="stage-links"><span class="lb">讲义</span><a href="ch1.html">第 1 课 · MDP、算子与 LQR 之桥</a><a href="ch2.html">第 2 课 · 有模型 ≠ 有解析解</a></div>
 </section>
 
 <hr class="div">
 <h3 class="grouping">第二部分 · 无模型的核心机器</h3>
 
 <section class="stage" id="s2" data-status="done">
-  <div class="stage-head"><span class="num">STAGE 2</span><h2>无模型表格法：MC / TD / Q-learning</h2>
-    <a class="lref" href="ch4.html">第 4 课 →</a>
-    <a class="lref" href="ch5.html">第 5 课 →</a></div>
+  <div class="stage-head"><span class="num">STAGE 2</span><h2>无模型表格法：MC / TD / Q-learning</h2></div>
   <p class="why">丢掉 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="1.699ex" height="1.545ex" role="img" focusable="false" viewBox="0 -683 751 683" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D443" xlink:href="#MJX-TEX-I-1D443"></use></g></g></g></svg></span>，只剩采样。这一阶段的数学主线是<strong>随机逼近</strong>与<strong>偏差-方差权衡</strong>——它决定了后面每一个算法的设计动机。</p>
 
   <div class="block">
@@ -169,11 +167,12 @@
     <h4>机械臂落点</h4>
     <p>在同一个离散化关节上跑表格 Q-learning 和 SARSA。<strong>关键实验：把 ‖Q_k − Q⋆‖∞ 对着 Stage 1 的精确解画出来</strong>，你能直接看到随机逼近的收敛速度以及步长衰减的影响。<br>
     第二个实验：把力矩上限压到重力矩之下（τ_max &lt; mgl），关节必须"先让它掉一点再拉"——on-policy 与 off-policy 的差别在这里第一次变得可见：SARSA 学到的策略明显更保守，因为它把探索的代价算进了值里。</p></div>
+
+  <div class="stage-links"><span class="lb">讲义</span><a href="ch4.html">第 4 课 · 无模型表格法</a><a href="ch5.html">第 5 课 · 轨迹上的四个选择</a></div>
 </section>
 
 <section class="stage" id="s3" data-status="done">
-  <div class="stage-head"><span class="num">STAGE 3</span><h2>函数逼近与致命三角</h2>
-    <a class="lref" href="ch6.html">第 6 课 →</a></div>
+  <div class="stage-head"><span class="num">STAGE 3</span><h2>函数逼近与致命三角</h2></div>
   <p class="why">很多人从表格法直接跳到 DQN，于是永远不知道 replay buffer 和 target network 到底在修什么。这一阶段是<strong>整条路径里数学密度最高、也最值得慢慢走</strong>的一段。</p>
 
   <div class="block">
@@ -200,6 +199,8 @@
     用 Fourier basis（阶数 3~5）+ SARSA(λ) 学这台两关节臂，<strong>不用任何神经网络</strong>：训练曲线远比 DQN 干净。这会让你对"深度"祛魅——两关节调节根本不需要深度网络。<br>
     <strong>对照实验：</strong>把同一套线性特征换成 off-policy Q-learning 更新并去掉 target，观察参数发散。你会亲眼看到致命三角。</p></div>
   <div class="pitfall"><b>这一阶段是分水岭。</b>走完它，DQN 的每一个 trick 你都能预测出来，而不是背下来。</div>
+
+  <div class="stage-links"><span class="lb">讲义</span><a href="ch6.html">第 6 课 · 函数逼近与致命三角</a></div>
 </section>
 
 <hr class="div">
@@ -226,6 +227,8 @@
     <h4>机械臂落点</h4>
     <p>把两关节的力矩离散成档位，从零实现 DQN（约 150 行），然后做<strong>消融</strong>：去掉 target network、去掉 replay、两个都去掉。三条曲线并排，Stage 3 的理论就变成了实验事实。<br>
     再画一张：DQN 的 max_a Q 估值 vs 真实回报——过估计的曲线会明显翘起来，Double DQN 把它压回去。在关节这种"很多状态下推哪边都差不多"的问题上，dueling 的收益也能直接看出来。</p></div>
+
+  <div class="stage-links"><span class="lb">讲义</span><a href="ch7.html">第 7 课 · DQN 家族</a></div>
 </section>
 
 <section class="stage" id="s5" data-status="pending">
@@ -256,6 +259,8 @@
     <p>同一台两关节臂，力矩不再离散，四个版本依次实现：<strong>REINFORCE → +baseline → A2C → PPO</strong>。<br>
     核心可视化不是回报曲线，而是<strong>梯度估计的方差</strong>：每一步用同一批 rollout 估 N 次梯度，画方差的箱线图。你会看到方差逐级下降一到两个数量级——这才是这条线的真正主题。<br>
     另外画 PPO 的 clip 触发比例与 KL 散度随训练的变化，直观看到"信任域"在做什么。</p></div>
+
+  <div class="stage-links"><span class="lb">讲义</span><a href="ch8.html">第 8 课 · 策略梯度</a></div>
 </section>
 
 <section class="stage" id="s6" data-status="pending">

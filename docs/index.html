@@ -22,14 +22,14 @@
     <div class="sb-group">Stage 0–1</div>
     <ul>
       <li><a href="ch0.html"><span class="sb-num">0</span><span class="sb-t">V 与 V⋆ 的含义</span></a></li>
-      <li><a href="ch1.html"><span class="sb-num">1</span><span class="sb-t">Stage 0 + Stage 1</span></a></li>
-      <li><a href="ch2.html"><span class="sb-num">2</span><span class="sb-t">Stage 0–1 补课</span></a></li>
-      <li><a href="ch3.html"><span class="sb-num">3</span><span class="sb-t">Stage 0 深入</span></a></li>
+      <li><a href="ch1.html"><span class="sb-num">1</span><span class="sb-t">MDP、算子与 LQR 之桥</span></a></li>
+      <li><a href="ch2.html"><span class="sb-num">2</span><span class="sb-t">有模型 ≠ 有解析解</span></a></li>
+      <li><a href="ch3.html"><span class="sb-num">3</span><span class="sb-t">值函数的数学直觉</span></a></li>
     </ul>
     <div class="sb-group">Stage 2</div>
     <ul>
       <li><a href="ch4.html"><span class="sb-num">4</span><span class="sb-t">无模型表格法</span></a></li>
-      <li><a href="ch5.html"><span class="sb-num">5</span><span class="sb-t">Stage 2 补完</span></a></li>
+      <li><a href="ch5.html"><span class="sb-num">5</span><span class="sb-t">轨迹上的四个选择</span></a></li>
     </ul>
     <div class="sb-group">Stage 3</div>
     <ul>
@@ -79,8 +79,8 @@
 
 <section class="stage" id="s0" data-status="done">
   <div class="stage-head"><span class="num">STAGE 0</span><h2>形式化：MDP 与 Bellman 算子</h2>
-    <a class="chip d" href="ch3.html" style="text-decoration:none">第三课（深入）</a>
-    <a class="chip d" href="ch1.html" style="text-decoration:none">第一课</a></div>
+    <a class="lref" href="ch3.html">第 3 课（深入） →</a>
+    <a class="lref" href="ch1.html">第 1 课 →</a></div>
   <p class="why">这一阶段不学任何"算法"，只建立语言。90% 的 RL 论文看不懂，是因为这一层没有推熟，而不是因为网络结构没见过。</p>
 
   <div class="block">
@@ -110,8 +110,8 @@
 
 <section class="stage" id="s1" data-status="done">
   <div class="stage-head"><span class="num">STAGE 1</span><h2>已知模型：动态规划 ↔ LQR</h2>
-    <a class="chip d" href="ch1.html" style="text-decoration:none">第一课</a>
-    <a class="chip d" href="ch2.html" style="text-decoration:none">第二课</a></div>
+    <a class="lref" href="ch1.html">第 1 课 →</a>
+    <a class="lref" href="ch2.html">第 2 课 →</a></div>
   <p class="why">你做 robotics，这一阶段是最容易建立直觉的桥：<strong>LQR 就是线性-二次 MDP 的解析解，RL 是它在非线性、未知模型下的推广。</strong>把这条线打通，后面所有算法都有落脚点。</p>
 
   <div class="block">
@@ -143,8 +143,8 @@
 
 <section class="stage" id="s2" data-status="done">
   <div class="stage-head"><span class="num">STAGE 2</span><h2>无模型表格法：MC / TD / Q-learning</h2>
-    <a class="chip d" href="ch4.html" style="text-decoration:none">第四课</a>
-    <a class="chip d" href="ch5.html" style="text-decoration:none">第五课</a></div>
+    <a class="lref" href="ch4.html">第 4 课 →</a>
+    <a class="lref" href="ch5.html">第 5 课 →</a></div>
   <p class="why">丢掉 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="1.699ex" height="1.545ex" role="img" focusable="false" viewBox="0 -683 751 683" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D443" xlink:href="#MJX-TEX-I-1D443"></use></g></g></g></svg></span>，只剩采样。这一阶段的数学主线是<strong>随机逼近</strong>与<strong>偏差-方差权衡</strong>——它决定了后面每一个算法的设计动机。</p>
 
   <div class="block">
@@ -173,7 +173,7 @@
 
 <section class="stage" id="s3" data-status="done">
   <div class="stage-head"><span class="num">STAGE 3</span><h2>函数逼近与致命三角</h2>
-    <a class="chip d" href="ch6.html" style="text-decoration:none">第六课</a></div>
+    <a class="lref" href="ch6.html">第 6 课 →</a></div>
   <p class="why">很多人从表格法直接跳到 DQN，于是永远不知道 replay buffer 和 target network 到底在修什么。这一阶段是<strong>整条路径里数学密度最高、也最值得慢慢走</strong>的一段。</p>
 
   <div class="block">

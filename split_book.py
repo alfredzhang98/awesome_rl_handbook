@@ -41,16 +41,28 @@ def parttag(sid):
 
 
 PAGES = [("index.html", "roadmap")] + [("ch%d.html" % i, "l%d" % i) for i in range(9)]
+
+# 侧栏/页签用的短名：讲这一课在讲什么，Stage 编号交给分组标题去说
+TITLES = {
+    "roadmap": "路线图",
+    "l0": "V 与 V⋆ 的含义",
+    "l1": "MDP、算子与 LQR 之桥",
+    "l2": "有模型 ≠ 有解析解",
+    "l3": "值函数的数学直觉",
+    "l4": "无模型表格法",
+    "l5": "轨迹上的四个选择",
+    "l6": "函数逼近与致命三角",
+    "l7": "DQN 家族",
+    "l8": "策略梯度",
+}
+
 titles = {}
 nums = {}
 for fn, sid in PAGES:
     t = parttag(sid)                                  # e.g. "第 4 课 · Stage 2 · 无模型表格法"
-    m = re.match(r"第\s*(\d+)\s*[课部].*?·\s*(.*)$", t)
-    if sid == "roadmap":
-        nums[sid], titles[sid] = "", "路线图"
-    else:
-        # 分组标题里已经写了 Stage N，章节名去掉重复的前缀
-        nums[sid], titles[sid] = m.group(1), re.sub(r"^Stage\s*\d+\s*·\s*", "", m.group(2))
+    m = re.match(r"第\s*(\d+)\s*[课部]", t)
+    nums[sid] = "" if sid == "roadmap" else m.group(1)
+    titles[sid] = TITLES[sid]
 
 GROUPS = [
     ("开始", ["roadmap"]),

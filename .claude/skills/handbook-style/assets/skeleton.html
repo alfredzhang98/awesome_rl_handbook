@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>〈讲义标题〉· 〈主线例子〉</title>
+<style>
+/* 把 assets/handbook.css 整段粘到这里（单文件讲义不引外部文件） */
+</style>
+</head>
+<body>
+
+<!-- MathJax 预渲染后，所有字形 <path id="MJX-TEX-…"> 会集中到这个隐藏 svg 里 -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg"><defs></defs></svg>
+
+<nav class="topnav"><div class="inner">
+  <div class="brand">〈手册名〉</div>
+  <a href="#roadmap">路线图</a>
+  <a href="#l0">0 · 〈短标题〉</a>
+  <a href="#l1">1 · 〈短标题〉</a>
+</div></nav>
+
+<div class="wrap">
+
+<!-- ============ 路线图 ============ -->
+<section class="doc roadmap" id="roadmap">
+<div class="parttag">第 0 部分 · 路线图</div>
+<header>
+  <h1>〈学习路径标题〉</h1>
+  <p class="sub">数学优先 · 面向〈读者的真实场景〉· 全程以〈主线例子〉作为同一个跑通到底的例子</p>
+  <p class="meta">每一阶段 = 一组方法 + 该阶段必须自己推一遍的数学 + 一个在〈主线例子〉上能看见差别的实验。<br>
+  阶段之间是<strong>依赖关系</strong>而不是时间表。</p>
+</header>
+
+<div class="legend">
+  <span class="chip">未开始</span><span class="chip n">进行中</span><span class="chip d">已掌握</span>
+</div>
+
+<div class="toc"><h3>路径总览</h3><ol>
+  <li><a href="#s0">〈Stage 0 标题〉</a></li>
+  <li><a href="#s1">〈Stage 1 标题〉</a></li>
+</ol></div>
+
+<h3 class="grouping">第一部分 · 基础</h3>
+
+<section class="stage" id="s0" data-status="done">
+  <div class="stage-head"><span class="num">STAGE 0</span><h2>〈阶段标题〉</h2>
+    <a class="chip d" href="#l0" style="text-decoration:none">第 0 课</a></div>
+  <p class="why">〈为什么必须学这一段——一句狠话，不是内容摘要〉</p>
+  <div class="block"><h4>核心内容</h4>
+    <ul class="algos">
+      <li><b>〈概念〉</b>：〈一句话说清它解决什么〉</li>
+      <li><b>〈概念〉</b>：〈…〉<span class="opt">可选</span></li>
+    </ul>
+  </div>
+  <div class="demo"><h4>〈主线例子〉落点</h4>
+    <p>〈这一阶段在主线例子上跑什么实验〉。<strong>关键实验：</strong>〈能看见差别的那一张图〉。</p></div>
+  <p class="pitfall"><b>最容易踩的坑：</b>〈…〉</p>
+</section>
+
+<footer>〈路线怎么组织的 + 邀请读者说出起点〉</footer>
+</section>
+
+<!-- ============ 第 0 课 ============ -->
+<section class="doc lesson" id="l0">
+<div class="parttag">第 0 课 · 〈这一课在全书的坐标〉</div>
+<header>
+  <div class="kicker">第 0 课 · 〈副标题〉</div>
+  <h1>〈白话现象〉<br>〈术语或副题〉</h1>
+  <p class="lede">〈接住上一课〉。〈这一课拿掉/加上了什么〉。〈你会看到什么〉。</p>
+</header>
+
+<h2><span class="n">§ 1</span>〈从一个能手算的小例子开始〉</h2>
+
+<p>〈规则简单到没有歧义地列出来〉：</p>
+<ul>
+  <li>〈规则一〉</li>
+  <li>〈规则二〉</li>
+</ul>
+
+<div class="big">
+<strong>我们要的就是一个数：〈公式〉。</strong><br>〈用大白话把它说一遍〉
+</div>
+
+<div class="math"><span class="mj mjd">$$ 〈LaTeX，最后预渲染成 SVG〉 $$</span></div>
+
+<p class="small">先记住这个数 <b>〈精确值〉</b>。下面我们<strong>假装不知道它</strong>，一步一步把它逼出来。</p>
+
+<table>
+<tr><th>刷第几遍</th><th>〈状态〉</th><th>这一行在回答</th></tr>
+<tr><td class="num">1</td><td class="num">0.0000</td><td>只剩 1 步能拿多少</td></tr>
+<tr><td class="num">2</td><td class="num"><b>0.9000</b></td><td>只剩 2 步能拿多少</td></tr>
+</table>
+
+<div class="key">
+<b>〈这一节要你记住的那一句断言。〉</b>〈展开一到两句〉
+</div>
+
+<hr>
+
+<h2><span class="n">§ 2</span>〈交互：让它自己长出来〉</h2>
+
+<div class="wgt" id="w1">
+  <div class="wgt-head">交互 · 〈组件在演示哪一步〉</div>
+  <div class="wgt-body">
+    <div class="chain" id="w1-nodes"></div>
+    <div class="calcline" id="w1-calc">按「算一格」开始。注意每一格都是拿<b>上一稿</b>的数字来算的。</div>
+  </div>
+  <div class="wgt-ctl">
+    <button id="w1-one" class="pri">算一格</button>
+    <button id="w1-sweep">刷完这一遍</button>
+    <button id="w1-auto">自动</button>
+    <button id="w1-reset">重置</button>
+    <label>γ <input type="range" id="w1-g" min="0.5" max="0.95" step="0.05" value="0.9"><span class="val" id="w1-gv">0.90</span></label>
+  </div>
+  <div class="wgt-stat">
+    <span>当前是第 <b id="w1-k">0</b> 稿</span>
+    <span>本轮最大改动 <b id="w1-d">—</b></span>
+    <span>离真值还差 <b id="w1-e">—</b></span>
+  </div>
+  <div class="wgt-note">〈一句话说明该看什么〉</div>
+</div>
+
+<div class="key">
+<b>盯住三件事。</b>
+<ul style="margin:8px 0 0">
+<li><b>〈现象一〉</b>〈为什么〉</li>
+<li><b>〈现象二〉</b>〈为什么〉</li>
+<li><b>〈现象三〉</b>〈为什么〉</li>
+</ul>
+</div>
+
+<script>
+(function(){
+  /* 组件脚本：只引用 w1- 前缀的 id，不碰全局；不引任何外部库 */
+})();
+</script>
+
+<h2><span class="n">§ 3</span>〈形式化：算子 / 定理 / 收敛性〉</h2>
+
+<div class="warn">
+<b>读书时的一个坑。</b>〈本文的符号约定与常见教材的差异〉——读那本书觉得下标不对时，不是你看错了。
+</div>
+
+<figure>
+  <picture>
+    <source srcset="data:image/webp;base64,〈暗色版〉" media="(prefers-color-scheme: dark)">
+    <img src="data:image/webp;base64,〈亮色版〉" alt="〈图在画什么，用公式说〉">
+  </picture>
+  <figcaption>左：〈该看什么〉，<b>〈结论词〉</b>。右：〈该看什么〉——〈带数字的结论〉。</figcaption>
+</figure>
+
+<div class="card">
+  <div class="role">〈前提条件 · 解的性质〉</div>
+  <h4>〈方法名〉</h4>
+  <dl>
+    <dt>输入</dt><dd>〈…〉</dd>
+    <dt>一次迭代</dt><dd>〈…〉</dd>
+    <dt>输出</dt><dd>〈…〉</dd>
+    <dt>失效点</dt><dd>〈它在哪断掉——下一个方法的存在理由〉</dd>
+  </dl>
+</div>
+
+<h2><span class="n">§ 4</span>〈N〉句话收尾</h2>
+
+<ol>
+<li><b>〈断言一〉</b>〈补一句解释〉</li>
+<li><b>〈断言二〉</b>〈补一句解释〉</li>
+</ol>
+
+<footer>
+下一课进〈Stage N〉：〈去哪，以及为什么是这个顺序〉。<br>
+本课所有图和数字都由随附脚本生成：<code>〈script_a.py〉</code>（〈职责〉）与 <code>〈script_b.py〉</code>（作图）。改参数重跑约〈N〉分钟。
+</footer>
+</section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,174 @@
+---
+name: handbook-style
+description: 写「数学优先、单文件 HTML、可交互」的中文技术讲义时使用——把一个具体例子从头贯穿到底，先给能手算的数字再给公式，图和数字全部由脚本跑出来。触发词：讲义、handbook、学习手册、教程页面、单文件 HTML 文档、把某个理论从头讲清楚、RL/控制/数学笔记。也用于给已有的这类讲义补写新一课、加交互组件、加图、切分成书。
+---
+
+# 讲义写作方法（RL Handbook 风格）
+
+这份 skill 是从 `RL_Handbook_CartPole.html`（强化学习学习手册，9 课 + 路线图，6.5 MB 单文件）里反推出来的写法。
+照着做，产出的是**一个能双击打开、断网也能看、公式和交互都在里面**的中文讲义。
+
+## 第一原则：一个例子贯穿到底
+
+整份文档只用**一个**具体系统当主线（这份手册里是 CartPole），每一阶段都在同一个系统上落地：
+
+- 新概念先在这个系统上**算出一个具体的数**，再谈一般形式。
+- 每一课末尾有「CartPole 落点」——这一课的理论在主线例子上表现成什么、该画哪张图、能看见什么差别。
+- 例子要小到能手算：第 0 课用 5 个状态的链（`s_A→s_B→s_C→s_D→s_E`，`γ=0.9`，真值 6.5610），第 4 课用崖边链，全书才敢在这些数上反复引用。
+
+**先给数字，再给公式。** 顺序永远是：一个能手算的小例子 → 表格里逐行长出来的数 → 图 → 才是算子/定理/收敛性。第 0 课的开篇一句话就是「这一课不推公式」。
+
+## 第二原则：所有数字都是跑出来的
+
+每一课的 `<footer>` 里都有一句交代来源，这不是客套：
+
+> 本课所有图和数字都由随附的两个脚本生成：`cartpole_dp.py`（动力学、离散化、值迭代、LQR）和 `cartpole_figs.py`（作图与对比实验）。改参数重跑大约 90 秒。
+
+> 本课用到的所有数字（8 集的 A-B 例子、崖边链的 −6.95、CartPole 的 446/446）都是跑出来的，不是抄的。
+
+规矩：
+
+- 写进正文的每一个数（收敛率 0.900、3721 格、44 小时、4190 步、106 倍方差）必须来自一次真实运行，脚本随讲义一起留下。
+- 不确定的数不写；写了就必须能重跑出来。
+- 数字带精度：`6.5610` 而不是「约 6.6」，`0.900` 那一列要连续列 10 行让读者自己看出收缩率。
+- 表格数字列一律 `class="num"`（`font-variant-numeric:tabular-nums`），小数位对齐。
+
+## 文档骨架
+
+```
+<html lang="zh-CN">
+ <head><style>…设计系统（见 assets/handbook.css）…</style></head>
+ <body>
+   <svg style="display:none"><defs>…MathJax 字形…</defs></svg>   ← 公式字形，全篇共用
+   <nav class="topnav">…</nav>                                   ← 单文件版；切成书后换成侧栏
+   <div class="wrap">
+     <section class="doc roadmap" id="roadmap">…</section>        ← 路线图：Stage 卡片
+     <section class="doc lesson" id="l0">…</section>              ← 第 0 课
+     …
+   </div>
+ </body>
+```
+
+一课的内部结构固定：
+
+```html
+<section class="doc lesson" id="l4">
+<div class="parttag">第 4 课 · Stage 2 · 无模型表格法</div>   <!-- 全大写小字，右侧自动接一条横线 -->
+<header>
+  <div class="kicker">第四课 · STAGE 2 · 无模型表格法</div>     <!-- 主色小字 -->
+  <h1>没有模型的时候<br>MC / TD / SARSA / Q-learning</h1>       <!-- 两行：现象 + 名词 -->
+  <p class="lede">前面三课的每一个数字，都是算出来的……这一课把模型拿走。</p>
+</header>
+
+<h2><span class="n">§ 1</span>把模型拿走，到底什么变了</h2>
+…
+<hr>
+<h2><span class="n">§ 2</span>…</h2>
+…
+<footer>下一课进 Stage 3：…… 本课所有数字都是跑出来的：……</footer>
+</section>
+```
+
+- `h1` 用 `<br>` 断成两行：**第一行是白话现象，第二行是术语**（「把表换成函数 / 以及所有保证是怎么坏掉的」）。
+- `h2` 一律带 `<span class="n">§ N</span>`，序号是主色小字、单独一行。一课 6–10 节。
+- `h3` 用来在节内分「一、二、三」或列小标题，不带编号。
+- 每课 8–10 个 `§`，末节固定是收尾（「六句话收尾」「七句话收尾」「四句话收尾」）——用编号列表把整课压成几句能背的话。
+
+## 组件词典
+
+细节和可复制的代码在 `references/components.md`，样式表在 `assets/handbook.css`。常用的六个：
+
+| 组件 | 类 | 什么时候用 |
+|---|---|---|
+| 结论块 | `.key` | 绿色左边框。**这一节要你记住的那一句**。一节最多一个，开头必是 `<b>一句断言。</b>` |
+| 提醒块 | `.warn` | 虚线框。坑、易错点、符号约定差异、「读书时的一个坑」 |
+| 领读句 | `.big` | 主色左竖线、大一号字。把一个定义翻译成大白话，通常配 `＝` |
+| 公式块 | `.math` + `.mj.mjd` | 展示式；行内公式用 `<span class="mj">` |
+| 算法卡 | `.card` | 一个方法的 `输入 / 一次迭代 / 输出 / 失效点` 四栏 `<dl>` |
+| 交互组件 | `.wgt` | 见下 |
+
+配色/排版 token 全在 `:root`，深色模式靠 `@media (prefers-color-scheme: dark)` 换同名变量——**任何新组件只准用变量，不准写死颜色**（唯一例外是致命三角表里的 `#c0392b` 红）。
+一课需要自己的组件时，在该 `<section>` 内部再开一个 `<style>`，类名加前缀（`.qtab` `.dtgrid` `.pc` `.triad`），仍然只用全局变量。
+
+## 公式
+
+- 用 LaTeX 写，最后**预渲染成内联 SVG**（MathJax，`mjpage` 之类），页面零外部请求。行内 `<span class="mj">`，展示 `<span class="mj mjd">`，字形 `<path>` 集中在 body 顶部那个隐藏 `<svg><defs>`。做法见 `references/pipeline.md`。
+- 符号统一：最优量用 `V^\star / Q^\star / \pi^\star`（渲染成 ⋆，**不要用黑星 ★**）；迭代次数 `k`，时刻 `t`，两者**不许混用**——第 0 课专门花一节论证「`k` 不是时刻」。
+- 换符号必须公告。第 1 课把第 0 课的 `V_k` 改叫别的，就在正文里写明「因为那边的 `t` 被用来表示时刻了」。
+- 关键式子用 `\underbrace{…}_{\text{目标（一个样本）}}` 标注每一块的含义，这是这份讲义里最常用的公式修辞。
+- 一个式子写完，下一句永远是「这个式子读一遍就够了：……」式的白话复述。
+
+## 图
+
+三种，都不依赖外部文件：
+
+1. **数据图（主力，31 张）**：matplotlib 跑真实实验 → **画两版**（亮色/暗色，配色取自 CSS token）→ webp → base64 → `<picture>`：
+   ```html
+   <figure>
+     <picture>
+       <source srcset="data:image/webp;base64,…" media="(prefers-color-scheme: dark)">
+       <img src="data:image/webp;base64,…" alt="V_k(s0) 逐遍逼近 V*(s0)">
+     </picture>
+     <figcaption>左：每刷一遍，级数就<b>多加恰好一项</b>…右：还差多少，与 γ^k 完全重合——差距就是级数还没加完的那条尾巴。</figcaption>
+   </figure>
+   ```
+   `figcaption` 是**说明书不是标题**：按「左：…右：…」逐块讲该看什么，带具体数字（「核内标准差 0.441」「松了 11 倍」），关键词 `<b>` 加粗。
+2. **手绘 SVG 示意图**：状态转移图、开关面这类结构图，直接写 `<svg>`，`stroke="currentColor"` + `fill="none"`，靠 `color:var(--ink-2)` 自动适配深浅色。
+3. **canvas**：交互组件里的实时曲线，见下。
+
+## 交互组件
+
+一课最多 1–2 个，只在「静态图讲不动」的地方用（值迭代一格一格长出来、DP vs TD 并排跑）。固定五段结构：
+
+```html
+<div class="wgt" id="cw">
+  <div class="wgt-head">交互 · 刷一遍 = 作用一次 T</div>   <!-- 主色小标题 -->
+  <div class="wgt-body">…节点 / canvas / 计算行…</div>
+  <div class="wgt-ctl">                                    <!-- 四个按钮 + 滑杆 -->
+    <button class="pri">算一格</button><button>刷完这一遍</button>
+    <button>自动</button><button>重置</button>
+    <label>γ <input type="range" …><span class="val">0.90</span></label>
+  </div>
+  <div class="wgt-stat"><span>当前是第 <b>0</b> 稿</span>…</div>  <!-- 实时数字 -->
+  <div class="wgt-note">…一句话说明看什么…</div>
+</div>
+```
+
+- 按钮四件套：**单步 / 走完一轮 / 自动 / 重置**，第一个 `.pri`。
+- `.wgt-stat` 里放「本轮最大改动」「离真值还差」「残余权重 γ^k」这类**能对应到公式里某一项**的量。
+- 组件后面紧跟一个 `.key`「盯住三件事」，明确告诉读者该观察什么——组件不解释自己。
+- 脚本就写在该 `<section>` 内的 `<script>` 里，用 IIFE 包住，只引用本节内的 id，别碰全局。
+
+## 语气与句式
+
+- 第二人称「你」，动词直给：「盯住三件事」「先把话说白」「照着数就行」「把这一节记牢」。
+- 先说结论，再解释。`.key` 的第一句永远是完整断言：「`V_k` 不是什么"迭代中间量"。」
+- 主动承认难点和意外：「然后是本课最让我意外的一个数字」「一个值得记住的对立」「但代价请看清楚」。
+- 破除误解优先于介绍知识：「很多人从表格法直接跳到 DQN，于是永远不知道 replay buffer 和 target network 到底在修什么。」
+- 加粗只给**可执行的结论**，不给术语首次出现。术语用 `<code>` 或公式。
+- 中文排版：中英文之间留空格，全角标点，「」用于强调短语，双引号用于口语引述。
+- 每课 `<footer>` 两句话：**下一课要去哪**（并说明为什么是这个顺序）+ **数字来源与重跑耗时**。
+
+## 路线图页
+
+整份讲义前面有一张 `section.doc.roadmap`：
+
+- `.toc` 双栏编号目录 → 每个 Stage 一张 `section.stage` 卡片，`data-status="done|now|pending"` 控制左边框颜色。
+- 卡片里：`.stage-head`（`STAGE N` 徽章 + 标题 + 跳转到对应课的 `.chip`）→ `.why`（**为什么必须学这一段**，一句狠话）→ `.block h4` 分组（核心算法 / 核心内容）→ `ul.algos` 逐条 → `.demo`（CartPole 落点）→ `.pitfall`（这一段最容易踩的坑）。
+- 已完成的 Stage 在卡片右上角挂 `.chip.d` 链到讲义，读者能立刻跳过去。
+
+## 交付流水线
+
+1. 写实验脚本 → 跑出数字和两版图 → 存成 webp。
+2. 写 LaTeX + HTML 正文 → 预渲染公式为内联 SVG → 得到单文件 `*.html`（双击可读，可离线）。
+3. 需要网页书时用 `split_book.py` 按课切分到 `docs/`（侧栏目录 + 上/下一章 + 本章 § 小目录），`publish.py` 一键重切 + commit + push，GitHub Pages 从 `main /docs` 发布。
+
+**交稿前对照 `references/checklist.md` 过一遍。**
+
+## 参考文件
+
+- `references/components.md` —— 每个组件的完整可复制标记与使用边界
+- `references/writing.md` —— 句式、修辞、真实例句清单
+- `references/pipeline.md` —— 公式预渲染、双主题配图、切书与发布的具体命令
+- `references/checklist.md` —— 交稿前 20 条自检
+- `assets/handbook.css` —— 完整设计系统（亮/暗双色板，可直接粘进 `<style>`）

@@ -36,7 +36,8 @@ def strip_tags(s):
 
 # ---------- 3. chapter metadata ----------
 def parttag(sid):
-    return strip_tags(re.search(r'<div class="parttag">(.*?)</div>', sections[sid], re.S).group(1))
+    t = strip_tags(re.search(r'<div class="parttag">(.*?)</div>', sections[sid], re.S).group(1))
+    return t.replace(u"★", u"⋆")
 
 
 PAGES = [("index.html", "roadmap")] + [("ch%d.html" % i, "l%d" % i) for i in range(9)]
@@ -66,6 +67,8 @@ def rewrite(html, cur_sid):
     def sub_l(m):
         return 'href="%s"' % file_of["l" + m.group(1)]
     html = re.sub(r'href="#l(\d)"', sub_l, html)
+    # 正文里仅有的 2 处黑星 ★ 统一成 ⋆（star operator），与公式里 V^\star 的渲染一致
+    html = html.replace(u"★", u"⋆")
     if cur_sid != "roadmap":
         html = re.sub(r'href="#(s\d+)"', r'href="index.html#\1"', html)
         html = html.replace('href="#roadmap"', 'href="index.html"')

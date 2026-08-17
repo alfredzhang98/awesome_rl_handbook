@@ -4,7 +4,7 @@
 
 ## Stage 0–1
 
-* [第 0 课 · V 与 V★ 的含义](ch0.html)
+* [第 0 课 · V 与 V⋆ 的含义](ch0.html)
 * [第 1 课 · Stage 0 + Stage 1](ch1.html)
 * [第 2 课 · Stage 0–1 补课](ch2.html)
 * [第 3 课 · Stage 0 深入](ch3.html)

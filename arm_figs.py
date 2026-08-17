@@ -57,7 +57,8 @@ Am, Bd = A.linearize()
 P, K = A.lqr_discounted(Am, Bd)
 lam_cl = np.abs(np.linalg.eigvals(Am - Bd @ K)).max()
 g = A.Grid(161, 161, 41)
-V, PI, hist, kfin, _ = g.solve(tol=1e-10)
+SNAPS = {1, 2, 3, 5, 10, 30, 100}
+V, PI, hist, kfin, snaps = g.solve(tol=1e-10, snapshots=SNAPS)
 Vq = np.einsum("...i,ij,...j->...", g.X, P, g.X)
 print("  值迭代 %d 轮" % kfin)
 
@@ -162,7 +163,24 @@ def fig4(c):
     return fig
 
 
-for name, fn in [("f1", fig1), ("f2", fig2), ("f3", fig3), ("f4", fig4)]:
+
+def fig5(c):
+    """前几稿在 θ̇ = 0 切片上的样子：算子一遍一遍把 V 抬起来。"""
+    fig, ax = plt.subplots(figsize=(6.0, 3.6))
+    j = len(g.dth) // 2
+    sl = np.abs(g.th) <= 0.8
+    cols = [c["ink3"], c["blue"], c["blue"], c["orange"], c["orange"], c["green"], c["green"]]
+    for n, (k, col) in enumerate(zip(sorted(snaps), cols)):
+        ax.plot(g.th[sl], snaps[k][sl, j], color=col, lw=1.3,
+                alpha=0.35 + 0.09 * n, label="k = %d" % k)
+    ax.plot(g.th[sl], V[sl, j], "--", color=c["ink"], lw=2, label="不动点 V⋆")
+    ax.set_xlabel("θ (rad)，θ̇ = 0 切片"); ax.set_ylabel("代价-到-去")
+    ax.set_ylim(0, 26); ax.legend(fontsize=7.5, ncol=2)
+    ax.set_title("每作用一次 T⋆，曲线往上长一层")
+    theme(fig, ax, c)
+    return fig
+
+for name, fn in [("f1", fig1), ("f2", fig2), ("f3", fig3), ("f4", fig4), ("f5", fig5)]:
     figs[name] = {}
     for tag, c in [("light", LIGHT), ("dark", DARK)]:
         figs[name][tag] = save(fn(c), c)

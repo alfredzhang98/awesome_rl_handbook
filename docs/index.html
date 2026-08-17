@@ -101,8 +101,9 @@
 
   <div class="demo">
     <h4>机械臂落点</h4>
-    <p>写出<strong>单个关节</strong>的连续动力学 <code>I θ̈ = τ − b θ̇ + m g l sin θ</code>（协作臂的肘关节量级：I = 0.075 kg·m²、mgl = 2.94 N·m、50 Hz、τ 限 ±2 N·m），把它<strong>离散化成一个真正的表格 MDP</strong>：状态 (θ, θ̇) 分箱，动作是力矩档位。这个离散 MDP 会一直用到 Stage 3。<br>
-    <strong>可视化：</strong>在 (θ, θ̇) 平面上画 V⋆ 的热力图——你会看到一条清晰的"还救得回来"的边界，这就是控制里的 <strong>viability kernel</strong>；它的右边界正好落在 arcsin(τ_max/mgl) = 42.8°，因为再远静止时连重力都顶不住。</p></div>
+    <p>把<strong>单个关节</strong> <code>I θ̈ = τ − b θ̇ + m g l sin θ</code>（I = 0.075 kg·m²、mgl = 2.94 N·m、50 Hz、τ 限 ±2 N·m）写成一个真正能填表的 MDP：状态 (θ, θ̇) 各分 121 格、力矩 21 档 → <strong>14 641 个状态 × 21 个动作 = 每刷一遍 307 461 次备份</strong>。<br>
+    <strong>把算子落到实处：</strong>挑一个格点（θ = 16.5°、θ̇ = 0），把 21 个力矩摊开算 <code>g + γV</code>，看 min 取在哪一档——撒手当下最省却落点最差，顶到底落点最好却电费最贵，最优在中间。<strong>算出来的最小值正好等于表里存的 V⋆，这就是"不动点"的字面意思。</strong><br>
+    <strong>可视化：</strong>在 (θ, θ̇) 平面画 V⋆ 热力图，能看到一条清晰的"还救得回来"的边界（控制里的 viability kernel）；它的右边界正好落在 arcsin(τ_max/mgl) = 42.8°，再远静止时连重力都顶不住。</p></div>
   <div class="pitfall"><b>容易跳过但不该跳的：</b>折扣因子 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> 不是超参数而是问题定义的一部分。robotics 里 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> 与 episode 长度、与 average-reward 形式的关系，值得单独想清楚。</div>
 
   <div class="stage-links"><span class="lb">讲义</span><a href="ch1.html">第 1 课 · MDP、算子与 LQR 之桥</a><a href="ch3.html">第 3 课 · 值函数的数学直觉（深入）</a></div>
@@ -132,8 +133,10 @@
 
   <div class="demo">
     <h4>机械臂落点</h4>
-    <p>在离散化的关节上跑值迭代到收敛，得到"上帝视角"的 V⋆ 与 π⋆。<strong>这个解在后面每个阶段都作为 ground truth 用来量误差。</strong><br>
-    然后在举直位形线性化，解折扣 Riccati 得到 LQR 增益 K = [5.68, 0.82]，把 xᵀPx 与 V⋆ 叠在同一张图上——<strong>小角度区两者压在一起（网格加密一倍，中位偏差从 44.6% 降到 4.7%），大角度区力矩饱和，线性律的假设失效</strong>。这一张图基本说明了 RL 该在哪一端接手。</p></div>
+    <p>在同一个关节上跑值迭代到收敛，得到"上帝视角"的 V⋆ 与 π⋆——<strong>后面每个阶段都拿它当 ground truth 量误差</strong>。<br>
+    然后在举直位形线性化，解折扣 Riccati（技巧：对 (√γA, √γB) 解标准 DARE）得到 K = [5.68, 0.82]、P₁₁ = 40.25，把 xᵀPx 与 V⋆ 叠在同一张图上：<strong>小角度区两者压在一起（网格加密一倍，中位偏差 44.6% → 15.0% → 4.7%），大角度区力矩饱和，线性律的假设失效。</strong><br>
+    <strong>三个必须自己量一遍的数：</strong>后验停机界 γε/(1−γ) = 49ε；实测收缩率 0.925（γ = 0.98 明显松，真正的速度是 γ·|λ_cl| = 0.899）；力矩饱和角 20.2° 与物理保持极限 42.8°。<br>
+    <strong>这一阶段真正的结论：</strong>单关节 + 二次代价上 LQR 就是答案，把 τ_max 压到 0.8 N·m 让约束处处咬人，网格 DP 也一个初值都没多救回来。RL 的入场券是另外三张——维数、未知模型、非二次代价。</p></div>
 
   <div class="stage-links"><span class="lb">讲义</span><a href="ch1.html">第 1 课 · MDP、算子与 LQR 之桥</a><a href="ch2.html">第 2 课 · 有模型 ≠ 有解析解</a></div>
 </section>

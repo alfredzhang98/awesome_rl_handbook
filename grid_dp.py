@@ -290,60 +290,6 @@ OUT["flip"] = {"cell": "%d%d" % FLIP, "det_best": det_best, "slip_best": slip_be
                "V_det": fmt(V[FLIP]), "V_slip": fmt(Vs[FLIP])}
 
 
-# ---------------- README 用的独立插图（写死颜色，不依赖页面 CSS） ----------------
-def hero_svg():
-    BG, INK, INK2, INK3, LINE, ACC = "#faf9f7", "#1c1b19", "#4d4a45", "#8d8981", "#e5e2dc", "#8a5a2b"
-    C, PAD, TOP = 78, 26, 58
-    W, H = N * C + 2 * PAD + 300, N * C + TOP + PAD + 14
-    o = ['<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif">' % (W, H, W, H)]
-    o.append('<defs><marker id="ah" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="%s"/></marker></defs>' % ACC)
-    o.append('<rect width="%d" height="%d" fill="%s"/>' % (W, H, BG))
-    o.append('<text x="%d" y="30" font-size="17" font-weight="700" fill="%s">V⋆ · 4×4 仓库，每走一步 −1，γ = 0.9</text>' % (PAD, INK))
-    o.append('<text x="%d" y="48" font-size="12.5" fill="%s">14 个状态 · 52 个状态-动作对 · 值迭代 7 遍精确收敛</text>' % (PAD, INK3))
-    vmax = max(abs(v) for v in V.values())
-    for r in range(N):
-        for c in range(N):
-            x, y, s_ = PAD + c * C, TOP + r * C, (r, c)
-            if s_ in SHELF:
-                o.append('<rect x="%d" y="%d" width="%d" height="%d" fill="%s" stroke="%s"/>' % (x, y, C, C, "#e8e5df", LINE))
-                o.append('<text x="%d" y="%d" font-size="12" fill="%s" text-anchor="middle">货架</text>' % (x + C // 2, y + C // 2 + 4, INK3))
-                continue
-            op = abs(V[s_]) / vmax * 0.42
-            o.append('<rect x="%d" y="%d" width="%d" height="%d" fill="%s" fill-opacity="%.3f" stroke="%s"/>' % (x, y, C, C, ACC, op, LINE))
-            o.append('<text x="%d" y="%d" font-size="14.5" fill="%s" text-anchor="middle">%.3f</text>' % (x + C // 2, y + C // 2 - 2, INK, V[s_]))
-            if s_ == GOAL:
-                o.append('<circle cx="%d" cy="%d" r="22" fill="none" stroke="%s" stroke-width="2"/>' % (x + C // 2, y + C // 2 - 7, ACC))
-                o.append('<text x="%d" y="%d" font-size="10.5" fill="%s" text-anchor="middle">充电桩</text>' % (x + C // 2, y + C - 8, ACC))
-            elif s_ in pol:
-                ar = {"上": (0, -1), "下": (0, 1), "左": (-1, 0), "右": (1, 0)}[pol[s_]]
-                cx, cy = x + C // 2, y + C - 20
-                o.append('<path d="M%d %d l%d %d" stroke="%s" stroke-width="2" fill="none" marker-end="url(#ah)"/>' % (cx - ar[0] * 10, cy - ar[1] * 7, ar[0] * 20, ar[1] * 14, ACC))
-            if s_ == START:
-                o.append('<g><rect x="%d" y="%d" width="20" height="13" rx="3.5" fill="%s"/><circle cx="%d" cy="%d" r="2.6" fill="%s"/><circle cx="%d" cy="%d" r="2.6" fill="%s"/></g>'
-                         % (x + 5, y + 5, ACC, x + 10, y + 19, INK3, x + 20, y + 19, INK3))
-                o.append('<text x="%d" y="%d" font-size="9" font-weight="700" fill="%s">AGV</text>' % (x + 28, y + 15, ACC))
-    tx = PAD + N * C + 30
-    lines = [("每一格的数 = 从这里出发、一路最优地走，", INK2),
-             ("未来奖励的折扣总和。", INK2),
-             ("", INK2),
-             ("离充电桩 d 步的格子，闭式解是", INK2),
-             ("V⋆ = −10 (1 − 0.9^d)", ACC),
-             ("值迭代跑出来的 14 个数与它逐格相同，", INK2),
-             ("最大差 0.0——你有一把能核对一切的尺子。", INK2),
-             ("", INK2),
-             ("箭头是最优动作；灰格进不去，撞上去", INK3),
-             ("原地不动，这一步照样白走。", INK3)]
-    for i, (t, col) in enumerate(lines):
-        if t:
-            o.append('<text x="%d" y="%d" font-size="%s" fill="%s"%s>%s</text>'
-                     % (tx, TOP + 16 + i * 22, "13.5" if col != INK3 else "12.5", col,
-                        ' font-weight="700"' if col == ACC else "", t))
-    o.append('</svg>')
-    return "".join(o)
-
-io.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "assets", "hero.svg"),
-        "w", encoding="utf-8", newline=chr(10)).write(hero_svg())
-
 if __name__ == "__main__":
     if sys.platform == "win32":
         try: sys.stdout.reconfigure(encoding="utf-8")

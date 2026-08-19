@@ -1,0 +1,64 @@
+Copyright (c) 2026 alfred (alfredzhang98). All rights reserved.
+版权所有 © 2026 alfred（alfredzhang98）。保留一切权利。
+
+================================================================================
+Awesome RL Handbook — 仅供在线阅读 / VIEW-ONLY, ALL RIGHTS RESERVED
+================================================================================
+
+本作品（讲义正文、插图、交互组件、随附脚本与全部素材，以下统称「本作品」）
+受著作权法保护。除下文明确列出的许可外，版权人未授予任何权利。
+This work is protected by copyright. No rights are granted except those
+expressly stated below.
+
+许可你做的事 / You MAY
+--------------------------------------------------------------------------------
+  1. 通过官方站点或官方仓库在线阅读本作品：
+       https://alfredzhang98.github.io/awesome_rl_handbook/
+       https://github.com/alfredzhang98/awesome_rl_handbook
+  2. 为你个人的学习目的，在本地设备上保存副本（含离线阅读），
+     但不得以任何方式再分发该副本。
+  3. 链接到官方站点，并为评论、教学或研究目的作合理的少量引用
+     （单次引用不超过一页篇幅，且必须注明作者与原始链接）。
+
+未经版权人事先书面许可，不得做的事 / You MAY NOT (without prior written permission)
+--------------------------------------------------------------------------------
+  1. 再分发（Redistribution）——包括但不限于：镜像站点、全文或大段转载、
+     上传至其他网站、网盘、公众号、知识库、论坛、课程平台或应用内。
+     No mirroring, reposting, or redistribution in any form.
+  2. 出版（Publication）——印刷成书、制作电子书、投稿或提交至任何出版社、
+     内容平台或期刊。
+  3. 演绎与改编（Derivative works）——翻译、改写、节选重排、二次创作，
+     以及以本作品为基础制作的任何衍生教材，无论是否公开。
+  4. 商业使用（Commercial use）——出售、付费专栏、付费课程、含广告的展示、
+     打包进付费产品或服务、用于商业培训或咨询交付物。
+  5. 机器学习用途——使用本作品训练、微调、蒸馏任何模型，
+     或将其内容并入训练数据集、检索库或语料库。
+
+版权人保留的权利 / Rights reserved by the copyright holder
+--------------------------------------------------------------------------------
+  上述限制仅约束被授权方。版权人 alfred（alfredzhang98）本人保留对本作品的
+  全部权利，包括但不限于商业出版、商业授权、改编、再许可，以及以任何其他条款
+  向特定对象另行授权的权利。
+  The above restrictions bind licensees only. The copyright holder retains all
+  rights, including commercial publication, adaptation, relicensing, and the
+  right to grant separate terms to any party.
+
+关于 GitHub 平台 / Note on GitHub
+--------------------------------------------------------------------------------
+  本仓库以公开形式托管在 GitHub 上。根据 GitHub 服务条款，公开仓库允许其他
+  用户在 GitHub 平台内查看与 fork。本许可不改变该平台规则，但 fork 之外的
+  一切使用——包括把内容搬到 GitHub 之外的任何地方——仍受本许可约束。
+  This repository is public on GitHub; GitHub's Terms of Service permit viewing
+  and forking within the platform. Any use beyond that remains subject to this
+  license.
+
+想做上面「不可以」里的事？ / Requesting permission
+--------------------------------------------------------------------------------
+  单独来谈授权：https://github.com/alfredzhang98/awesome_rl_handbook/issues
+
+免责声明 / Disclaimer
+--------------------------------------------------------------------------------
+  本作品按「现状」提供，不附带任何明示或默示的担保。作者不对因使用本作品
+  （含其中的代码与数值结论）而产生的任何损失承担责任。
+  This work is provided "as is", without warranty of any kind. The author is
+  not liable for any damages arising from its use.

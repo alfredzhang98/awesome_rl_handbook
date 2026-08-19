@@ -52,6 +52,11 @@ hr{border:none;border-top:1px solid var(--line);margin:46px 0}
 hr.div{border:none;border-top:1px solid var(--line);margin:44px 0 30px}
 footer{margin-top:20px;padding-top:22px;border-top:1px solid var(--line);color:var(--ink-3);font-size:14px}
 
+/* ---------- 封面 ---------- */
+.cover{text-align:center;margin:28px 0 0}
+.cover img{max-width:320px;width:100%;height:auto;border-radius:12px;
+ box-shadow:0 10px 36px rgba(0,0,0,.18)}
+
 /* ---------- 讲义 ---------- */
 .lesson h2{font-size:20px;margin:54px 0 4px;letter-spacing:-.01em}
 .lesson h2 .n{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.08em;display:block;margin-bottom:4px}

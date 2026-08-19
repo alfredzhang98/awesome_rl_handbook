@@ -1,12 +1,21 @@
+<div align="center">
+
+<img src="docs/assets/cover.png" alt="Awesome RL Handbook 封面" width="360">
+
 # Awesome RL Handbook
 
-**数学优先的中文强化学习讲义。每一个数字都是脚本跑出来的，不是抄的。**
+**数学优先的中文强化学习讲义**<br>
+每一个数字都是脚本跑出来的，不是抄的
+
+[![在线阅读](https://img.shields.io/badge/在线阅读-GitHub_Pages-8a5a2b?style=flat-square)](https://alfredzhang98.github.io/awesome_rl_handbook/)
+[![版本](https://img.shields.io/github/v/tag/alfredzhang98/awesome_rl_handbook?style=flat-square&label=版本&color=3f7d58)](https://github.com/alfredzhang98/awesome_rl_handbook/tags)
+[![课程](https://img.shields.io/badge/讲义-第_0–8_课-555?style=flat-square)](https://alfredzhang98.github.io/awesome_rl_handbook/)
+[![python](https://img.shields.io/badge/python-3.8+-3776ab?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![License](https://img.shields.io/badge/许可-仅供阅读_·_保留所有权利-8a5a2b?style=flat-square)](LICENSE)
+
+</div>
 
 从 MDP 与 Bellman 算子（Stage 0–1），到无模型表格法（Stage 2）、函数逼近与致命三角（Stage 3）、DQN 家族（Stage 4）、策略梯度（Stage 5）——每一课都挑一个**小到能手算、又真能算到底**的例子，把公式落到具体的数上。
-
-**📖 在线阅读 → <https://alfredzhang98.github.io/awesome_rl_handbook/>**
-
-![第 1 课：4×4 仓库网格上的最优值函数](docs/assets/hero.svg)
 
 ---
 
@@ -61,7 +70,6 @@ docs/                       讲义正文，GitHub Pages 站点根目录（直接
   index.html                路线图
   ch0.html … ch8.html       第 0–8 课
   assets/book.css | book.js 侧边栏版式与本章小目录
-  assets/hero.svg           README 用的插图，由 grid_dp.py 生成
 grid_dp.py                  第 1 课数值后端：4×4 仓库的值迭代、闭式解核对、停机界、
                             打滑对照、扫描顺序实验；正文插图也由它产出
 publish.py                  一步完成「提交 + 推送」
@@ -85,13 +93,22 @@ GitHub Pages 从 `main` 分支的 `/docs` 发布。`.npy` 与 `arm_numbers.json`
 
 ## 版本
 
-出版按 tag 走，不随便发。每个 tag 对应一次「内容定稿」，改动记在 [Releases](https://github.com/alfredzhang98/awesome_rl_handbook/releases)：
+内容定稿会打 tag，改动记在 [Releases](https://github.com/alfredzhang98/awesome_rl_handbook/releases)。在线站点始终跟随 `main`，想读某个定稿版本按 tag 检出即可。
 
 | Tag | 内容 |
 |---|---|
-| `v0.1.0` | 第一个定稿版本：路线图 Stage 0–12，第 0–8 课在线；第 1 课以 4×4 仓库网格为主线重写 |
+| `v0.1.0` | 路线图 Stage 0–12，第 0–8 课在线；第 1 课以 4×4 仓库网格为主线重写 |
 
-在线站点始终跟随 `main`；想读某个定稿版本，按 tag 检出即可。
+## 许可
+
+**版权所有，保留一切权利。本作品仅授权在线阅读**——详见 [LICENSE](LICENSE)。
+
+| | |
+|---|---|
+| ✅ 可以 | 在[官方站点](https://alfredzhang98.github.io/awesome_rl_handbook/)或本仓库在线阅读；为个人学习在本地保存副本；链接到官方站点；为评论、教学、研究作合理的少量引用（注明作者与原链接） |
+| ❌ 不可以 | **镜像或转载**（搬到其他网站、网盘、公众号、课程平台）；出版（印刷、电子书、投稿）；翻译、改写、节选重排等演绎；任何商业使用；用于训练模型或并入数据集 |
+
+版权人保留全部权利，包括商业出版与另行授权。要做上面「不可以」里的事，[开个 issue](https://github.com/alfredzhang98/awesome_rl_handbook/issues) 单独谈。
 
 ## 写作方法已经打包成 Claude Code Skill
 

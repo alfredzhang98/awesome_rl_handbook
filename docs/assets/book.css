@@ -125,8 +125,8 @@ table td .mj svg{vertical-align:-.15em}
 .roadmap .demo h4{color:var(--accent);margin-bottom:6px}
 .roadmap .demo p{margin:0;color:var(--ink-2)}
 .roadmap .demo strong{color:var(--ink)}
-.roadmap .pitfall{font-size:14px;color:var(--ink-2);margin-top:14px;padding:10px 14px;border:1px dashed var(--line-2);border-radius:8px}
-.roadmap .pitfall b{color:var(--ink)}
+.roadmap .keypoint{font-size:14px;color:var(--ink-2);margin-top:14px;padding:10px 14px;border:1px dashed var(--line-2);border-radius:8px}
+.roadmap .keypoint b{color:var(--ink)}
 .roadmap h3.grouping{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 16px}
 
 /* ---------- 交互组件 ---------- */

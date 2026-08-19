@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""重新切分讲义并发布到 GitHub。
+"""提交改动并发布到 GitHub Pages。
 
 用法：
     python publish.py                 # 有改动才提交并推送
@@ -8,14 +8,12 @@
 
 失败（没网、没凭据等）时打印原因并以 0 退出，不打断调用方。
 """
-import io
 import os
 import subprocess
 import sys
 import time
 
 REPO = os.path.dirname(os.path.abspath(__file__))
-SPLIT = os.path.join(REPO, "split_book.py")
 
 
 def run(args, **kw):
@@ -39,13 +37,7 @@ def main():
         say("publish: %s 不是 git 仓库，跳过" % REPO)
         return 0
 
-    # 1) 重新切分
-    r = run([sys.executable, SPLIT])
-    if r.returncode != 0:
-        say("publish: split_book.py 失败\n" + (r.stderr or r.stdout).strip()[-1500:])
-        return 0
-
-    # 2) 有改动才提交
+    # 1) 有改动才提交
     run(["git", "add", "-A"])
     if run(["git", "diff", "--cached", "--quiet"]).returncode == 0:
         if not quiet:
@@ -54,7 +46,7 @@ def main():
 
     files = [l for l in run(["git", "diff", "--cached", "--name-only"]).stdout.splitlines() if l]
     if msg is None:
-        msg = u"更新讲义并重新切分（%s）" % time.strftime("%Y-%m-%d %H:%M")
+        msg = u"更新讲义（%s）" % time.strftime("%Y-%m-%d %H:%M")
     body = msg + u"\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>\n"
 
     r = run(["git", "commit", "-F", "-"], input=body)
@@ -62,7 +54,7 @@ def main():
         say("publish: commit 失败\n" + (r.stderr or r.stdout).strip()[-1500:])
         return 0
 
-    # 3) 推送
+    # 2) 推送
     r = run(["git", "push", "origin", "HEAD"])
     if r.returncode != 0:
         say("publish: 已在本地提交，但 push 失败（改动没丢，联网后 git push 即可）\n"

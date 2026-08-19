@@ -5,7 +5,7 @@
 ## Stage 0–1
 
 * [第 0 课 · V 与 V⋆ 的含义](ch0.html)
-* [第 1 课 · MDP、算子与 LQR 之桥](ch1.html)
+* [第 1 课 · MDP 与 Bellman 算子](ch1.html)
 * [第 2 课 · 有模型 ≠ 有解析解](ch2.html)
 * [第 3 课 · 值函数的数学直觉](ch3.html)
 

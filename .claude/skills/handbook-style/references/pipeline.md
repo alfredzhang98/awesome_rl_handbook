@@ -9,8 +9,8 @@
 每一课配一到两个脚本，命名说清职责：
 
 ```
-cartpole_dp.py     动力学、离散化、值迭代、LQR       ← 出数字
-cartpole_figs.py   作图与对比实验                    ← 出图
+arm_dp.py     动力学、离散化、值迭代、折扣 LQR       ← 出数字
+arm_figs.py   作图与对比实验                         ← 出图
 ```
 
 脚本要求：
@@ -36,7 +36,7 @@ CSS token 与 matplotlib 配色对应关系：
 
 ```bash
 # 每张图两版 → webp（质量 80 左右，几十 KB 一张）
-python cartpole_figs.py            # 产出 fig_xx.light.png / fig_xx.dark.png
+python arm_figs.py                 # 产出 fig_xx.light.png / fig_xx.dark.png
 cwebp -q 80 fig_xx.light.png -o fig_xx.light.webp
 ```
 
@@ -65,7 +65,7 @@ mjpage --output CommonHTML --format "TeX" --svg < draft.html > handbook.html
 - 展示：`<span class="mj mjd">…</span>`，外面套 `<div class="math">`
 - 所有字形 `<path id="MJX-TEX-…">` 收在 body 顶部一个隐藏的 `<svg style="display:none"><defs>…</defs></svg>`
 
-**校验**：页面里出现的每个 `xlink:href="#MJX-…"` 都必须能在 `<defs>` 里找到同名 `<path>`；切分文件时尤其要重查（`split_book.py` 会按页只带该页用到的字形）。
+**校验**：页面里出现的每个 `xlink:href="#MJX-…"` 都必须能在 `<defs>` 里找到同名 `<path>`；拆页时尤其要重查（每页只带该页用到的字形）。
 
 符号约定：
 
@@ -82,13 +82,7 @@ mjpage --output CommonHTML --format "TeX" --svg < draft.html > handbook.html
 
 ## 5. 切分成网页书
 
-单文件适合发给人 / 存档，网页书适合阅读。仓库里的 `split_book.py`：
-
-```bash
-python split_book.py     # 单文件 → docs/：index.html + ch0..ch8.html + assets/
-```
-
-它做的事（改造新讲义时照搬）：
+单文件适合发给人 / 存档，网页书适合阅读。本仓库已经切完，只留网页书形态（`docs/`：index.html + ch0..ch8.html + assets/），之后直接改各页 HTML。从单文件切一遍要做的事（改造新讲义时照搬）：
 
 - 按 `<section class="doc lesson" id="lN">` 切页，正文**逐字不动**，只重写跨章锚点（`#l4` → `ch4.html`）。
 - 抽出 `<head>` 里的样式到 `assets/book.css`，追加侧栏版式。
@@ -99,7 +93,7 @@ python split_book.py     # 单文件 → docs/：index.html + ch0..ch8.html + as
 ## 6. 发布
 
 ```bash
-python publish.py                  # 重切 + 有改动才 commit + push
+python publish.py                  # 有改动才 commit + push
 python publish.py -m "自定义信息"
 ```
 

@@ -99,8 +99,6 @@ table td .mj svg{vertical-align:-.15em}
 .roadmap .toc a:hover{color:var(--accent);text-decoration:underline}
 .roadmap section.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;
  padding:26px 28px;margin:0 0 20px;scroll-margin-top:70px}
-.roadmap section.stage[data-status="done"]{border-left:3px solid var(--done)}
-.roadmap section.stage[data-status="now"]{border-left:3px solid var(--now)}
 .roadmap .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
 .roadmap .stage-head .num{font-variant-numeric:tabular-nums;font-size:12px;font-weight:700;letter-spacing:.06em;
  color:var(--accent);background:var(--accent-soft);padding:3px 9px;border-radius:6px}
@@ -127,6 +125,10 @@ table td .mj svg{vertical-align:-.15em}
 .roadmap .demo strong{color:var(--ink)}
 .roadmap .keypoint{font-size:14px;color:var(--ink-2);margin-top:14px;padding:10px 14px;border:1px dashed var(--line-2);border-radius:8px}
 .roadmap .keypoint b{color:var(--ink)}
+.roadmap .block + .block{margin-top:22px}
+.roadmap .block .math{margin:0}
+.roadmap ul.algos.take li{padding:9px 0 9px 18px;line-height:1.72}
+.roadmap ul.algos.take li b{color:var(--ink)}
 .roadmap h3.grouping{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 16px}
 
 /* ---------- 交互组件 ---------- */

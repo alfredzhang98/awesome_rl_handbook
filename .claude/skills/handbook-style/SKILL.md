@@ -22,7 +22,7 @@ description: 写「数学优先、单文件 HTML、可交互」的中文技术�
 
 每一课的 `<footer>` 里都有一句交代来源，这不是客套：
 
-> 本课所有图和数字都由随附的两个脚本生成：`cartpole_dp.py`（动力学、离散化、值迭代、LQR）和 `cartpole_figs.py`（作图与对比实验）。改参数重跑大约 90 秒。
+> 本课所有图和数字都由随附的两个脚本生成：`arm_dp.py`（动力学、离散化、值迭代、折扣 LQR）和 `arm_figs.py`（作图与对比实验）。改参数重跑大约 5 分钟。
 
 > 本课用到的所有数字（8 集的 A-B 例子、崖边链的 −6.95、CartPole 的 446/446）都是跑出来的，不是抄的。
 
@@ -161,7 +161,7 @@ description: 写「数学优先、单文件 HTML、可交互」的中文技术�
 
 1. 写实验脚本 → 跑出数字和两版图 → 存成 webp。
 2. 写 LaTeX + HTML 正文 → 预渲染公式为内联 SVG → 得到单文件 `*.html`（双击可读，可离线）。
-3. 需要网页书时用 `split_book.py` 按课切分到 `docs/`（侧栏目录 + 上/下一章 + 本章 § 小目录），`publish.py` 一键重切 + commit + push，GitHub Pages 从 `main /docs` 发布。
+3. 网页书形态：每课一个独立 HTML 放进 `docs/`（侧栏目录 + 上/下一章 + 本章 § 小目录），`publish.py` 一键 commit + push，GitHub Pages 从 `main /docs` 发布。
 
 **交稿前对照 `references/checklist.md` 过一遍。**
 

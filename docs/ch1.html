@@ -13,7 +13,7 @@
   <span class="tb-title">MDP 与 Bellman 算子</span>
 </header>
 <aside class="sidebar" id="sidebar">
-  <div class="sb-brand"><a href="index.html">Awesome RL Handbook</a><span class="sb-sub">数学优先 · 面向 robotics · 一个例子跑到底</span></div>
+  <div class="sb-brand"><a href="index.html">Awesome RL Handbook</a><a class="sb-sub" href="https://github.com/alfredzhang98" target="_blank" rel="noopener">@alfredzhang98</a></div>
   <nav class="sb-nav">
     <div class="sb-group">开始</div>
     <ul>
@@ -268,8 +268,8 @@
 
 <p><b>公式先变。</b>确定性时「落点」是<u>一个</u>格子，查一个数就行；现在落点是<u>三个</u>格子上的概率分布，那一项就得按概率加权平均：</p>
 
-<div class="math"><div class="ubrow">
-  <span class="ub"><span class="ub-t">(T⋆<i>V</i>)(s) = max<sub>a</sub> { −1 + 0.9 · [ 0.90·<i>V</i>(直走) + 0.05·<i>V</i>(偏左) + 0.05·<i>V</i>(偏右) ] }</span><span class="ub-b">方括号里这一坨，就是 Bellman 方程里 E<sub>s′</sub> 的真身</span></span>
+<div class="math"><div class="ubrow tight">
+  <span class="ub"><span class="ub-t">(T⋆<i>V</i>)(s) = max<sub>a</sub> { −1 + 0.9 ·&nbsp;</span></span><span class="ub"><span class="ub-t">[ 0.90·<i>V</i>(直走) + 0.05·<i>V</i>(偏左) + 0.05·<i>V</i>(偏右) ]</span><span class="ub-b">方括号里这一坨，就是 Bellman 方程里 E<sub>s′</sub> 的真身</span></span><span class="ub"><span class="ub-t">&nbsp;}</span></span>
 </div></div>
 
 <p class="small">两个容易漏的点：<b>三个落点可以重复</b>——贴着墙时偏出去的那一支撞墙又回到原地，同一个格子被算两次；<b>而 −1 那一笔不受影响</b>——不管滑到哪，这一步的账照付。</p>
@@ -420,6 +420,7 @@
 .minisvg .m-num.fin{fill:var(--ink);font-weight:700}
 .minisvg .m-cap{font-size:10px;fill:var(--ink-3)}
 .ubrow{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:14px 18px;padding:6px 0 2px}
+.ubrow.tight{gap:0}
 .ub{display:inline-flex;flex-direction:column;align-items:center;max-width:100%}
 .ub-t{line-height:1.6;color:var(--ink);white-space:nowrap}
 .ub-b{font-size:12.5px;color:var(--ink-3);text-align:center;margin-top:2px;line-height:1.45}

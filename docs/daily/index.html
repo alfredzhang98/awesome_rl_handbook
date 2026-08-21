@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>每日一问 · Awesome RL Handbook</title>
+<link rel="stylesheet" href="../assets/book.css">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+</head>
+<body data-page="daily">
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg"><defs><path id="MJX-TEX-I-1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path><path id="MJX-TEX-N-2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path><path id="MJX-TEX-I-1D6FE" d="M31 249Q11 249 11 258Q11 275 26 304T66 365T129 418T206 441Q233 441 239 440Q287 429 318 386T371 255Q385 195 385 170Q385 166 386 166L398 193Q418 244 443 300T486 391T508 430Q510 431 524 431H537Q543 425 543 422Q543 418 522 378T463 251T391 71Q385 55 378 6T357 -100Q341 -165 330 -190T303 -216Q286 -216 286 -188Q286 -138 340 32L346 51L347 69Q348 79 348 100Q348 257 291 317Q251 355 196 355Q148 355 108 329T51 260Q49 251 47 251Q45 249 31 249Z"></path><path id="MJX-TEX-I-1D449" d="M52 648Q52 670 65 683H76Q118 680 181 680Q299 680 320 683H330Q336 677 336 674T334 656Q329 641 325 637H304Q282 635 274 635Q245 630 242 620Q242 618 271 369T301 118L374 235Q447 352 520 471T595 594Q599 601 599 609Q599 633 555 637Q537 637 537 648Q537 649 539 661Q542 675 545 679T558 683Q560 683 570 683T604 682T668 681Q737 681 755 683H762Q769 676 769 672Q769 655 760 640Q757 637 743 637Q730 636 719 635T698 630T682 623T670 615T660 608T652 599T645 592L452 282Q272 -9 266 -16Q263 -18 259 -21L241 -22H234Q216 -22 216 -15Q213 -9 177 305Q139 623 138 626Q133 637 76 637H59Q52 642 52 648Z"></path><path id="MJX-TEX-N-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path><path id="MJX-TEX-I-1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path><path id="MJX-TEX-V-2032" d="M79 43Q73 43 52 49T30 61Q30 68 85 293T146 528Q161 560 198 560Q218 560 240 545T262 501Q262 496 260 486Q259 479 173 263T84 45T79 43Z"></path><path id="MJX-TEX-N-29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path><path id="MJX-TEX-S4-E152" d="M-24 327L-18 333H-1Q11 333 15 333T22 329T27 322T35 308T54 284Q115 203 225 162T441 120Q454 120 457 117T460 95V60V28Q460 8 457 4T442 0Q355 0 260 36Q75 118 -16 278L-24 292V327Z"></path><path id="MJX-TEX-S4-E153" d="M-10 60V95Q-10 113 -7 116T9 120Q151 120 250 171T396 284Q404 293 412 305T424 324T431 331Q433 333 451 333H468L474 327V292L466 278Q375 118 190 36Q95 0 8 0Q-5 0 -7 3T-10 24V60Z"></path><path id="MJX-TEX-S4-E151" d="M-10 60Q-10 104 -10 111T-5 118Q-1 120 10 120Q96 120 190 84Q375 2 466 -158L474 -172V-207L468 -213H451H447Q437 -213 434 -213T428 -209T423 -202T414 -187T396 -163Q331 -82 224 -41T9 0Q-4 0 -7 3T-10 25V60Z"></path><path id="MJX-TEX-S4-E150" d="M-18 -213L-24 -207V-172L-16 -158Q75 2 260 84Q334 113 415 119Q418 119 427 119T440 120Q454 120 457 117T460 98V60V25Q460 7 457 4T441 0Q308 0 193 -55T25 -205Q21 -211 18 -212T-1 -213H-18Z"></path><path id="MJX-TEX-S4-E154" d="M-10 0V120H410V0H-10Z"></path></defs></svg>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">☰</button>
+  <span class="tb-title">每日一问 · 总目录</span>
+</header>
+<aside class="sidebar" id="sidebar">
+  <div class="sb-brand"><a href="../index.html">Awesome RL Handbook</a><a class="sb-sub" href="https://github.com/alfredzhang98" target="_blank" rel="noopener">@alfredzhang98</a></div>
+  <nav class="sb-nav">
+    <div class="sb-group">开始</div>
+    <ul>
+      <li><a href="../index.html"><span class="sb-num">·</span><span class="sb-t">路线图</span></a></li>
+    </ul>
+    <div class="sb-group">Stage 0–1</div>
+    <ul>
+      <li><a href="../ch0.html"><span class="sb-num">0</span><span class="sb-t">V 与 V⋆ 的含义</span></a></li>
+      <li><a href="../ch1.html"><span class="sb-num">1</span><span class="sb-t">MDP 与 Bellman 算子</span></a></li>
+      <li><a href="../ch2.html"><span class="sb-num">2</span><span class="sb-t">有模型 ≠ 有解析解</span></a></li>
+      <li><a href="../ch3.html"><span class="sb-num">3</span><span class="sb-t">值函数的数学直觉</span></a></li>
+    </ul>
+    <div class="sb-group">Stage 2</div>
+    <ul>
+      <li><a href="../ch4.html"><span class="sb-num">4</span><span class="sb-t">无模型表格法</span></a></li>
+      <li><a href="../ch5.html"><span class="sb-num">5</span><span class="sb-t">轨迹上的四个选择</span></a></li>
+    </ul>
+    <div class="sb-group">Stage 3</div>
+    <ul>
+      <li><a href="../ch6.html"><span class="sb-num">6</span><span class="sb-t">函数逼近与致命三角</span></a></li>
+    </ul>
+    <div class="sb-group">Stage 4</div>
+    <ul>
+      <li><a href="../ch7.html"><span class="sb-num">7</span><span class="sb-t">DQN 家族</span></a></li>
+    </ul>
+    <div class="sb-group">Stage 5</div>
+    <ul>
+      <li><a href="../ch8.html"><span class="sb-num">8</span><span class="sb-t">策略梯度</span></a></li>
+    </ul>
+    <div class="sb-group">每日一问</div>
+    <ul>
+      <li class="on"><a href="index.html"><span class="sb-num">≡</span><span class="sb-t">总目录</span></a><ol class="sb-sub-toc" id="subtoc"></ol></li>
+    </ul>
+  </nav>
+</aside>
+<div class="sb-mask" id="sbMask"></div>
+<main class="content" id="content">
+<div class="wrap">
+<section class="doc lesson" id="dindex">
+
+<style>
+#dindex .qlist{list-style:none;padding:0;margin:16px 0 0}
+#dindex .qlist li{margin:0 0 11px}
+#dindex .qlist a{display:flex;gap:18px;align-items:flex-start;text-decoration:none;border:1px solid var(--line);
+  border-radius:12px;padding:15px 19px;background:var(--panel);transition:border-color .18s,transform .18s}
+#dindex .qlist a:hover{border-color:var(--accent);transform:translateY(-1px)}
+#dindex .qn{flex:none;width:50px;padding-top:3px;font-size:11.5px;font-weight:700;letter-spacing:.09em;color:var(--accent)}
+#dindex .qmain{flex:1;min-width:0}
+#dindex .qmain b{display:block;color:var(--ink);font-size:16px;font-weight:600;line-height:1.5}
+#dindex .qmain i{display:block;font-style:normal;color:var(--ink-2);font-size:13.5px;line-height:1.65;margin-top:6px}
+#dindex .qmeta{flex:none;font-size:11.5px;color:var(--ink-3);text-align:right;line-height:1.7;padding-top:3px}
+#dindex .qmeta b{display:block;color:var(--ink-2);font-weight:600}
+#dindex .mon{font-size:11px;letter-spacing:.14em;color:var(--ink-3);font-weight:700;margin:28px 0 12px}
+#dindex .count{font-size:12.5px;color:var(--ink-3);margin-top:-6px}
+@media(max-width:640px){
+  #dindex .qlist a{flex-wrap:wrap;gap:0 14px}
+  #dindex .qmeta{width:100%;text-align:left;margin-top:8px;padding-top:0}
+  #dindex .qmeta b{display:inline}
+}
+</style>
+
+<div class="parttag">每日一问</div>
+<header>
+  <div class="kicker">正课之外</div>
+  <h1>每天想清楚一个问题<br>强化学习问题合集</h1>
+  <p class="lede">讲义按 Stage 一课一课往前走，但总有些问题<strong>不属于任何一课，又绕不过去</strong>——「这两个东西到底什么关系」「为什么这里敢这么写那里不敢」。这个板块专门收它们：一天一个，写法和正课完全一样——<strong>先给一个小到能手算的例子，再给定理和公式，每个变量当场标清楚，图和数字全部由脚本跑出来</strong>。不定期更新。</p>
+</header>
+
+<h2><span class="n">§ 1</span>全部问题</h2>
+
+<p class="count">目前 <b>1</b> 问。最新的排在最前面。</p>
+
+<div class="mon">2026 年 8 月</div>
+<ol class="qlist">
+<li><a href="001.html">
+  <span class="qn">DAY 1</span>
+  <span class="qmain">
+    <b>蒙特卡罗、TD、动态规划之间到底是什么关系</b>
+    <i>三者在解同一个 Bellman 期望方程，分歧只在「右边那个期望怎么估」。两个正交的开关——采样还是全宽、走一步还是走到底——拼出四个格子，TD 正好是 MC 的采样加 DP 的自举。</i>
+  </span>
+  <span class="qmeta"><b>三站地铁</b>2026-08-21</span>
+</a></li>
+</ol>
+
+<hr>
+<h2><span class="n">§ 2</span>这个板块的规矩</h2>
+
+<ol>
+<li><b>一问一个能手算的例子。</b>例子小到能在纸上跑完，第一个数字不用跑代码就能自己验一遍。</li>
+<li><b>先给数，再给公式。</b>顺序永远是：一个具体的数 → 表格 → 图 → 才是定理和收敛性。</li>
+<li><b>每个公式都拆开。</b>关键式子像 <span class="mj"><svg style="vertical-align: -4.092ex;" xmlns="http://www.w3.org/2000/svg" width="10.203ex" height="5.809ex" role="img" focusable="false" viewBox="0 -759 4509.9 2567.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="munder"><g data-mml-node="TeXAtom" data-mjx-texclass="OP"><g data-mml-node="munder"><g data-mml-node="mrow"><g data-mml-node="mi"><use data-c="1D45F" xlink:href="#MJX-TEX-I-1D45F"></use></g><g data-mml-node="mo" transform="translate(673.2,0)"><use data-c="2B" xlink:href="#MJX-TEX-N-2B"></use></g><g data-mml-node="mi" transform="translate(1673.4,0)"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g><g data-mml-node="mi" transform="translate(2216.4,0)"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(2985.4,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="msup" transform="translate(3374.4,0)"><g data-mml-node="mi"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(502,363) scale(0.707)"><use data-c="2032" xlink:href="#MJX-TEX-V-2032"></use></g></g><g data-mml-node="mo" transform="translate(4120.9,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g></g><g data-mml-node="mo" transform="translate(0,-675)"><use data-c="E152" xlink:href="#MJX-TEX-S4-E152"></use><use data-c="E153" xlink:href="#MJX-TEX-S4-E153" transform="translate(4059.9,0)"></use><g data-c="E156" transform="translate(1804.9,0)"><use data-c="E151" xlink:href="#MJX-TEX-S4-E151"></use><use data-c="E150" xlink:href="#MJX-TEX-S4-E150" transform="translate(450,0)"></use></g><svg width="1554.9" height="720" x="350" y="-300" viewBox="388.7 -300 1554.9 720"><use data-c="E154" xlink:href="#MJX-TEX-S4-E154" transform="scale(5.831,1)"></use></svg><svg width="1554.9" height="720" x="2604.9" y="-300" viewBox="388.7 -300 1554.9 720"><use data-c="E154" xlink:href="#MJX-TEX-S4-E154" transform="scale(5.831,1)"></use></svg></g></g></g><g data-mml-node="TeXAtom" transform="translate(1547.8,-1567.3) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mtext"><text data-variant="normal" transform="scale(1,-1)" font-size="884px" font-family="serif">目</text><text data-variant="normal" transform="translate(1000,0) scale(1,-1)" font-size="884px" font-family="serif">标</text></g></g></g></g></g></svg></span> 这样把每一块标住，公式下面再挂一张符号表，逐条说清每个变量是什么、为什么在那个位置。</li>
+<li><b>所有数字都是跑出来的。</b>正文里出现的每一个数都来自一次真实运行，不确定的数不写。</li>
+<li><b>写清楚边界。</b>每一问都要回答「这套说法什么时候不成立」，而不只是「它是什么」。</li>
+</ol>
+
+<footer>
+这个板块和正课是互补的：正课负责把一条路径走完，每日一问负责把路上那些「等一下，这两个为什么长得这么像」的疙瘩拆开。想从头读讲义，回<a href="../index.html">路线图</a>。
+</footer>
+
+</section>
+</div>
+<nav class="pagenav">
+  <a class="pn prev" href="../ch8.html" data-key="prev"><span class="pn-l">← 上一章</span><span class="pn-t">策略梯度</span></a>
+  <a class="pn next" href="001.html" data-key="next"><span class="pn-l">下一篇 →</span><span class="pn-t">Day 1 · MC / TD / DP 的关系</span></a>
+</nav>
+</main>
+<a class="totop" href="#" id="totop">↑ 回到顶部</a>
+<script src="../assets/book.js"></script>
+</body>
+</html>

@@ -28,4 +28,5 @@
 
 ## 每日一问
 
-* [Day 1 · MC / TD / DP 的关系](q1.html)
+* [总目录](daily/index.html)
+* [Day 1 · MC / TD / DP 的关系](daily/001.html)

@@ -44,9 +44,11 @@
 
 正课之外的一个小板块：**每天挑一个强化学习问题想清楚**，写法和讲义一样——先给能手算的数，再给公式，图和数字全部跑出来。不定期更新。
 
+全部问题见[总目录](https://alfredzhang98.github.io/awesome_rl_handbook/daily/)。
+
 | 日期 | 问题 | 例子 |
 |---|---|---|
-| [Day 1](https://alfredzhang98.github.io/awesome_rl_handbook/q1.html) | 蒙特卡罗、TD、动态规划之间到底是什么关系 | **三站地铁** |
+| [Day 1](https://alfredzhang98.github.io/awesome_rl_handbook/daily/001.html) | 蒙特卡罗、TD、动态规划之间到底是什么关系 | **三站地铁** |
 
 ## 怎么读
 

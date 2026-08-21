@@ -25,3 +25,7 @@
 ## Stage 5
 
 * [第 8 课 · 策略梯度](ch8.html)
+
+## 每日一问
+
+* [Day 1 · MC / TD / DP 的关系](q1.html)

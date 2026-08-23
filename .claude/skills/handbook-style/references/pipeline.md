@@ -9,8 +9,7 @@
 每一课配一到两个脚本，命名说清职责：
 
 ```
-arm_dp.py     动力学、离散化、值迭代、折扣 LQR       ← 出数字
-arm_figs.py   作图与对比实验                         ← 出图
+grid_dp.py    环境规则、值迭代、各种对照实验          ← 出数字，也出内联 SVG 插图
 ```
 
 脚本要求：
@@ -36,7 +35,7 @@ CSS token 与 matplotlib 配色对应关系：
 
 ```bash
 # 每张图两版 → webp（质量 80 左右，几十 KB 一张）
-python arm_figs.py                 # 产出 fig_xx.light.png / fig_xx.dark.png
+python grid_dp.py                  # 数字与插图一起产出
 cwebp -q 80 fig_xx.light.png -o fig_xx.light.webp
 ```
 

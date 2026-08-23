@@ -8,13 +8,13 @@
 
 [![在线阅读](https://img.shields.io/badge/在线阅读-GitHub_Pages-8a5a2b?style=flat-square)](https://alfredzhang98.github.io/awesome_rl_handbook/)
 [![版本](https://img.shields.io/github/v/tag/alfredzhang98/awesome_rl_handbook?style=flat-square&label=版本&color=3f7d58)](https://github.com/alfredzhang98/awesome_rl_handbook/tags)
-[![课程](https://img.shields.io/badge/讲义-第_0–8_课-555?style=flat-square)](https://alfredzhang98.github.io/awesome_rl_handbook/)
+[![课程](https://img.shields.io/badge/讲义-第_0–2_课_·_持续更新-555?style=flat-square)](https://alfredzhang98.github.io/awesome_rl_handbook/)
 [![python](https://img.shields.io/badge/python-3.8+-3776ab?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![License](https://img.shields.io/badge/许可-仅供阅读_·_保留所有权利-8a5a2b?style=flat-square)](LICENSE)
 
 </div>
 
-一份**数学优先、面向 robotics** 的中文强化学习讲义：从 MDP 与 Bellman 算子出发，一路走到无模型表格法、函数逼近、DQN 与策略梯度。每一课都挑一个**小到能手算、又真能算到底**的例子，把公式落到具体的数上。
+一份**数学优先、零控制背景也能读**的中文强化学习讲义。路线图规划到 PPO / SAC，讲义按 Stage 顺序逐课写出来——每一课挑一个**小到能手算、又真能算到底**的例子，把公式落到具体的数上，并且说清楚**上一步在哪儿撑不住、这一步补了什么、又带来了什么新问题**。
 
 ## 特点
 
@@ -25,20 +25,16 @@
 
 ## 目录
 
+路线图把整条路线切成 6 个 Stage，已经写完的课如下（其余在路线图里列了完整知识点清单，逐课补）：
+
 | 章节 | 内容 | 例子 |
 |---|---|---|
-| [路线图](https://alfredzhang98.github.io/awesome_rl_handbook/) | Stage 0–12 全景：每阶段的核心概念、核心公式、核心知识点理解与对应讲义 | —— |
-| [第 0 课](https://alfredzhang98.github.io/awesome_rl_handbook/ch0.html) | V 与 V⋆ 到底是什么：把一个具体的数一遍一遍刷出来 | 五格链 |
-| [第 1 课](https://alfredzhang98.github.io/awesome_rl_handbook/ch1.html) | **Stage 0–1**：MDP 五要素、Bellman 算子的 γ-收缩与停机界、值迭代刷出整张表、打滑引出期望，以及表格法的天花板 | **4×4 仓库网格** |
-| [第 2 课](https://alfredzhang98.github.io/awesome_rl_handbook/ch2.html) | Stage 0–1 补课：有模型 ≠ 有解析解，以及 V / Q / A 分别在算什么 | CartPole |
-| [第 3 课](https://alfredzhang98.github.io/awesome_rl_handbook/ch3.html) | Stage 0 深入：值函数与 Bellman 方程在数学上到底在做什么 | CartPole |
-| [第 4 课](https://alfredzhang98.github.io/awesome_rl_handbook/ch4.html) | Stage 2：无模型表格法 MC / TD / SARSA / Q-learning | CartPole |
-| [第 5 课](https://alfredzhang98.github.io/awesome_rl_handbook/ch5.html) | Stage 2 补完：n-step、TD(λ)、Dyna、重要性采样 | CartPole |
-| [第 6 课](https://alfredzhang98.github.io/awesome_rl_handbook/ch6.html) | Stage 3：把表换成函数，以及所有收敛保证是怎么坏掉的 | CartPole |
-| [第 7 课](https://alfredzhang98.github.io/awesome_rl_handbook/ch7.html) | Stage 4：DQN 家族，三个补丁各修一处 | CartPole |
-| [第 8 课](https://alfredzhang98.github.io/awesome_rl_handbook/ch8.html) | Stage 5：策略梯度，不再学值再取 argmax | CartPole |
+| [路线图](https://alfredzhang98.github.io/awesome_rl_handbook/) | Stage 0–5 全景：学习链条、数学前置、全书符号、每阶段的核心概念 / 公式 / 理解 | —— |
+| [第 0 课](https://alfredzhang98.github.io/awesome_rl_handbook/ch0.html) | 值函数 V 与最优值函数 V⋆ | 五格链 |
+| [第 1 课](https://alfredzhang98.github.io/awesome_rl_handbook/ch1.html) | 马尔可夫决策过程与 Bellman 算子：γ-收缩、停机界、随机转移、表格法的边界 | 4×4 仓库网格 |
+| [第 2 课](https://alfredzhang98.github.io/awesome_rl_handbook/ch2.html) | 动态规划：策略评估、策略改进与值迭代 | 4×4 仓库网格 |
 
-> 最后一列标了每课当前用的例子。标着 CartPole 的几课是早期版本，会按同样的流程逐课翻新。
+接下来：第 3 课 蒙特卡罗与时序差分 → 第 4 课 SARSA → 第 5 课 Q-learning 与 off-policy → …
 
 ## 每日一问
 
@@ -52,7 +48,7 @@
 
 ## 怎么读
 
-从[路线图](https://alfredzhang98.github.io/awesome_rl_handbook/)开始，它给了 Stage 0–12 的全景。每一课是独立的 HTML，自带侧边栏目录与上/下一章导航。
+从[路线图](https://alfredzhang98.github.io/awesome_rl_handbook/)开始：先看那张流程图和「这条链为什么是这个顺序」，再按 Stage 顺序读。每一课是独立的 HTML，自带侧边栏目录与上/下一章导航。
 
 ## 版本与发布
 

@@ -151,6 +151,22 @@
 <b>这正是第 1 课那个 1/(1−γ) 又一次现身</b>：它既是「有效视野」，也是「一直挨罚能亏到多少」的天花板。折扣把无穷长的失败压成了一个有限的数——这也是为什么 <span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> < 1 时，再烂的策略也有一个明确的分数。
 </div>
 
+<p><b>把刚才那件事写成定义。</b>策略评估要回答的是：<b>给定一个策略 π，每一格值多少</b>。上一节的 Bellman 期望方程说的是这张表必须满足什么，把它当成一条<b>更新规则</b>反复用，就是评估算法：</p>
+
+<div class="math"><div class="ubrow tight">
+  <span class="ub"><span class="ub-t"><i>V</i><sub>k+1</sub>(<i>s</i>) =&nbsp;</span></span><span class="ub"><span class="ub-t">Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>)</span><span class="ub-b">照策略<br>平均动作</span></span><span class="ub"><span class="ub-t">&nbsp;Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>)</span><span class="ub-b">照模型<br>平均落点</span></span><span class="ub"><span class="ub-t">&nbsp;[ <i>R</i>(<i>s</i>,<i>a</i>) + γ<i>V</i><sub>k</sub>(<i>s</i>′) ]</span><span class="ub-b">当场的账<br>+ 上一稿的未来</span></span>
+</div></div>
+
+<p>右下角那个下标是关键：<b>算新表只读旧表</b>（<i>V</i><sub>k</sub>），和第 0 课「预算记账」的规矩一模一样。写成算子就是一行：</p>
+
+<div class="math"><span class="plainmath"><i>V</i><sub>k+1</sub> = <i>T</i><sup>π</sup><i>V</i><sub>k</sub>，&nbsp; 收敛到唯一解 &nbsp;<i>V</i><sup>π</sup> = <i>T</i><sup>π</sup><i>V</i><sup>π</sup></span></div>
+
+<p>而因为 <i>T</i><sup>π</sup> 对 <i>V</i> 是线性的，那条不动点方程也可以<b>不迭代、直接解</b>——把它按矩阵写开：</p>
+
+<div class="math"><span class="plainmath"><i>V</i><sup>π</sup> = <i>R</i><sup>π</sup> + γ<i>P</i><sup>π</sup><i>V</i><sup>π</sup> &nbsp;⟹&nbsp; <i>V</i><sup>π</sup> = (<i>I</i> − γ<i>P</i><sup>π</sup>)<sup>−1</sup> <i>R</i><sup>π</sup></span></div>
+
+<p class="small">其中 <i>P</i><sup>π</sup> 是 14×14 的转移矩阵（第 <i>s</i> 行第 <i>s</i>′ 列 = 照 π 走一步从 s 到 s′ 的概率），<i>R</i><sup>π</sup> 是 14 维的即时奖励向量。γ &lt; 1 保证 <i>I</i> − γ<i>P</i><sup>π</sup> 可逆，所以解<b>存在且唯一</b>。</p>
+
 <h3>3.1　迭代求解与直接求解</h3>
 
 <p><b>路一：反复代入。</b>随便填一张表，然后照着策略一遍遍刷，直到不动。这就是把 <span class="mj"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.819ex" height="1.532ex" role="img" focusable="false" viewBox="0 -677 1246.1 677" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mi" transform="translate(793,363) scale(0.707)"><use data-c="1D70B" xlink:href="#MJX-TEX-I-1D70B"></use></g></g></g></g></svg></span> 反复作用——和第 1 课一模一样的收缩论证，所以它必然收敛。这次花了 <b>264 轮</b>。</p>
@@ -167,9 +183,17 @@
 
 <p>手上有了 <i>V</i><sup>π</sup>，改策略的办法很直白：<b>在每一格重新把 4 个动作试一遍，谁的「当场的账 + 打折后的落点分」最高就改选谁</b>。这一步叫<b>贪心改进</b>，它和第 1 课的一次备份是同一个动作，区别只在于结果写去哪里——备份写回值表，改进写回策略。</p>
 
+<p><b>写成定义：</b>新策略在每一格挑「当场的账 + 打折后的落点分」最大的那个动作——也就是<b>对自己的分数表贪心一步</b>：</p>
+
+<div class="math"><span class="plainmath">π′(<i>s</i>) = argmax<sub><i>a</i></sub> [ <i>R</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i><sup>π</sup>(<i>s</i>′) ] = argmax<sub><i>a</i></sub> <i>Q</i><sup>π</sup>(<i>s</i>,<i>a</i>)</span></div>
+
+<p>注意方括号里那一坨正是第 1 课 §4.4 的 <i>Q</i><sup>π</sup>——<b>「改进」就是把 Q 表的每一行取 argmax</b>，没有别的内容。</p>
+
 <p>对「一律往右」做一次改进，<b>10 个格子换了方向</b>：</p>
 
 <div class="figwrap"><svg class="gridsvg" viewBox="0 0 316 316" xmlns="http://www.w3.org/2000/svg"><defs><marker id="gah" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--accent)"/></marker></defs><rect x="26" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="59" y="64">-10.000</text><path class="g-arrow" d="M59 86 l0 -14" marker-end="url(#gah)"/><rect x="92" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="125" y="64">-10.000</text><path class="g-arrow" d="M125 86 l0 -14" marker-end="url(#gah)"/><rect x="158" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="191" y="64">-10.000</text><path class="g-arrow" d="M191 86 l0 -14" marker-end="url(#gah)"/><rect x="224" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="257" y="64">-10.000</text><path class="g-arrow" d="M257 86 l0 -14" marker-end="url(#gah)"/><rect x="26" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="59" y="130">-10.000</text><path class="g-arrow" d="M59 152 l0 -14" marker-end="url(#gah)"/><rect x="92" y="92" width="66" height="66" fill="var(--ink-3)" fill-opacity=".28" stroke="var(--line-2)"/><text class="g-lbl" x="125" y="129">货架</text><rect x="158" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="191" y="130">-10.000</text><path class="g-arrow" d="M191 152 l0 -14" marker-end="url(#gah)"/><rect x="224" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="257" y="130">-10.000</text><path class="g-arrow" d="M257 152 l0 -14" marker-end="url(#gah)"/><rect x="26" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.172" stroke="var(--line-2)"/><text class="g-num" x="59" y="196">-3.439</text><path class="g-arrow" d="M59 204 l0 14" marker-end="url(#gah)"/><rect x="92" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.136" stroke="var(--line-2)"/><text class="g-num" x="125" y="196">-2.710</text><path class="g-arrow" d="M125 204 l0 14" marker-end="url(#gah)"/><rect x="158" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.095" stroke="var(--line-2)"/><text class="g-num" x="191" y="196">-1.900</text><path class="g-arrow" d="M191 204 l0 14" marker-end="url(#gah)"/><rect x="224" y="158" width="66" height="66" fill="var(--ink-3)" fill-opacity=".28" stroke="var(--line-2)"/><text class="g-lbl" x="257" y="195">货架</text><rect x="26" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.136" stroke="var(--line-2)"/><text class="g-num" x="59" y="262">-2.710</text><path class="g-arrow" d="M50 277 l18 0" marker-end="url(#gah)"/><rect x="92" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.095" stroke="var(--line-2)"/><text class="g-num" x="125" y="262">-1.900</text><path class="g-arrow" d="M116 277 l18 0" marker-end="url(#gah)"/><rect x="158" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.050" stroke="var(--line-2)"/><text class="g-num" x="191" y="262">-1.000</text><path class="g-arrow" d="M182 277 l18 0" marker-end="url(#gah)"/><rect x="224" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.000" stroke="var(--line-2)"/><circle cx="257" cy="257" r="13" fill="none" stroke="var(--accent)" stroke-width="2"/><text class="g-num" x="257" y="262">0.000</text></svg></div>
+
+<div class="math"><span class="plainmath"><i>V</i><sup>π′</sup>(<i>s</i>) ≥ <i>V</i><sup>π</sup>(<i>s</i>)，&nbsp; 对每一个 <i>s</i> 都成立</span></div>
 
 <div class="key">
 <b>策略改进定理：贪心改出来的新策略，在<u>每一格</u>上都不会比原来差。</b>不是「平均更好」，是<b>逐格不降</b>——我把 14 个格子逐个比对过，无一例外。<br><br>
@@ -179,6 +203,12 @@
 <p class="small">注意一个反直觉的细节：这一次改进之后，左上角的值<b>还是 -10.0</b>。10 个格子改了方向，但改完仍然到不了桩——只是从「撞墙」变成了「绕圈」。<b>改进保证不变差，可没保证一步到位。</b></p>
 
 <h2><span class="n">§ 5</span>策略迭代</h2>
+
+<p><b>写成定义：</b>评估与改进交替，直到策略不再变化：</p>
+
+<div class="math"><span class="plainmath">π<sub>0</sub> &nbsp;<span style="color:var(--ink-3)">—评估→</span>&nbsp; <i>V</i><sup>π<sub>0</sub></sup> &nbsp;<span style="color:var(--ink-3)">—改进→</span>&nbsp; π<sub>1</sub> &nbsp;<span style="color:var(--ink-3)">—评估→</span>&nbsp; <i>V</i><sup>π<sub>1</sub></sup> &nbsp;<span style="color:var(--ink-3)">—改进→</span>&nbsp; ⋯ &nbsp;→&nbsp; π⋆<br>停机条件：&nbsp; π<sub>k+1</sub> = π<sub>k</sub> &nbsp;⟺&nbsp; <i>V</i><sup>π<sub>k</sub></sup> 已满足 Bellman <b>最优</b>方程</span></div>
+
+<p class="small">停机条件那一步值得多看一眼：策略不再变，说明它已经<b>对自己的分数表贪心</b>，即 π(s) = argmax<sub>a</sub> <i>Q</i><sup>π</sup>(s,a)，于是 <i>V</i><sup>π</sup>(s) = max<sub>a</sub> <i>Q</i><sup>π</sup>(s,a)——这正是 Bellman 最优方程。<b>「策略不动」和「拿到最优解」是同一件事</b>，不是近似。</p>
 
 <p>两件事凑成一个循环：<b>评估到底 → 贪心改一次 → 再评估到底 → 再改一次……</b>直到某一轮改进后策略一个格子都没变，就说明它已经对自己的分数表贪心了——那正是 Bellman 最优方程的定义，答案到手。</p>
 
@@ -197,6 +227,12 @@
 <p>策略迭代每一轮都要把评估<b>做到底</b>。可你想想：既然评估完马上就要改策略，那把分数算到那么准并没有必要。</p>
 
 <p><b>值迭代就是把这份耐心砍到最短</b>：只评估一次，立刻改进；而且因为「评估一次 + 取最大」可以写成同一个动作，它连策略都不用显式存——每一轮直接对值表取 <span class="mj"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="4.21ex" height="1.038ex" role="img" focusable="false" viewBox="0 -448 1861 459" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g></g></g></svg></span> 就行。这正是第 1 课那个 <span class="mj"><svg style="vertical-align: -0.471ex;" xmlns="http://www.w3.org/2000/svg" width="12.449ex" height="2.069ex" role="img" focusable="false" viewBox="0 -706.7 5502.6 914.6" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mi" transform="translate(616,-150) scale(0.707)"><use data-c="1D458" xlink:href="#MJX-TEX-I-1D458"></use></g></g><g data-mml-node="mo" transform="translate(1312.2,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="msup" transform="translate(2368,0)"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mo" transform="translate(793,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="msub" transform="translate(3564.5,0)"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="TeXAtom" transform="translate(616,-150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D458" xlink:href="#MJX-TEX-I-1D458"></use></g><g data-mml-node="mo" transform="translate(521,0)"><use data-c="2212" xlink:href="#MJX-TEX-N-2212"></use></g><g data-mml-node="mn" transform="translate(1299,0)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g></g></g></g></g></svg></span>。</p>
+
+<p><b>写成定义：</b>把评估那一步的 Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>) 直接换成 max<sub><i>a</i></sub>，评估与改进就合并成了一个动作：</p>
+
+<div class="math"><span class="plainmath"><i>V</i><sub>k+1</sub>(<i>s</i>) = max<sub><i>a</i></sub> [ <i>R</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i><sub>k</sub>(<i>s</i>′) ] = (<i>T</i>⋆<i>V</i><sub>k</sub>)(<i>s</i>)<br>算完之后再取一次 argmax，才得到策略：&nbsp; π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> [ <i>R</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i>⋆(<i>s</i>′) ]</span></div>
+
+<p><b>和评估式逐字对比，差别只有一处</b>：<span class="plainmath">Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>)</span> 换成了 <span class="plainmath">max<sub><i>a</i></sub></span>。这也是为什么值迭代<b>不需要显式存策略</b>——策略藏在那个 max 里，最后才取出来一次。</p>
 
 <p>把「每轮评估几次」当成一个旋钮 <i>m</i>，三件套就在同一条轴上：</p>
 

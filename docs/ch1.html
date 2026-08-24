@@ -59,6 +59,12 @@
 
 <h2><span class="n">§ 2</span>MDP 的五个要素</h2>
 
+<p>「形式化」落到实处，就是把五样东西一一指认清楚。<b>合起来写成一个五元组，这就是 MDP 的全部定义：</b></p>
+
+<div class="math"><span class="plainmath">MDP = ( <i>S</i>, <i>A</i>, <i>P</i>, <i>R</i>, γ )</span></div>
+
+<p class="small">五样填满，「最优策略」这四个字才有定义——<b>少一样，问题本身就没提清楚</b>，也就谈不上求解。</p>
+
 <p>「形式化」落到实处，就是把五样东西一一指认清楚：</p>
 
 <table>
@@ -569,24 +575,26 @@
 
 <h2><span class="n">§ 10</span>本章小结</h2>
 
-<p>整章的概念在这里过一遍：左边是名字，中间是它到底在说什么、在这间仓库里对应哪个数，右边是式子。名字记不住不要紧，先想那个数。</p>
+<p>整章的概念收在下面这张图里。<b>每一格三行：名字、式子、一句能读懂的话</b>——箭头是「怎么从上一个推出下一个」。名字记不住不要紧，<b>先看那句话和那个箭头</b>。</p>
 
-<div class="tscroll">
-<table class="recap">
-<tr><th>概念</th><th>理解</th><th>式子</th></tr>
-<tr><td class="rc-k">状态 · 马尔可夫性</td><td>知道了当前状态，再多历史也没用。这是对<u>状态变量</u>的要求，不是对世界的假设——选漏了，后面每一步都不成立。<span class="rc-n">本课：<i>s</i> = 车在哪一格，共 14 个</span></td><td><span class="plainmath">P(<i>s</i>′ | <i>s</i>, <i>a</i>) 与更早的历史无关</span></td></tr>
-<tr><td class="rc-k">MDP 五要素</td><td>一个决策问题的完整说明书。五项填满，「最优」两个字才有定义。<span class="rc-n">本课：14 格 / 4 动作 / 确定性（或打滑）/ 每步 −1 / 0.9</span></td><td><span class="plainmath">(<i>S</i>, <i>A</i>, <i>P</i>, <i>R</i>, γ)</span></td></tr>
-<tr><td class="rc-k">折扣回报</td><td>未来的奖励逐步打折再加总。γ 不是超参数，它声明的是你关心多长的未来。<span class="rc-n">本课：有效视野 1/(1−γ) = 10 步</span></td><td><span class="plainmath"><i>G</i> = <i>r</i><sub>1</sub> + γ<i>r</i><sub>2</sub> + γ²<i>r</i><sub>3</sub> + ⋯</span></td></tr>
-<tr><td class="rc-k">最优值函数 <i>V</i>⋆</td><td>从这一格出发、之后每步都最优，未来能拿到的折扣和。它是一张表，不是一条路。<span class="rc-n">本课：闭式解 −10(1 − 0.9<sup><i>d</i></sup>)，(0,0) = −4.6856</span></td><td><span class="plainmath"><i>V</i>⋆(<i>s</i>) = max<sub><i>a</i></sub> { <i>R</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i>⋆(<i>s</i>′) }</span></td></tr>
-<tr><td class="rc-k">最优策略 π⋆</td><td>有了 <i>V</i>⋆，最优策略就是对它贪心<u>一步</u>——全局规划塌成一次局部比较。<span class="rc-n">本课：§3 那张 14 个箭头的图</span></td><td><span class="plainmath">π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> { <i>R</i> + γ Σ <i>P</i> <i>V</i>⋆ }</span></td></tr>
-<tr><td class="rc-k">Bellman 最优算子 <i>T</i>⋆</td><td>吃一张表、吐一张表的机器。<b>一次备份</b>＝一格上把 4 个动作各算一笔账取最大；14 格做一遍叫<b>刷一遍</b>。<span class="rc-n">本课：格 (2,2) 的那次备份 = −1 + 0.9 × (−1.0) = −1.9</span></td><td><span class="plainmath">(<i>T</i>⋆<i>V</i>)(<i>s</i>) = max<sub><i>a</i></sub> { <i>R</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i>(<i>s</i>′) }</span></td></tr>
-<tr><td class="rc-k">值迭代</td><td>随便填一张表，反复作用同一台机器。「会不会收敛」于是变成「反复作用同一台机器会不会稳下来」。<span class="rc-n">本课：7 遍精确收敛；离桩 <i>d</i> 步的格子正好第 <i>d</i> 轮变准</span></td><td><span class="plainmath"><i>V<sub>k</sub></i> = <i>T</i>⋆<i>V</i><sub><i>k</i>−1</sub></span></td></tr>
-<tr><td class="rc-k">γ-压缩</td><td>任意两张表各刷一遍，距离最多剩 γ 倍。整章收敛性只来自这一行，不需要线性、二次或连续——但只在 sup 范数下成立。<span class="rc-n">本课：实测每轮衰减几何平均 0.63，γ = 0.9 是<u>上界</u>不是速度</span></td><td><span class="plainmath">‖<i>T</i>⋆<i>V</i> − <i>T</i>⋆<i>W</i>‖<sub>∞</sub> ≤ γ‖<i>V</i> − <i>W</i>‖<sub>∞</sub></span></td></tr>
-<tr><td class="rc-k">唯一不动点</td><td>喂进去出来还是自己的表只有一张，那就是答案（Banach）。这是<u>一致性条件</u>，不是计算公式。<span class="rc-n">本课：跑出来的 14 个数与闭式解逐格相同，最大差 0</span></td><td><span class="plainmath"><i>V</i>⋆ = <i>T</i>⋆<i>V</i>⋆</span></td></tr>
-<tr><td class="rc-k">停机判据</td><td>不知道答案时唯一能算的误差上界：相邻两轮的差，乘一个放大器。γ/(1−γ) 是这一课所有近似误差的公共放大器。<span class="rc-n">本课：放大器 = 9；γ = 0.99 时是 99</span></td><td><span class="plainmath">‖<i>V<sub>k</sub></i> − <i>V</i>⋆‖<sub>∞</sub> ≤ γ/(1−γ) · ‖<i>V<sub>k</sub></i> − <i>V</i><sub><i>k</i>−1</sub>‖<sub>∞</sub></span></td></tr>
-<tr><td class="rc-k">期望备份</td><td>落点变成分布时，把「落到哪一格的值」按概率加权——期望就是从这里进来的，而它要求你知道 <i>P</i>。<span class="rc-n">本课：打滑 10% → 0.9 / 0.05 / 0.05 三个落点，收敛 7 遍变 32 遍</span></td><td><span class="plainmath">E[<i>V</i>(<i>s</i>′)] = Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i>(<i>s</i>′)</span></td></tr>
-</table>
-</div>
+<div class="vfwrap"><svg class="vfsvg" viewBox="0 0 680 890" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="值函数家族关系图：回报、策略、状态价值、动作价值、优势、Bellman 期望方程、最优值函数、最优策略"><defs><marker id="vfa" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs><rect class="bx hi" x="180" y="40" width="320" height="84" rx="10"/><text class="t" x="340" y="61">回报 G<tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"></tspan></text><text class="f" x="340" y="81">G<tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"></tspan> = Σ<tspan dy="4" font-size="8.5">k</tspan><tspan dy="-4"></tspan> γ<tspan dy="-5" font-size="8.5">k</tspan><tspan dy="5"></tspan>R<tspan dy="4" font-size="8.5">t+k+1</tspan><tspan dy="-4"></tspan></text><text class="d" x="340" y="100">从这一刻起，往后所有奖励打折加起来。</text><text class="d" x="340" y="114">走一条轨迹得一个数——它是样本，不是估计</text><rect class="bx hi" x="180" y="164" width="320" height="84" rx="10"/><text class="t" x="340" y="185">策略 π(a|s)</text><text class="f" x="340" y="205">Σ<tspan dy="4" font-size="8.5">a</tspan><tspan dy="-4"></tspan> π(a|s) = 1</text><text class="d" x="340" y="224">在状态 s 时该怎么挑动作。</text><text class="d" x="340" y="238">环境是给定的，它是你唯一能改的东西</text><rect class="bx" x="20" y="288" width="300" height="84" rx="10"/><text class="t" x="170" y="309">状态价值 V<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s)</text><text class="f" x="170" y="329">E<tspan dy="4" font-size="8.5">π</tspan><tspan dy="-4"></tspan>[ G<tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"></tspan> | S<tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"></tspan>=s ]</text><text class="d" x="170" y="348">站在 s，此后一直照 π 走，</text><text class="d" x="170" y="362">平均能拿多少</text><rect class="bx" x="360" y="288" width="300" height="84" rx="10"/><text class="t" x="510" y="309">动作价值 Q<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s,a)</text><text class="f" x="510" y="329">E<tspan dy="4" font-size="8.5">π</tspan><tspan dy="-4"></tspan>[ G<tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"></tspan> | S<tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"></tspan>=s, A<tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"></tspan>=a ]</text><text class="d" x="510" y="348">站在 s，这一步先走 a，</text><text class="d" x="510" y="362">之后才照 π 走，平均能拿多少</text><rect class="bx" x="150" y="412" width="380" height="84" rx="10"/><text class="t" x="340" y="433">优势 A<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s,a)</text><text class="f" x="340" y="453">A<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s,a) = Q<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s,a) − V<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s)</text><text class="d" x="340" y="472">在状态 s 下选动作 a，相比于「按当前策略正常发挥」，</text><text class="d" x="340" y="486">到底好多少。按策略平均必然等于 0</text><rect class="bx" x="100" y="536" width="480" height="84" rx="10"/><text class="t" x="340" y="557">Bellman 期望方程</text><text class="f" x="340" y="577">V<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s) = Σ<tspan dy="4" font-size="8.5">a</tspan><tspan dy="-4"></tspan> π(a|s) Σ<tspan dy="4" font-size="8.5">s′</tspan><tspan dy="-4"></tspan> P(s′|s,a) [ R + γV<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s′) ]</text><text class="d" x="340" y="596">把无穷长的和改写成「这一步 + 下一格的值」。</text><text class="d" x="340" y="610">定义只能拿来理解，方程才能拿来计算</text><rect class="bx hi" x="100" y="660" width="480" height="84" rx="10"/><text class="t" x="340" y="681">最优值函数 V⋆ / Q⋆</text><text class="f" x="340" y="701">V⋆(s) = max<tspan dy="4" font-size="8.5">a</tspan><tspan dy="-4"></tspan> [ R + γ Σ<tspan dy="4" font-size="8.5">s′</tspan><tspan dy="-4"></tspan> P(s′|s,a) V⋆(s′) ]</text><text class="d" x="340" y="720">所有走法里最好的那一种能拿多少。</text><text class="d" x="340" y="734">与上式只差一处：Σ_a π 换成 max_a，于是变成非线性</text><rect class="bx hi" x="180" y="784" width="320" height="84" rx="10"/><text class="t" x="340" y="805">最优策略 π⋆</text><text class="f" x="340" y="825">π⋆(s) = argmax<tspan dy="4" font-size="8.5">a</tspan><tspan dy="-4"></tspan> Q⋆(s,a)</text><text class="d" x="340" y="844">有了 Q⋆，选动作只剩「这一行里挑最大」。</text><text class="d" x="340" y="858">max 取的是值，argmax 取的是动作</text><path class="ln" d="M340,124 V164" marker-end="url(#vfa)"/><text class="el" x="340" y="148">要先说清按谁的走法算</text><path class="ln" d="M340,248 V268 H170 V288" marker-end="url(#vfa)"/><text class="el" x="168" y="282">对 G 取期望</text><path class="ln" d="M340,248 V268 H510 V288" marker-end="url(#vfa)"/><text class="el" x="512" y="282">多钉死第一步</text><path class="ln dash" d="M170,372 V392 H230 V412" marker-end="url(#vfa)"/><text class="el" x="150" y="406">当基准</text><path class="ln dash" d="M510,372 V392 H450 V412" marker-end="url(#vfa)"/><text class="el" x="530" y="406">相减</text><path class="ln" d="M340,496 V536" marker-end="url(#vfa)"/><text class="el" x="340" y="520">展开一步，写成递推</text><path class="ln em" d="M340,620 V660" marker-end="url(#vfa)"/><text class="el em" x="340" y="644">Σₐπ 换成 maxₐ</text><path class="ln" d="M340,744 V784" marker-end="url(#vfa)"/><text class="el" x="340" y="768">取 argmax</text></svg></div>
+<style>
+.vfwrap{margin:22px 0}
+.vfsvg{width:100%;max-width:680px;display:block;margin:0 auto;color:var(--accent)}
+.vfsvg text{text-anchor:middle;dominant-baseline:middle}
+.vfsvg .bx{fill:var(--panel);stroke:var(--line-2);stroke-width:1}
+.vfsvg .bx.hi{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.4}
+.vfsvg .t{fill:var(--ink);font-size:13.5px;font-weight:700}
+.vfsvg .f{fill:var(--ink);font-size:12px;
+ font-family:"Cambria Math","STIX Two Math","Times New Roman",Georgia,serif;
+ font-variant-numeric:tabular-nums}
+.vfsvg .d{fill:var(--ink-3);font-size:11px}
+.vfsvg .ln{stroke:var(--accent);stroke-width:1.6;fill:none}
+.vfsvg .ln.dash{stroke:var(--line-2);stroke-width:1.4;stroke-dasharray:4 3}
+.vfsvg .el{fill:var(--ink-3);font-size:10.5px}
+.vfsvg .el.em{fill:var(--accent);font-weight:600}
+@media(max-width:620px){.vfwrap{overflow-x:auto}.vfsvg{min-width:600px}}
+</style>
 
 <div class="key">
 <b>三句话把这一章串起来。</b><br>

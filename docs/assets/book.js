@@ -40,6 +40,7 @@
   }
 
   var host=document.getElementById('subtoc');
+  var rail=null;
   var heads=[];
   if(host){
     var page=document.body.getAttribute('data-page');
@@ -62,31 +63,46 @@
         h.__t=lab;
       });
     }
-    heads.forEach(function(el){
-      var li=document.createElement('li'), a=document.createElement('a');
-      a.href='#'+el.id;
-      a.innerHTML='<span class="sn"></span><span class="st"></span>';
-      a.firstChild.textContent=el.__n;
-      a.lastChild.textContent=el.__t;
-      a.title=(el.__n?el.__n+'. ':'')+el.__t;
-      /* 长页面上平滑滚动会走很久，目录跳转改成即时定位 */
-      a.addEventListener('click',function(e){
-        e.preventDefault();
-        jump(el.getBoundingClientRect().top+window.scrollY-14);
-        history.replaceState(null,'','#'+el.id);
-        if(window.innerWidth<=1080) toggle(false);
+    /* 同一份数据渲染两处：侧栏小目录 + 右侧「本页目录」 */
+    function fill(box){
+      heads.forEach(function(el){
+        var li=document.createElement('li'), a=document.createElement('a');
+        a.href='#'+el.id;
+        a.innerHTML='<span class="sn"></span><span class="st"></span>';
+        a.firstChild.textContent=el.__n;
+        a.lastChild.textContent=el.__t;
+        a.title=(el.__n?el.__n+'. ':'')+el.__t;
+        /* 长页面上平滑滚动会走很久，目录跳转改成即时定位 */
+        a.addEventListener('click',function(e){
+          e.preventDefault();
+          jump(el.getBoundingClientRect().top+window.scrollY-14);
+          history.replaceState(null,'','#'+el.id);
+          if(window.innerWidth<=1080) toggle(false);
+        });
+        li.appendChild(a); box.appendChild(li);
       });
-      li.appendChild(a); host.appendChild(li);
-    });
+    }
+    fill(host);
+    /* 右侧「本页目录」：由 JS 建，各页 HTML 不用改；窄屏由 CSS 隐藏 */
+    if(heads.length>1){
+      rail=document.createElement('nav');
+      rail.className='pagetoc'; rail.id='pagetoc';
+      rail.setAttribute('aria-label','本页目录');
+      rail.innerHTML='<div class="pt-h">本页目录</div><ol></ol>';
+      document.body.appendChild(rail);
+      fill(rail.querySelector('ol'));
+    }
   }
 
   /* ---- 滚动高亮 + 回到顶部 ---- */
-  var links=host?[].slice.call(host.querySelectorAll('a')):[];
+  var lists=[];
+  if(host) lists.push([].slice.call(host.querySelectorAll('a')));
+  if(rail) lists.push([].slice.call(rail.querySelectorAll('a')));
   function upd(){
-    if(links.length){
+    if(lists.length){
       var y=window.scrollY+130, cur=-1;
       heads.forEach(function(el,k){ if(el.getBoundingClientRect().top+window.scrollY<=y) cur=k; });
-      links.forEach(function(a,k){ a.classList.toggle('cur',k===cur); });
+      lists.forEach(function(ls){ ls.forEach(function(a,k){ a.classList.toggle('cur',k===cur); }); });
     }
     if(totop) totop.classList.toggle('show', window.scrollY>700);
   }

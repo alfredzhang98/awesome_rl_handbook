@@ -39,17 +39,32 @@
 <div class="parttag">第 2 课 · Stage 0 · 动态规划</div>
 <header>
   <div class="kicker">第二课 · Stage 0</div>
-  <h1>动态规划：策略评估、策略改进与值迭代</h1>
+  <h1>动态规划</h1>
   <p class="lede">第 1 课我们只用了一招：把每一格的所有动作试一遍、取最大、写回去，刷到不动为止。那招叫<strong>值迭代</strong>，但它其实是三件套里的一件。这一课回到同一间 4×4 仓库，把动态规划一次讲全——<strong>先学会给一个策略打分（策略评估），再学会照着分数改策略（策略改进），两者交替就是策略迭代；而值迭代是它的一个极端特例。</strong>最后我们会发现：这三件套全都依赖同一样东西——<strong>转移规则</strong>。把它拿走，就只剩下一条路可走，那就是 Stage 1 的 Q-learning。</p>
 </header>
 
-<h2><span class="n">§ 1</span>先把 Bellman 最优方程拆开看</h2>
+<h2><span class="n">§ 1</span>Bellman 最优方程</h2>
 
 <p>第 1 课的核心是这一行，它说的是「最优值必须自洽」：</p>
 
 <div class="math"><span class="mj mjd"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -1.625ex;" xmlns="http://www.w3.org/2000/svg" width="44.655ex" height="4.225ex" role="img" focusable="false" viewBox="0 -1149.5 19737.3 1867.6" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,413) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="mo" transform="translate(1264.9,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(1653.9,0)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(2122.9,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="mo" transform="translate(2789.6,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="munder" transform="translate(3845.4,0)"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g><g data-mml-node="mi" transform="translate(743.5,-611) scale(0.707)"><use data-c="1D44E" xlink:href="#MJX-TEX-I-1D44E"></use></g></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(5873.1,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="7B" xlink:href="#MJX-TEX-LO-7B"></use></g></g><g data-mml-node="mi" transform="translate(6540.1,0)"><use data-c="1D45F" xlink:href="#MJX-TEX-I-1D45F"></use></g><g data-mml-node="mo" transform="translate(6991.1,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(7380.1,0)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(7849.1,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(8293.7,0)"><use data-c="1D44E" xlink:href="#MJX-TEX-I-1D44E"></use></g><g data-mml-node="mo" transform="translate(8822.7,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="mo" transform="translate(9434,0)"><use data-c="2B" xlink:href="#MJX-TEX-N-2B"></use></g><g data-mml-node="mi" transform="translate(10434.2,0)"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g><g data-mml-node="mstyle" transform="translate(10977.2,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="msub" transform="translate(11144.2,0)"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D53C" xlink:href="#MJX-TEX-D-1D53C"></use></g></g><g data-mml-node="TeXAtom" transform="translate(700,-150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(502,289) scale(0.707)"><use data-c="2032" xlink:href="#MJX-TEX-V-2032"></use></g></g></g></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(12422,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="5B" xlink:href="#MJX-TEX-SO-5B"></use></g></g><g data-mml-node="msup" transform="translate(12839,0)"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,413) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="mo" transform="translate(14103.9,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="msup" transform="translate(14492.9,0)"><g data-mml-node="mi"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(502,413) scale(0.707)"><use data-c="2032" xlink:href="#MJX-TEX-V-2032"></use></g></g><g data-mml-node="mo" transform="translate(15239.3,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(15628.3,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="5D" xlink:href="#MJX-TEX-SO-5D"></use></g></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(16045.3,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="7D" xlink:href="#MJX-TEX-LO-7D"></use></g></g><g data-mml-node="mstyle" transform="translate(16712.3,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="mi" transform="translate(18712.3,0)"><use data-c="2200" xlink:href="#MJX-TEX-N-2200"></use></g><g data-mml-node="mi" transform="translate(19268.3,0)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g></g></g></svg></span></div>
 
-<p>它由三部分拼起来，各管各的事：</p>
+<p>这一行里出现了 <b>9 个记号</b>，下面一个不漏地过一遍。<b>这一课后面的每一件事，都只是在动其中某一个</b>——所以先把它们认清楚，比记住三个算法的名字要紧。</p>
+
+<table>
+<tr><th>记号</th><th>含义</th></tr>
+<tr><td><b>s</b></td><td><b>状态</b>。系统当前所处的情形；转移与奖励都只由它和所选动作决定</td></tr>
+<tr><td><b>a</b></td><td><b>动作</b>。在状态 s 下可以采取的一个选择</td></tr>
+<tr><td><b><i>V</i><sup>⋆</sup>(s)</b></td><td><b>最优值函数</b>。从 s 出发、此后一直按最优走法走，今后能拿到的折现总回报</td></tr>
+<tr><td><b>max<sub>a</sub></b></td><td><b>对动作取最大</b>。把花括号里的式子对每个可行动作各算一遍，取其中最大的那个</td></tr>
+<tr><td><b>r(s,a)</b></td><td><b>奖励函数</b>。在状态 s 选了动作 a，这一步当场收到的奖励</td></tr>
+<tr><td><b>γ</b></td><td><b>折扣因子</b>。把「一步之后」的收益折算成当前价值的系数，0 ≤ γ &lt; 1</td></tr>
+<tr><td><b>s′</b></td><td><b>后继状态</b>。走完这一步之后到达的那个状态</td></tr>
+<tr><td><b>𝔼<sub>s′</sub>[ · ]</b></td><td><b>对后继状态取期望</b>。按各个后继状态发生的概率，把括号里的值加权平均</td></tr>
+<tr><td><b>∀s</b></td><td><b>全称量词</b>。这个等式对状态空间里的每一个 s 都成立</td></tr>
+</table>
+
+<p>把这 9 个记号按功能归拢，方程就只剩三块，各管各的事：</p>
 
 <table>
 <colgroup><col style="width:7em"><col></colgroup>
@@ -59,9 +74,50 @@
 <tr><td><b>期望那一项</b></td><td><b>未来的账</b>：落到哪儿、那儿值多少，按概率加权后打 <span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> 折。确定性时它退化成「查一个数」，打滑时才真的要加权平均</td></tr>
 </table>
 
-<p>把期望写开，它长这样——注意里面那个 <b>P(s′ | s, a)</b>，<b>那就是「转移规则」，也就是所谓的「模型」</b>：</p>
+<h3>1.1　转移概率 P(s′ | s, a)</h3>
 
-<div class="math"><span class="plainmath">V<sup>⋆</sup>(s) = max<sub>a</sub> [ r(s,a) + γ Σ<sub>s′</sub> P(s′ | s, a) · V<sup>⋆</sup>(s′) ]</span></div>
+<p>上面那个 <b>𝔼<sub>s′</sub></b> 还只是个壳子：它说了「要对落点取平均」，<b>却没说落点是按什么概率抽出来的</b>。这件事不写下来，期望就落不成一个具体的数。</p>
+
+<p><b>落点为什么会不止一个？</b>第 1 课 §6 那条打滑规则就是最直接的例子：选定一个方向后，90% 概率照走，左右两个垂直方向各 5% 被地面带偏。于是「在格 (2,0) 选『下』」这一步，落点不是一个格子，而是三个格子上的一张<b>概率表</b>：</p>
+
+<table>
+<tr><th>落点 s′</th><th>概率</th><th>怎么来的</th></tr>
+<tr><td>格 30</td><td class="num">0.90</td><td>照着「下」走</td></tr>
+<tr><td>格 20</td><td class="num">0.05</td><td>偏左撞墙，留在原地——<b>落点可以是出发格自己</b></td></tr>
+<tr><td>格 21</td><td class="num">0.05</td><td>偏右</td></tr>
+</table>
+
+<p>把这样一张表<b>对每一对 (s, a) 都写下来</b>，得到的就是一个函数。它有名字：</p>
+
+<div class="big">P(s′ | s, a) ＝ 在状态 s 选了动作 a 的<b>条件下</b>，下一格恰好是 s′ 的概率。</div>
+
+<p>两件事一起交代清楚。<b>什么类型</b>：它不是一个数，而是<b>对每一对 (s, a) 各给出一张 s′ 上的概率分布</b>。<b>取值范围</b>：每一项都有 0 ≤ P(s′ | s, a) ≤ 1，并且对固定的 (s, a)，Σ<sub>s′</sub> P(s′ | s, a) = 1——走一步总得落在某一格，概率加起来必须是 1。中间那道竖线是<b>条件概率</b>的记法，不是除号，也不是绝对值。</p>
+
+<div class="warn">
+<b>它不是这一课新造出来的东西。</b>第 1 课 §2 把 MDP 拆成五样要素时，第三样「转移」就是它——只不过那时仓库是<b>确定性</b>的，P 只取 0 和 1（选了方向就 100% 走那一格），一张概率表退化成「查一个落点」，看不出它是个分布。要到第 1 课 §6 加上 10% 打滑，它才第一次取到 0 和 1 以外的值。<b>这一课把它单独命名，是因为 §8 会说明：这一课的三种方法，没有一种绕得开它。</b>
+</div>
+
+<p>有了 P，期望就不再是壳子了。<b>期望 ＝ 把每个可能落点的值，按它发生的概率加权求和</b>：</p>
+
+<div class="math"><div class="ubrow tight">
+  <span class="ub"><span class="ub-t">𝔼<sub>s′</sub>[ <i>V</i><sup>⋆</sup>(s′) ] =&nbsp;</span></span><span class="ub"><span class="ub-t">Σ<sub>s′</sub></span><span class="ub-b">把所有可能的<br>落点过一遍</span></span><span class="ub"><span class="ub-t">&nbsp;P(s′ | s, a)</span><span class="ub-b">落到 s′ 的<br>概率</span></span><span class="ub"><span class="ub-t">&nbsp;·&nbsp;<i>V</i><sup>⋆</sup>(s′)</span><span class="ub-b">那一格<br>值多少</span></span>
+</div></div>
+
+<p>于是整行方程写开就长这样。<b>这是这一课后面所有式子的原型</b>，往下每一个算法都只是在改它的某一块：</p>
+
+<div class="math"><div class="ubrow tight">
+  <span class="ub"><span class="ub-t"><i>V</i><sup>⋆</sup>(s) =&nbsp;</span></span><span class="ub"><span class="ub-t">max<sub>a</sub></span><span class="ub-b">4 个动作里<br>挑最好的</span></span><span class="ub"><span class="ub-t">&nbsp;{&nbsp;</span></span><span class="ub"><span class="ub-t">r(s,a)</span><span class="ub-b">当场的账<br>这里恒为 −1</span></span><span class="ub"><span class="ub-t">&nbsp;+&nbsp;γ&nbsp;</span><span class="ub-b">打折<br>0.9</span></span><span class="ub"><span class="ub-t">Σ<sub>s′</sub> P(s′ | s, a) · <i>V</i><sup>⋆</sup>(s′)</span><span class="ub-b">未来的账：落点的值按概率加权</span></span><span class="ub"><span class="ub-t">&nbsp;}</span></span>
+</div></div>
+
+<p>拿一个真数字对一遍。<b>这一课的仓库是确定性的</b>（打滑那版留在第 1 课 §6），所以 P 只取 0 和 1：在格 (2,2) 选「下」，落点 100% 是那一格，其余 13 格的概率全是 0，那个 Σ 里只剩一项活着——</p>
+
+<div class="math"><div class="chain">
+<span class="c-m"><i>Q</i><sup>⋆</sup>((2,2), 下) = −1 + 0.9 × Σ<sub>s′</sub> P(s′ | (2,2), 下) · <i>V</i><sup>⋆</sup>(s′)</span><span class="c-w">完整写法：这个 Σ 名义上有 14 项</span>
+<span class="c-m">= −1 + 0.9 × [ 1 × (−1) + 0 × ⋯ + 0 × ⋯ ]</span><span class="c-w">只有落点那一项的 P 是 1，其余 13 项被 0 抹掉</span>
+<span class="c-m">= <b>−1.9</b></span><span class="c-w">§8 那张 Q 表里「下」那一行，就是这个数</span>
+</div></div>
+
+<p class="small">对照第 1 课 §6 打滑版的同一套算术：格 (2,0) 选「下」是 −1 + 0.9 × [ 0.90×(−3.0579) + 0.05×(−3.7536) + 0.05×(−2.9829) ] = <b>−3.7801</b>。<b>式子一个字没变，变的只是 P 那一列的数</b>——确定性是「一个 1 加一堆 0」，打滑是「0.90 / 0.05 / 0.05」。这就是为什么那个 Σ 必须一直写在式子里：它不是装饰，是<b>留给 P 的位置</b>。</p>
 
 <div class="key">
 <b>这一课要回答的三个问题，全都藏在这行式子里。</b>
@@ -72,7 +128,7 @@
 </ul>
 </div>
 
-<h2><span class="n">§ 2</span>把 max 拿掉：Bellman 期望方程</h2>
+<h2><span class="n">§ 2</span>Bellman 期望方程</h2>
 
 <p><span class="mj"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="4.21ex" height="1.038ex" role="img" focusable="false" viewBox="0 -448 1861 459" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g></g></g></svg></span> 是「你可以挑」。如果策略已经定死——每一格该走哪个方向都写好了，不许挑——那这一格的值就没得选：<b>照它说的走，拿这一步的账，加上落点的值打折</b>。这就是 <b>Bellman 期望方程</b>，对应的算子写作 <span class="mj"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.819ex" height="1.532ex" role="img" focusable="false" viewBox="0 -677 1246.1 677" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mi" transform="translate(793,363) scale(0.707)"><use data-c="1D70B" xlink:href="#MJX-TEX-I-1D70B"></use></g></g></g></g></svg></span>：</p>
 
@@ -83,19 +139,19 @@
 而 <span class="mj"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.707ex" height="1.599ex" role="img" focusable="false" viewBox="0 -706.7 1196.6 706.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mo" transform="translate(793,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span> 因为带着 <span class="mj"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="4.21ex" height="1.038ex" role="img" focusable="false" viewBox="0 -448 1861 459" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g></g></g></svg></span> 是非线性的，你解不出闭式，只能一轮一轮刷。<strong>这一个字的差别，是这一课所有算法分岔的源头。</strong>
 </div>
 
-<h2><span class="n">§ 3</span>策略评估：给一个策略打分</h2>
+<h2><span class="n">§ 3</span>策略评估</h2>
 
-<p>先找个策略来评。挑一个笨到能看穿的：<b>不管在哪一格，一律往右走</b>（撞墙就留在原地）。它的分数表长这样：</p>
+<p>先找个策略来评。挑一个足够简单、能一眼看穿的：<b>不管在哪一格，一律往右走</b>（撞墙就留在原地）。它的分数表长这样：</p>
 
 <div class="figwrap"><svg class="gridsvg" viewBox="0 0 316 316" xmlns="http://www.w3.org/2000/svg"><defs><marker id="gah" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--accent)"/></marker></defs><rect x="26" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="59" y="64">-10.000</text><path class="g-arrow" d="M50 79 l18 0" marker-end="url(#gah)"/><rect x="92" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="125" y="64">-10.000</text><path class="g-arrow" d="M116 79 l18 0" marker-end="url(#gah)"/><rect x="158" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="191" y="64">-10.000</text><path class="g-arrow" d="M182 79 l18 0" marker-end="url(#gah)"/><rect x="224" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="257" y="64">-10.000</text><path class="g-arrow" d="M248 79 l18 0" marker-end="url(#gah)"/><rect x="26" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="59" y="130">-10.000</text><path class="g-arrow" d="M50 145 l18 0" marker-end="url(#gah)"/><rect x="92" y="92" width="66" height="66" fill="var(--ink-3)" fill-opacity=".28" stroke="var(--line-2)"/><text class="g-lbl" x="125" y="129">货架</text><rect x="158" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="191" y="130">-10.000</text><path class="g-arrow" d="M182 145 l18 0" marker-end="url(#gah)"/><rect x="224" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="257" y="130">-10.000</text><path class="g-arrow" d="M248 145 l18 0" marker-end="url(#gah)"/><rect x="26" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="59" y="196">-10.000</text><path class="g-arrow" d="M50 211 l18 0" marker-end="url(#gah)"/><rect x="92" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="125" y="196">-10.000</text><path class="g-arrow" d="M116 211 l18 0" marker-end="url(#gah)"/><rect x="158" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="191" y="196">-10.000</text><path class="g-arrow" d="M182 211 l18 0" marker-end="url(#gah)"/><rect x="224" y="158" width="66" height="66" fill="var(--ink-3)" fill-opacity=".28" stroke="var(--line-2)"/><text class="g-lbl" x="257" y="195">货架</text><rect x="26" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.136" stroke="var(--line-2)"/><text class="g-num" x="59" y="262">-2.710</text><path class="g-arrow" d="M50 277 l18 0" marker-end="url(#gah)"/><rect x="92" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.095" stroke="var(--line-2)"/><text class="g-num" x="125" y="262">-1.900</text><path class="g-arrow" d="M116 277 l18 0" marker-end="url(#gah)"/><rect x="158" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.050" stroke="var(--line-2)"/><text class="g-num" x="191" y="262">-1.000</text><path class="g-arrow" d="M182 277 l18 0" marker-end="url(#gah)"/><rect x="224" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.000" stroke="var(--line-2)"/><circle cx="257" cy="257" r="13" fill="none" stroke="var(--accent)" stroke-width="2"/><text class="g-num" x="257" y="262">0.000</text></svg></div>
 
 <div class="key">
-<b>10 个格子的值正好是 −10，一个不多一个不少。</b>因为「一律往右」在这张图上<b>根本到不了充电桩</b>——除了最底下那一行能一路向右滑进去，其余格子要么撞墙原地打转，要么撞货架卡住。永远走不到终点，就是每一步都亏 1、亏到天荒地老：
+<b>10 个格子的值正好是 −10，一个不多一个不少。</b>因为「一律往右」在这张图上<b>根本到不了充电桩</b>——除了最底下那一行能一路向右滑进去，其余格子要么撞墙原地打转，要么撞货架卡住。永远走不到终点，就是每一步都亏 1、一直亏下去：
 <div class="math"><span class="plainmath">−1 − 0.9 − 0.9² − ⋯ = −1 / (1 − 0.9) = <b>−10</b></span></div>
 <b>这正是第 1 课那个 1/(1−γ) 又一次现身</b>：它既是「有效视野」，也是「一直挨罚能亏到多少」的天花板。折扣把无穷长的失败压成了一个有限的数——这也是为什么 <span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> < 1 时，再烂的策略也有一个明确的分数。
 </div>
 
-<h3>3.1　两条路算同一张表</h3>
+<h3>3.1　迭代求解与直接求解</h3>
 
 <p><b>路一：反复代入。</b>随便填一张表，然后照着策略一遍遍刷，直到不动。这就是把 <span class="mj"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.819ex" height="1.532ex" role="img" focusable="false" viewBox="0 -677 1246.1 677" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mi" transform="translate(793,363) scale(0.707)"><use data-c="1D70B" xlink:href="#MJX-TEX-I-1D70B"></use></g></g></g></g></svg></span> 反复作用——和第 1 课一模一样的收缩论证，所以它必然收敛。这次花了 <b>264 轮</b>。</p>
 
@@ -105,9 +161,9 @@
 两条路算出来的 14 个数，<strong>逐格最大差 8e-12</strong>——就是浮点误差的量级。
 </div>
 
-<p class="small">既然能一次解出来，为什么还要迭代？因为消元的代价是状态数的三次方（14 格无所谓，百万格就免谈），而且<b>一旦转移规则不在手里，方程根本列不出来</b>——迭代那条路只需要「能采样」，这就是它一路活到深度强化学习的原因。</p>
+<p class="small">既然能一次解出来，为什么还要迭代？因为消元的代价是状态数的三次方（14 格无所谓，百万格就免谈），而且<b>一旦转移规则不在手里，方程根本列不出来</b>——迭代那条路只需要「能采样」，这就是它能一直延续到深度强化学习的原因。</p>
 
-<h2><span class="n">§ 4</span>策略改进：照着分数改，凭什么不会改坏</h2>
+<h2><span class="n">§ 4</span>策略改进</h2>
 
 <p>手上有了 <i>V</i><sup>π</sup>，改策略的办法很直白：<b>在每一格重新把 4 个动作试一遍，谁的「当场的账 + 打折后的落点分」最高就改选谁</b>。这一步叫<b>贪心改进</b>，它和第 1 课的一次备份是同一个动作，区别只在于结果写去哪里——备份写回值表，改进写回策略。</p>
 
@@ -122,7 +178,7 @@
 
 <p class="small">注意一个反直觉的细节：这一次改进之后，左上角的值<b>还是 -10.0</b>。10 个格子改了方向，但改完仍然到不了桩——只是从「撞墙」变成了「绕圈」。<b>改进保证不变差，可没保证一步到位。</b></p>
 
-<h2><span class="n">§ 5</span>策略迭代：评估 ↔ 改进，交替到不动</h2>
+<h2><span class="n">§ 5</span>策略迭代</h2>
 
 <p>两件事凑成一个循环：<b>评估到底 → 贪心改一次 → 再评估到底 → 再改一次……</b>直到某一轮改进后策略一个格子都没变，就说明它已经对自己的分数表贪心了——那正是 Bellman 最优方程的定义，答案到手。</p>
 
@@ -133,12 +189,12 @@
 
 <div class="key">
 <b>五轮收敛，但前三轮左上角一直挂在 −10。</b>信息是一格一格往外爬的：每做一次改进，「能到桩」的区域才往外扩一圈，直到第 4 轮才连通到左上角。<b>而第 5 轮改了 0 格——策略已经稳住，这一轮纯粹是确认。</b><br><br>
-策略迭代有一个漂亮的性质：<b>策略只有有限多种</b>（这里 13 格各 4 选 1），而每轮都严格变好、绝不回头，所以它<b>必然在有限轮内停</b>。值迭代没有这个保证，它是几何逼近，理论上永远差一点点（第 1 课那间仓库因为是确定性最短路才恰好精确收敛）。
+策略迭代有一个重要性质：<b>策略只有有限多种</b>（这里 13 格各 4 选 1），而每轮都严格变好、绝不回头，所以它<b>必然在有限轮内停</b>。值迭代没有这个保证，它是几何逼近，理论上永远差一点点（第 1 课那间仓库因为是确定性最短路才恰好精确收敛）。
 </div>
 
-<h2><span class="n">§ 6</span>值迭代：不等评估收敛就动手</h2>
+<h2><span class="n">§ 6</span>值迭代</h2>
 
-<p>策略迭代每一轮都要把评估<b>做到底</b>。可你想想：既然评估完马上就要改策略，那把分数算得那么准图什么？</p>
+<p>策略迭代每一轮都要把评估<b>做到底</b>。可你想想：既然评估完马上就要改策略，那把分数算到那么准并没有必要。</p>
 
 <p><b>值迭代就是把这份耐心砍到最短</b>：只评估一次，立刻改进；而且因为「评估一次 + 取最大」可以写成同一个动作，它连策略都不用显式存——每一轮直接对值表取 <span class="mj"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="4.21ex" height="1.038ex" role="img" focusable="false" viewBox="0 -448 1861 459" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g></g></g></svg></span> 就行。这正是第 1 课那个 <span class="mj"><svg style="vertical-align: -0.471ex;" xmlns="http://www.w3.org/2000/svg" width="12.449ex" height="2.069ex" role="img" focusable="false" viewBox="0 -706.7 5502.6 914.6" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mi" transform="translate(616,-150) scale(0.707)"><use data-c="1D458" xlink:href="#MJX-TEX-I-1D458"></use></g></g><g data-mml-node="mo" transform="translate(1312.2,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="msup" transform="translate(2368,0)"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mo" transform="translate(793,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="msub" transform="translate(3564.5,0)"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="TeXAtom" transform="translate(616,-150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D458" xlink:href="#MJX-TEX-I-1D458"></use></g><g data-mml-node="mo" transform="translate(521,0)"><use data-c="2212" xlink:href="#MJX-TEX-N-2212"></use></g><g data-mml-node="mn" transform="translate(1299,0)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g></g></g></g></g></svg></span>。</p>
 
@@ -153,16 +209,16 @@
 
 <p class="small">「备份」的口径统一成<b>一次动作评估</b>——算一次「r + γ·落点的值」。所以：评估一轮 = 13 次（每格只算它选定的那个动作），取最大或改进一轮 = 52 次（每格 4 个动作全试）。</p>
 
-<h2><span class="n">§ 7</span>三件套的账：轮数少 ≠ 算得少</h2>
+<h2><span class="n">§ 7</span>计算代价</h2>
 
 <div class="key">
 <b>策略迭代的轮数最少（5 轮），总账却贵了 39 倍</b>（14079 次备份 vs 值迭代的 364 次）。原因就一句话：<strong>「轮」不是一个统一的计量单位</strong>——策略迭代的一轮里塞了 264 次评估扫描，而值迭代的一轮只有一次。<br><br>
 教科书说「策略迭代收敛轮数少」并没有错，错的是把它读成「策略迭代更快」。<b>真要比，只能比总备份次数</b>，而这取决于评估有多贵：状态少、评估便宜时，中间档的 <i>m</i> 往往最划算；状态一多、每次评估都要扫全表时，把评估砍到一次的值迭代反而最省。
 </div>
 
-<p class="small">这条轴还有一个更重要的下游：<b>后面 Stage 5 的 actor-critic，骨架就是 <i>m</i> 很小的策略迭代</b>——critic 做几步不完全的评估，actor 做一次不彻底的改进，交替进行。你在这张表上看到的权衡，会原样出现在那里，只不过评估从「扫全表」换成了「采几条轨迹」。</p>
+<p class="small">这条轴还有一个更重要的下游：<b>后面 Stage 2 的 actor-critic，骨架就是 <i>m</i> 很小的策略迭代</b>——critic 做几步不完全的评估，actor 做一次不彻底的改进，交替进行。你在这张表上看到的权衡，会原样出现在那里，只不过评估从「扫全表」换成了「采几条轨迹」。</p>
 
-<h2><span class="n">§ 8</span>三件套的共同软肋：那个 Σ 里的 P</h2>
+<h2><span class="n">§ 8</span>对转移模型的依赖</h2>
 
 <p>回头看改进那一步，把它完整写出来：</p>
 
@@ -170,9 +226,9 @@
 
 <p><b>要选出最好的动作，你必须知道每个动作会把你带到哪儿、概率各是多少。</b>这一课的三件套——评估、改进、值迭代——没有一件能绕开这个 P。<b>而真机上没有人会给你 P。</b></p>
 
-<h3>8.1　把模型吸收进一张表：Q</h3>
+<h3>8.1　动作值函数 Q</h3>
 
-<p>解法出人意料地简单：<b>与其存「这一格值多少」，不如直接存「在这一格做这个动作值多少」</b>。后者就是 <b>Q</b>：</p>
+<p>解法很简单：<b>与其存「这一格值多少」，不如直接存「在这一格做这个动作值多少」</b>。后者就是 <b>Q</b>：</p>
 
 <table>
 <colgroup><col style="width:8em"><col></colgroup>
@@ -191,10 +247,10 @@
 <div class="key">
 <b>优势 A 把「这个动作比最好的差多少」直接标了出来。</b>最优动作的 A 恰好是 0，其余全是负的——<b>所以「最优」在 Q 表上就是「这一行里 A = 0 的那一列」</b>，一眼可辨，完全不用碰转移规则。<br><br>
 三者的关系也就清楚了：<span class="mj mjd"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -1.625ex;" xmlns="http://www.w3.org/2000/svg" width="74.018ex" height="3.547ex" role="img" focusable="false" viewBox="0 -849.5 32716 1567.6" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mi" transform="translate(861.3,413) scale(0.707)"><use data-c="1D70B" xlink:href="#MJX-TEX-I-1D70B"></use></g></g><g data-mml-node="mo" transform="translate(1314.4,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(1703.4,0)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(2172.4,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="mo" transform="translate(2839.1,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="msub" transform="translate(3894.9,0)"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D53C" xlink:href="#MJX-TEX-D-1D53C"></use></g></g><g data-mml-node="TeXAtom" transform="translate(700,-150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D44E" xlink:href="#MJX-TEX-I-1D44E"></use></g><g data-mml-node="mo" transform="translate(529,0)"><use data-c="223C" xlink:href="#MJX-TEX-N-223C"></use></g><g data-mml-node="mi" transform="translate(1307,0)"><use data-c="1D70B" xlink:href="#MJX-TEX-I-1D70B"></use></g></g></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(5972.1,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="5B" xlink:href="#MJX-TEX-SO-5B"></use></g></g><g data-mml-node="msup" transform="translate(6389.1,0)"><g data-mml-node="mi"><use data-c="1D444" xlink:href="#MJX-TEX-I-1D444"></use></g><g data-mml-node="mi" transform="translate(824,413) scale(0.707)"><use data-c="1D70B" xlink:href="#MJX-TEX-I-1D70B"></use></g></g><g data-mml-node="mo" transform="translate(7666.2,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(8055.2,0)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(8524.2,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(8968.9,0)"><use data-c="1D44E" xlink:href="#MJX-TEX-I-1D44E"></use></g><g data-mml-node="mo" transform="translate(9497.9,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(9886.9,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="5D" xlink:href="#MJX-TEX-SO-5D"></use></g></g><g data-mml-node="mo" transform="translate(10303.9,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mstyle" transform="translate(10581.9,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="msub" transform="translate(12748.5,0)"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D53C" xlink:href="#MJX-TEX-D-1D53C"></use></g></g><g data-mml-node="TeXAtom" transform="translate(700,-150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D44E" xlink:href="#MJX-TEX-I-1D44E"></use></g><g data-mml-node="mo" transform="translate(529,0)"><use data-c="223C" xlink:href="#MJX-TEX-N-223C"></use></g><g data-mml-node="mi" transform="translate(1307,0)"><use data-c="1D70B" xlink:href="#MJX-TEX-I-1D70B"></use></g></g></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(14825.8,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="5B" xlink:href="#MJX-TEX-SO-5B"></use></g></g><g data-mml-node="msup" transform="translate(15242.8,0)"><g data-mml-node="mi"><use data-c="1D434" xlink:href="#MJX-TEX-I-1D434"></use></g><g data-mml-node="mi" transform="translate(783,413) scale(0.707)"><use data-c="1D70B" xlink:href="#MJX-TEX-I-1D70B"></use></g></g><g data-mml-node="mo" transform="translate(16478.8,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(16867.8,0)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(17336.8,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(17781.5,0)"><use data-c="1D44E" xlink:href="#MJX-TEX-I-1D44E"></use></g><g data-mml-node="mo" transform="translate(18310.5,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(18699.5,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="5D" xlink:href="#MJX-TEX-SO-5D"></use></g></g><g data-mml-node="mo" transform="translate(19394.3,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(20450,0)"><use data-c="30" xlink:href="#MJX-TEX-N-30"></use></g><g data-mml-node="mo" transform="translate(20950,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mstyle" transform="translate(21228,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="msup" transform="translate(23394.7,0)"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,413) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="mo" transform="translate(24659.6,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(25048.6,0)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(25517.6,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="mo" transform="translate(26184.3,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="munder" transform="translate(27240.1,0)"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g><g data-mml-node="mi" transform="translate(743.5,-611) scale(0.707)"><use data-c="1D44E" xlink:href="#MJX-TEX-I-1D44E"></use></g></g><g data-mml-node="msup" transform="translate(29267.8,0)"><g data-mml-node="mi"><use data-c="1D444" xlink:href="#MJX-TEX-I-1D444"></use></g><g data-mml-node="mo" transform="translate(824,413) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="mo" transform="translate(30495.3,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(30884.3,0)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(31353.3,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(31798,0)"><use data-c="1D44E" xlink:href="#MJX-TEX-I-1D44E"></use></g><g data-mml-node="mo" transform="translate(32327,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g></g></g></svg></span><br><br>
-<strong>下一课（Stage 2）要做的，就是把 Q 里的数从「算出来」换成「撞出来」</strong>：不再查 P，而是真的走一步、看看落到哪、拿到多少，然后把 Q 往那个方向挪一点。三件套里唯一能活下来的，是「评估 ↔ 改进交替」这个骨架；而它活下来靠的正是 Q。
+<strong>Stage 1 要做的，就是把 Q 里的数从「算出来」换成「撞出来」</strong>：不再查 P，而是真的走一步、看看落到哪、拿到多少，然后把 Q 往那个方向挪一点。三件套里唯一被保留下来的，是「评估 ↔ 改进交替」这个骨架；而它得以保留靠的正是 Q。
 </div>
 
-<h2><span class="n">§ 9</span>六句话收尾</h2>
+<h2><span class="n">§ 9</span>本章小结</h2>
 
 <ol>
 <li><b>Bellman 最优方程里只有三样东西</b>：取最大（决策）、当场的账、打折后的未来。取最大是唯一让它非线性的部件。</li>
@@ -206,7 +262,7 @@
 </ol>
 
 <footer>
-下一阶段（Stage 1）把转移概率 P 彻底拿走，只留下一条条真跑出来的轨迹。你会看到本课的「评估 ↔ 改进」骨架怎么在只有样本的世界里活下来，而这一课的 V<sup>⋆</sup> 与 Q<sup>⋆</sup> 正好当那把量误差的尺子。<br>
+下一阶段（Stage 1）把转移概率 P 彻底拿走，只留下一条条真跑出来的轨迹。你会看到本课的「评估 ↔ 改进」骨架怎么在只有样本的条件下继续成立，而这一课的 V<sup>⋆</sup> 与 Q<sup>⋆</sup> 正好当那把量误差的尺子。<br>
 本课所有数字与插图都由随附的 <code>grid_dp.py</code> 生成（策略评估的两条路、策略改进定理的逐格验证、策略迭代与值迭代的备份计数、Q 表）。整跑不到 1 秒。
 </footer>
 

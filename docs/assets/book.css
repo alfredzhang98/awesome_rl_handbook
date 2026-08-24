@@ -253,3 +253,32 @@ table td .mj svg{vertical-align:-.15em}
   section.doc{padding-top:30px}
 }
 @media print{ .sidebar,.topbar,.pagenav,.totop,.sb-mask{display:none!important} .content{margin-left:0} }
+
+/* ---- 右侧「本页目录」：够宽才出现，窄屏仍用侧栏里的小目录 ---- */
+:root{ --pt-w:212px; }
+.pagetoc{display:none}
+@media (min-width:1280px){
+  .content{padding-right:var(--pt-w)}
+  /* 右栏已经列出本页小节，侧栏里那份就收起来，避免同一份目录出现两次 */
+  .sb-sub-toc{display:none}
+  .totop{right:calc(var(--pt-w) + 20px)}
+  .pagetoc{display:block;position:fixed;top:0;right:0;width:var(--pt-w);height:100vh;z-index:40;
+   overflow-y:auto;padding:30px 20px 44px 6px;box-sizing:border-box;overscroll-behavior:contain;
+   scrollbar-width:thin}
+  .pagetoc::-webkit-scrollbar{width:8px}
+  .pagetoc::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:99px}
+  .pagetoc .pt-h{padding:0 10px 9px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+   color:var(--ink-3);font-weight:700}
+  .pagetoc ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--line)}
+  .pagetoc li{margin:0}
+  .pagetoc a{display:flex;gap:8px;align-items:baseline;padding:4px 10px;margin-left:-1px;
+   border-left:1px solid transparent;color:var(--ink-3);text-decoration:none;
+   font-size:12px;line-height:1.55}
+  .pagetoc .sn{flex:none;min-width:13px;text-align:right;font-size:11px;opacity:.6;
+   font-variant-numeric:tabular-nums}
+  .pagetoc .st{flex:1;min-width:0}
+  .pagetoc a:hover{color:var(--accent)}
+  .pagetoc a.cur{color:var(--accent);border-left-color:var(--accent)}
+  .pagetoc a.cur .sn{opacity:1}
+}
+@media print{ .pagetoc{display:none!important} }

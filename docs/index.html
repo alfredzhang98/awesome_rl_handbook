@@ -41,7 +41,7 @@
 <section class="doc roadmap" id="roadmap">
 <div class="parttag">第 0 部分 · 路线图</div>
 <header>
-  <h1>强化学习学习路径</h1>
+  <h1>强化学习路线图</h1>
   <p class="sub">数学优先 · 面向 robotics</p>
 </header>
 
@@ -243,7 +243,7 @@
 </section>
 
 <section class="stage" id="s1">
-  <div class="stage-head"><span class="num">STAGE 1</span><h2>off-policy 与深度价值方法：从 Q-learning 到 DQN</h2></div>
+  <div class="stage-head"><span class="num">STAGE 1</span><h2>off-policy 与深度价值方法</h2></div>
   <p class="why">Stage 0 结束时，你已经能在不知道模型的情况下评估并改进策略了，但学到的只是「含探索在内的自己」。这一阶段换成 <b>off-policy</b>：<b>行为可以随便探索，学的却是最优策略</b>。四步——① Q-learning 把目标换成 max → ② 一条轨迹能挖出多少信息 → ③ 表装不下时换成网络 → ④ 稳定性坏掉之后用三个补丁按回去。</p>
 
   <details class="pending">
@@ -321,7 +321,7 @@
 </section>
 
 <section class="stage" id="s2">
-  <div class="stage-head"><span class="num">STAGE 2</span><h2>策略梯度方法：从 REINFORCE 到 PPO / SAC</h2></div>
+  <div class="stage-head"><span class="num">STAGE 2</span><h2>策略梯度与 Actor-Critic 方法</h2></div>
   <p class="why">动作一连续，argmax 就没法枚举。这一阶段<b>直接把策略当参数优化</b>：策略梯度 → Actor-Critic，再分成信任域（TRPO / PPO / GRPO）与连续控制（DDPG / TD3 / SAC）两支。</p>
 
   <details class="pending">
@@ -348,7 +348,7 @@
       <li><b>TD3</b>：双 critic 取 min（压过估计）、延迟策略更新、目标策略平滑（正则化）——三个 trick 各修一个具体的数学病</li>
       <li><b>最大熵 RL 框架</b>：软 Bellman 算子、软值函数 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="5.045ex" height="1.999ex" role="img" focusable="false" viewBox="0 -861.5 2230.1 883.5" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="TeXAtom" transform="translate(861.3,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mi" transform="translate(469,0)"><use data-c="1D45C" xlink:href="#MJX-TEX-I-1D45C"></use></g><g data-mml-node="mi" transform="translate(954,0)"><use data-c="1D453" xlink:href="#MJX-TEX-I-1D453"></use></g><g data-mml-node="mi" transform="translate(1504,0)"><use data-c="1D461" xlink:href="#MJX-TEX-I-1D461"></use></g></g></g></g></g></svg></span>、能量基策略</li>
       <li><b>SAC</b>：重参数化技巧、自动温度调节（把 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.448ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 640 453" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FC" xlink:href="#MJX-TEX-I-1D6FC"></use></g></g></g></svg></span> 变成约束优化的对偶变量）</li>
-      <li><b>动作空间处理</b>：tanh 压缩后的对数概率修正项（Jacobian）——实现时最常见的坑</li>
+      <li><b>动作空间处理</b>：tanh 压缩后的对数概率修正项（Jacobian）——实现时最常见的错误</li>
     </ul></div>
   </details>
 
@@ -429,7 +429,7 @@
 
   <div class="block">
     <h4>为什么会有这一步</h4>
-    <table class="ledger"><tr><th>上一步的极限</th><td>前面都假设<b>还能和环境交互</b>。真机、医疗、推荐系统里，交互要么昂贵要么不允许。</td></tr><tr><th>这一步的做法</th><td>只从一个<b>固定数据集</b>里学，训练全程不采新数据。</td></tr><tr><th>解决了什么</th><td>能把历史数据变成策略；训练过程完全离线、可复现。</td></tr><tr><th>又引入了什么</th><td><b>外推误差</b>：max 会挑中数据里没有的动作，而那些动作的值是网络瞎猜的——越训越离谱。</td></tr><tr><th>于是下一步</th><td>三类修法：约束策略别偏离数据（BCQ/TD3+BC）、给 OOD 动作的值压一个下界（CQL）、干脆不查询 OOD 动作（IQL）。</td></tr></table>
+    <table class="ledger"><tr><th>上一步的极限</th><td>前面都假设<b>还能和环境交互</b>。真机、医疗、推荐系统里，交互要么昂贵要么不允许。</td></tr><tr><th>这一步的做法</th><td>只从一个<b>固定数据集</b>里学，训练全程不采新数据。</td></tr><tr><th>解决了什么</th><td>能把历史数据变成策略；训练过程完全离线、可复现。</td></tr><tr><th>又引入了什么</th><td><b>外推误差</b>：max 会挑中数据里没有的动作，而那些动作的值是网络凭空外推的——越训越偏。</td></tr><tr><th>于是下一步</th><td>三类修法：约束策略别偏离数据（BCQ/TD3+BC）、给 OOD 动作的值压一个下界（CQL）、干脆不查询 OOD 动作（IQL）。</td></tr></table>
   </div>
   <div class="stage-links"><span class="lb">讲义</span><span class="todo">待写</span></div>
 </section>
@@ -470,7 +470,7 @@
 <h3 class="grouping">支线</h3>
 
 <section class="stage" id="s6">
-  <div class="stage-head"><span class="num">STAGE 专题</span><h2>支线：基于模型的强化学习 · LLM / VLA 中的 RL</h2></div>
+  <div class="stage-head"><span class="num">STAGE 专题</span><h2>基于模型的强化学习与 LLM / VLA 中的 RL</h2></div>
   <p class="why"><b>先学一个环境模型再在里面规划</b>（Dyna → PETS → Dreamer），以及 <b>LLM / VLA 里的 RL</b>（RLHF、DPO、GRPO、RLVR）。</p>
 
   <details class="pending">

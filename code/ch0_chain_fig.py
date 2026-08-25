@@ -22,18 +22,18 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CH0 = os.path.join(HERE, os.pardir, "docs", "ch0.html")
 
 # ── 链的定义 ────────────────────────────────────────────────────────────
-STATES = ["s_A", "s_B", "s_C", "s_D", "s_E"]
+STATES = ["s_0", "s_1", "s_2", "s_3", "s_4"]
 GAMMA = 0.9
 KMAX = 40
 
 
 def step(i):
-    """走一步。到了 s_E 就原地打转。"""
+    """走一步。到了 s_4 就原地打转。"""
     return min(i + 1, len(STATES) - 1)
 
 
 def reward(i):
-    """站在 s_E 上出发才拿 1 分，其余为 0。"""
+    """站在 s_4 上出发才拿 1 分，其余为 0。"""
     return 1.0 if i == len(STATES) - 1 else 0.0
 
 
@@ -47,7 +47,7 @@ def sweep_table(kmax=KMAX, gamma=GAMMA):
 
 
 def v_star(i=0, gamma=GAMMA):
-    """预算无限时的答案：走 d 步到 s_E，之后每步 1 分。"""
+    """预算无限时的答案：走 d 步到 s_4，之后每步 1 分。"""
     d = len(STATES) - 1 - i
     return gamma ** d / (1.0 - gamma)
 
@@ -80,12 +80,12 @@ def draw(theme, gamma=GAMMA, kmax=KMAX):
 
     V = sweep_table(kmax, gamma)
     ks = list(range(1, kmax + 1))
-    cum = [V[k][0] for k in ks]                      # 起点 s_A 那一列
+    cum = [V[k][0] for k in ks]                      # 起点 s_0 那一列
     inc = [V[k][0] - V[k - 1][0] for k in ks]        # 这一遍新加进来的一项
     star = v_star(0, gamma)
     gap = [star - c for c in cum]
     tail = [gamma ** k / (1.0 - gamma) for k in ks]
-    d0 = len(STATES) - 1                             # s_A 到 s_E 的距离
+    d0 = len(STATES) - 1                             # s_0 到 s_4 的距离
 
     fig, (ax, bx) = plt.subplots(1, 2, figsize=(12.82, 4.81), dpi=100)
     fig.patch.set_facecolor(t["bg"])
@@ -105,12 +105,12 @@ def draw(theme, gamma=GAMMA, kmax=KMAX):
            color=t["cool"], zorder=2,
            label="这一次刷新新加进来的一项 $\\gamma^{k-1}$")
     ax.plot(ks, cum, color=t["warm"], marker="o", markersize=3.2, linewidth=1.8,
-            zorder=3, label="$V_k(s_A)$（累计）")
+            zorder=3, label="$V_k(s_0)$（累计）")
     ax.axhline(star, color=t["ink"], linestyle="--", linewidth=1.8, zorder=4)
-    ax.text(kmax, star + 0.18, "$V^{*}(s_A) = %.4f$" % star,
+    ax.text(kmax, star + 0.18, "$V^{*}(s_0) = %.4f$" % star,
             ha="right", va="bottom", color=t["ink"], fontsize=10)
     ax.text(1.0, star * 0.55,
-            "预算 $\\leqslant$ %d\n够不着奖励\n$V_k(s_A) = 0$" % d0,
+            "预算 $\\leqslant$ %d\n够不着奖励\n$V_k(s_0) = 0$" % d0,
             ha="left", va="top", color=t["ink3"], fontsize=9)
     ax.annotate("$k$=%d 第一次够到，只吃到一口 $\\gamma^{%d}$=%.4f" % (d0 + 1, d0, gamma ** d0),
                 xy=(d0 + 1, cum[d0]), xytext=(d0 + 3.2, star * 0.229),
@@ -119,7 +119,7 @@ def draw(theme, gamma=GAMMA, kmax=KMAX):
     ax.set_title("每刷一遍，级数就多加恰好一项", color=t["ink"], fontsize=12,
                  loc="left", pad=12)
     ax.set_xlabel("预算 $k$（刷了几遍）", color=t["ink3"])
-    ax.set_ylabel("$V_k(s_A)$", color=t["ink3"])
+    ax.set_ylabel("$V_k(s_0)$", color=t["ink3"])
     ax.set_xlim(0.5, kmax + 0.5)
     ax.set_ylim(0, star * 1.12)
 
@@ -132,7 +132,7 @@ def draw(theme, gamma=GAMMA, kmax=KMAX):
     bx.set_title("差距每刷一遍精确乘 $\\gamma$", color=t["ink"], fontsize=12,
                  loc="left", pad=12)
     bx.set_xlabel("预算 $k$", color=t["ink3"])
-    bx.set_ylabel("$V^{*}(s_A) - V_k(s_A)$", color=t["ink3"])
+    bx.set_ylabel("$V^{*}(s_0) - V_k(s_0)$", color=t["ink3"])
     bx.set_xlim(0.5, kmax + 0.5)
     bx.set_ylim(1e-2, 2e1)
     bx.text(2.0, 3.5e-2,
@@ -162,7 +162,7 @@ def embed():
         raise SystemExit("docs/ch0.html 里没找到 <picture>")
     new = ('<picture>\n'
            '      <source srcset="data:image/webp;base64,%s" media="(prefers-color-scheme: dark)">\n'
-           '      <img src="data:image/webp;base64,%s" alt="V_k(s_A) 逐遍逼近 V⋆(s_A)">\n'
+           '      <img src="data:image/webp;base64,%s" alt="V_k(s_0) 逐遍逼近 V⋆(s_0)">\n'
            '    </picture>' % (imgs["dark"], imgs["light"]))
     html = html[:pic.start()] + new + html[pic.end():]
     open(CH0, "w", encoding="utf-8", newline="\r\n").write(html.replace("\r\n", "\n"))
@@ -173,23 +173,23 @@ def embed():
 def report():
     V = sweep_table()
     star = v_star(0)
-    print("V⋆(s_A) = %.4f" % star)
+    print("V⋆(s_0) = %.4f" % star)
     print("\n逐遍刷表（前 7 遍）")
     print("  刷第几遍 " + " ".join("%8s" % s for s in STATES))
     for k in range(1, 8):
         print("  V_%-6d " % k + " ".join("%8.4f" % v for v in V[k]))
-    print("\n首次非零 = γ^d（d 为到 s_E 的距离）")
+    print("\n首次非零 = γ^d（d 为到 s_4 的距离）")
     for i, s in enumerate(STATES):
         d = len(STATES) - 1 - i
         print("  %-4s d=%d  第 %d 遍冒头  γ^%d = %.4f" % (s, d, d + 1, d, GAMMA ** d))
     print("\n差距 = γ^k/(1−γ)")
     for k in (5, 7, 10, 20, 40):
         g = GAMMA ** k / (1 - GAMMA)
-        print("  k=%-3d V_k(s_A)=%8.4f  差距=%9.6f" % (k, star - g, g))
+        print("  k=%-3d V_k(s_0)=%8.4f  差距=%9.6f" % (k, star - g, g))
     print("\n刷几遍够")
     for eps in (0.1, 0.01, 0.001):
         k = sweeps_for(eps)
-        print("  差距 < %-6s → %2d 遍，此时 V_k(s_A)=%.4f（差 %.6f）"
+        print("  差距 < %-6s → %2d 遍，此时 V_k(s_0)=%.4f（差 %.6f）"
               % (eps, k, star - GAMMA ** k / (1 - GAMMA), GAMMA ** k / (1 - GAMMA)))
 
 

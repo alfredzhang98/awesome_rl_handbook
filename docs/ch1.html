@@ -109,7 +109,7 @@
 
 <div class="math"><span class="plainmath">1 + γ + γ² + γ³ + ⋯ = 1/(1 − γ) = 10</span></div>
 
-<p class="small"><b>也就是说，你手上「未来」这件东西总共只值 10 步的分量。</b>第 100 步的奖励虽然还在式子里，权重却只有 0.9<sup>100</sup> ≈ 0.000027，等于不存在。有效视野 ；它是<b>所有误差界里的放大器</b>（§6 那条界就带着它）；它还决定<b>值的量级</b>——同一间仓库，<span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> = 0.5 时左上角是 -1.9688，0.9 时 -4.6856，0.99 时 -5.8520。<b><span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> 不是超参数，它是问题定义的一部分：改它就是改题目。</b></p>
+<p class="small"><b>也就是说，你手上「未来」这件东西总共只值 10 步的分量。</b>第 100 步的奖励虽然还在式子里，权重却只有 0.9<sup>100</sup> ≈ 0.000027，等于不存在。<b>它是你关心多远的未来</b>——有效视野 1/(1−γ) = 10 步；它是<b>所有误差界里的放大器</b>（§6 那条界就带着它）；它还决定<b>值的量级</b>——同一间仓库，<span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> = 0.5 时左上角是 -1.9688，0.9 时 -4.6856，0.99 时 -5.8520。<b><span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> 不是超参数，它是问题定义的一部分：改它就是改题目。</b></p>
 
 
 <div class="key">
@@ -446,7 +446,7 @@
 <tr><td><b>怎么停</b></td><td>订阈值，看 Δ</td><td>整表不再改动</td><td>订阈值，看 Δ</td></tr>
 </table>
 
-<p class="small">链那一列的 66 遍是第 0 课 §9 算出来的（γ = 0.9，差距要小于 0.01）；打滑那一列的 13 / 19 / 32 对应阈值 10⁻³ / 10⁻⁶ / 10⁻¹²，就是上面那张表。<b>同一间仓库，只是把落点从「一格」换成「三格的分布」，第一列的做法就整个失效了</b>——精确收敛靠的是「预算够了就到顶」，而随机之后永远有一条越来越细的尾巴够不到底。</p>
+<p class="small">链那一列的 66 遍是上一课算出来的（γ = 0.9，差距要小于 0.01）；打滑那一列的 13 / 19 / 32 对应阈值 10⁻³ / 10⁻⁶ / 10⁻¹²，就是上面那张表。<b>同一间仓库，只是把落点从「一格」换成「三格的分布」，第一列的做法就整个失效了</b>——精确收敛靠的是「预算够了就到顶」，而随机之后永远有一条越来越细的尾巴够不到底。</p>
 
 
 <h2><span class="n">§ 7</span>随机转移与期望</h2>
@@ -463,23 +463,23 @@
 
 <h3>7.1　一格对照</h3>
 
-<p>取格子 (20)。<b>确定性时它有两个并列最优</b>——「下」和「右」都是 −3.4390，值迭代按枚举顺序取了「下」：</p>
+<p>取格子 (2,0)。<b>确定性时它有两个并列最优</b>——「下」和「右」都是 −3.4390，值迭代按枚举顺序取了「下」：</p>
 
 <table>
 <tr><th>动作</th><th>落点分布</th><th>期望落点值</th><th>合计 −1 + 0.9 × 期望</th></tr>
-<tr><td>上</td><td>100% → 格 10（-4.0951）</td><td class="num">-4.0951</td><td class="num">-4.6856</td></tr><tr><td><b>下</b></td><td>100% → 格 30（-2.71）</td><td class="num">-2.71</td><td class="num"><b>-3.439 ← 最大</b></td></tr><tr><td>左</td><td>100% → 格 20（-3.439）</td><td class="num">-3.439</td><td class="num">-4.0951</td></tr><tr><td>右</td><td>100% → 格 21（-2.71）</td><td class="num">-2.71</td><td class="num">-3.439</td></tr>
+<tr><td>上</td><td>100% → 格 (1,0)（-4.0951）</td><td class="num">-4.0951</td><td class="num">-4.6856</td></tr><tr><td><b>下</b></td><td>100% → 格 (3,0)（-2.71）</td><td class="num">-2.71</td><td class="num"><b>-3.439 ← 最大</b></td></tr><tr><td>左</td><td>100% → 格 (2,0)（-3.439）</td><td class="num">-3.439</td><td class="num">-4.0951</td></tr><tr><td>右</td><td>100% → 格 (2,1)（-2.71）</td><td class="num">-2.71</td><td class="num">-3.439</td></tr>
 </table>
 
 <p>同一格，打滑 10% 之后（旧表用打滑版收敛的值表）：</p>
 
 <table>
 <tr><th>动作</th><th>落点分布</th><th>期望落点值</th><th>合计 −1 + 0.9 × 期望</th></tr>
-<tr><td>上</td><td>90% → 格 10（-4.44）<br>5% → 格 20（-3.7536）<br>5% → 格 21（-2.9829）</td><td class="num">-4.3328</td><td class="num">-4.8995</td></tr><tr><td>下</td><td>90% → 格 30（-3.0579）<br>5% → 格 20（-3.7536）<br>5% → 格 21（-2.9829）</td><td class="num">-3.089</td><td class="num">-3.7801</td></tr><tr><td>左</td><td>90% → 格 20（-3.7536）<br>5% → 格 10（-4.44）<br>5% → 格 30（-3.0579）</td><td class="num">-3.7531</td><td class="num">-4.3778</td></tr><tr><td><b>右</b></td><td>90% → 格 21（-2.9829）<br>5% → 格 10（-4.44）<br>5% → 格 30（-3.0579）</td><td class="num">-3.0595</td><td class="num"><b>-3.7536 ← 最大</b></td></tr>
+<tr><td>上</td><td>90% → 格 (1,0)（-4.44）<br>5% → 格 (2,0)（-3.7536）<br>5% → 格 (2,1)（-2.9829）</td><td class="num">-4.3328</td><td class="num">-4.8995</td></tr><tr><td>下</td><td>90% → 格 (3,0)（-3.0579）<br>5% → 格 (2,0)（-3.7536）<br>5% → 格 (2,1)（-2.9829）</td><td class="num">-3.089</td><td class="num">-3.7801</td></tr><tr><td>左</td><td>90% → 格 (2,0)（-3.7536）<br>5% → 格 (1,0)（-4.44）<br>5% → 格 (3,0)（-3.0579）</td><td class="num">-3.7531</td><td class="num">-4.3778</td></tr><tr><td><b>右</b></td><td>90% → 格 (2,1)（-2.9829）<br>5% → 格 (1,0)（-4.44）<br>5% → 格 (3,0)（-3.0579）</td><td class="num">-3.0595</td><td class="num"><b>-3.7536 ← 最大</b></td></tr>
 </table>
 
 <div class="key">
-<b>平局被打破了，赢的是「右」。</b>只差 0.0265，但方向很说明问题：从 (20) 往<b>下</b>走，两个偏移方向里有一个是<b>左</b>——那边是墙，滑过去白撞一下还留在原地。往<b>右</b>走，两个偏移方向（上、下）都是真格子。<strong>确定性时「贴着墙走」不要钱；一旦会打滑，它就开始要钱了。</strong><br><br>
-所以准确的说法不是「最优策略翻了向」，而是：<b>确定性时这两格各有两个并列最优，打滑把平局打破了</b>，随机性挑走了<b>离墙远</b>的那个。这是「鲁棒」两个字第一次以数字的形式出现。另一格 (21) 是完全一样的故事。
+<b>平局被打破了，赢的是「右」。</b>只差 0.0265，但方向很说明问题：从 (2,0) 往<b>下</b>走，两个偏移方向里有一个是<b>左</b>——那边是墙，滑过去白撞一下还留在原地。往<b>右</b>走，两个偏移方向（上、下）都是真格子。<strong>确定性时「贴着墙走」不要钱；一旦会打滑，它就开始要钱了。</strong><br><br>
+所以准确的说法不是「最优策略翻了向」，而是：<b>确定性时这两格各有两个并列最优，打滑把平局打破了</b>，随机性挑走了<b>离墙远</b>的那个。这是「鲁棒」两个字第一次以数字的形式出现。另一格 (2,1) 是完全一样的故事。
 </div>
 
 <p>把上面这套算法接到组件上——<b>默认就带 10% 打滑</b>，每一步的算式行会把三个落点的概率、值和加权和全部列出：</p>
@@ -511,7 +511,7 @@
 
 <ul class="algos">
 <li><b>值全线变差</b>：左上角从 -4.6856 掉到 -5.0279。打滑让你平均要多走几步，账就得多亏一点。</li>
-<li><b>两格的最优动作被改写</b>：(20) 和 (21)，都是上面那种「平局被打破、躲开墙」。</li>
+<li><b>两格的最优动作被改写</b>：(2,0) 和 (2,1)，都是上面那种「平局被打破、躲开墙」。</li>
 <li><b>收敛从 7 遍变成 32 遍</b>：确定性时值迭代是有限步精确收敛；随机之后它才真正变成「几何逼近」——每遍只把误差乘掉一个 <span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> 左右，永远差一点点。</li>
 </ul>
 
@@ -605,10 +605,10 @@
 </div>
 
 <div class="ex">
-<p class="ex-q"><b>4 ·</b> <b>把「旧表快照」拿掉。</b>现在的值迭代握着两张表：一轮开始先把旧表冻成一份快照，14 个格子全都查这份快照，整轮算完再整表替换（<code>src = 快照</code> → 结果写进 <code>new</code> → <code>V = new</code>）。现在把冻快照那一步删掉，改成<b>算完一格就立刻写回同一张表</b>，其它一个字不改。<br>跑之前先押三个答案：<b>① 它还收敛吗？② 收敛到的还是同一张 V⋆ 吗？③ 遍数会变吗？</b><br>然后把另外两个旋钮各试两档——<b>初值</b>（全填 0 / 全填 −100）、<b>扫描顺序</b>（从 (0,0) 正序 / 从充电桩 (3,3) 倒序），四组跑完，看哪一组和别人不一样。</p>
+<p class="ex-q"><b>4 ·</b> <b>把「旧表快照」拿掉。</b>现在的值迭代握着两张表：一轮开始先把旧表冻成一份快照，14 个格子全都查这份快照，整轮算完再整表替换（<code>src = 快照</code> → 结果写进 <code>new</code> → <code>V = new</code>）。现在把冻快照那一步删掉，改成<b>算完一格就立刻写回同一张表</b>，其它一个字不改。<br>跑之前先押三个答案：<b>① 它还收敛吗？② 收敛到的还是同一张 V⋆ 吗？③ 遍数会变吗？</b><br>然后把另外两个旋钮各试几档——<b>初值</b>（全填 0 / 全填 +100 / 全填 −100）、<b>扫描顺序</b>（从 (0,0) 正序 / 从充电桩 (3,3) 倒序），十二组跑完，看哪一组和别人不一样。</p>
 <details><summary>答案</summary>
 <div class="ex-a">
-<p><b>先给结论，三句话：</b>① <b>收敛</b>，而且是必然收敛；② 收敛到的<b>还是同一张 V⋆</b>，逐格最大差 0.0；③ 遍数在十二组里有十一组都是 <b>7 遍</b>，只有一组掉到 <b>3 遍</b>——<b>而那一组的功劳并不在「一张表」上</b>。</p>
+<p><b>先给结论，三句话：</b>① <b>收敛</b>，而且是必然收敛；② 收敛到的<b>还是同一张 V⋆</b>，逐格最大差 0.0；③ 遍数在十二组里有 <b>7 组是 7 遍</b>、<b>4 组是 30 遍</b>（全填 +100 那档），只有一组掉到 <b>3 遍</b>——<b>而那一组的功劳并不在「一张表」上</b>。</p>
 
 <p>下面把话说细。先钉住表头那两个词，它们说的是<b>同一张值表怎么写回去</b>：</p>
 
@@ -617,7 +617,7 @@
 <li><b>原地覆盖（一张表）</b>：算完一格立刻写回原表。同一遍里排在后面的格子，读到的已经是<u>这一遍</u>刚更新过的邻居。</li>
 </ul>
 
-<p>另外两个旋钮：<b>初值</b>是第 0 轮全填什么（充电桩那格恒为 0）；<b>扫描顺序</b>是一遍之内按什么次序走格子——正序从 (0,0) 逐行扫到 (3,3)，倒序从充电桩 (3,3) 倒着扫回 (0,0)。四个旋钮组合出十二行，<b>其中只有一行与众不同</b>：</p>
+<p>另外两个旋钮：<b>初值</b>是第 0 轮全填什么（充电桩那格恒为 0）；<b>扫描顺序</b>是一遍之内按什么次序走格子——正序从 (0,0) 逐行扫到 (3,3)，倒序从充电桩 (3,3) 倒着扫回 (0,0)。三个旋钮（写回方式 2 × 初值 3 × 扫描顺序 2）组合出十二行，<b>其中只有一行与众不同</b>：</p>
 
 <table>
 <tr><th>写回方式</th><th>初值</th><th>扫描顺序</th><th>刷几遍收敛</th></tr>
@@ -639,7 +639,7 @@
 
 <div class="key">
 <b>为什么全填 0 的时候倒着扫也没用？</b>因为在「每步 −1」的问题里，0 是一个<b>过分乐观</b>的初值：<span class="mj"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="4.21ex" height="1.038ex" role="img" focusable="false" viewBox="0 -448 1861 459" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g></g></g></svg></span> 会一直挑那些还没更新过、仍然写着 0 的邻居，你更新的顺序再聪明也传不出去。换成悲观初值（全填 −100）再从充电桩倒着扫，一遍之内就能顺着「桩 → 一步邻居 → 两步邻居」把真值一路推出去，<b>3 遍</b>见底——就是表里最后那一行。<br><br>
-<strong>但别把这笔账记到「一张表」头上。</strong>原地覆盖本身不提速——四个原地配置里三个都是 7 遍，和两张表打平。它真正的作用是<b>让「扫描顺序」这个旋钮存在</b>：两张表时每一格都读同一份冻住的快照，你按什么次序去填新表，填完都一模一样，顺序在数学上根本不起作用。<b>所以一张表是前置条件，不是加速器</b>；那 3 遍是顺序与初值凑出来的，而且是在「目标在角落、倒序几乎完美贴合信息流向、只有 14 格」这种最好情况下。<br><br><strong>反过来看就清楚了：两张表在表格里的成本几乎为零</strong>——不比一张表慢，只多一份内存。<b>所以后面真要放弃它，绝不会是为了速度</b>：一旦值不再存成表、而是由一组共享参数算出来，「冻住的旧表」就没有现成的东西可对应，那份白拿的保证也就跟着没了。
+<strong>但别把这笔账记到「一张表」头上。</strong>原地覆盖本身不提速——六个原地配置里五个都是 7 遍或 30 遍，和两张表逐行打平。它真正的作用是<b>让「扫描顺序」这个旋钮存在</b>：两张表时每一格都读同一份冻住的快照，你按什么次序去填新表，填完都一模一样，顺序在数学上根本不起作用。<b>所以一张表是前置条件，不是加速器</b>；那 3 遍是顺序与初值凑出来的，而且是在「目标在角落、倒序几乎完美贴合信息流向、只有 14 格」这种最好情况下。<br><br><strong>反过来看就清楚了：两张表在表格里的成本几乎为零</strong>——不比一张表慢，只多一份内存。<b>所以后面真要放弃它，绝不会是为了速度</b>：一旦值不再存成表、而是由一组共享参数算出来，「冻住的旧表」就没有现成的东西可对应，那份白拿的保证也就跟着没了。
 </div>
 </div>
 </details>

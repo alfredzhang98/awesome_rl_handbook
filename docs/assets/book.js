@@ -197,14 +197,30 @@
       var top=st[st.length-1];
       back.querySelector('.bj-t').textContent =
         '返回 ' + (top.label||'原处') + (st.length>1 ? ' · 还有 '+(st.length-1)+' 层' : '');
-      back.title = '回到点击 '+(top.label||'')+' 之前的位置';
+      back.title = '回到 '+(top.label||'原处')+'，也就是你点进来之前的位置';
       back.classList.add('show');
+    }
+
+    /* 按钮上写「从哪儿来」，不是「往哪儿去」：找链接所在的那一节标题 */
+    function originLabel(node){
+      var el=node, h=null;
+      while(el && el!==document.body){
+        var p=el.previousElementSibling;
+        while(p){ if(p.tagName==='H2'||p.tagName==='H3'){ h=p; break; } p=p.previousElementSibling; }
+        if(h) break;
+        el=el.parentNode;
+      }
+      if(!h) return '';
+      var m=/^\s*(\d+)\.(\d+)/.exec(h.textContent);
+      if(m) return '§'+m[1]+'.'+m[2];
+      var n=h.querySelector('.n');
+      return n ? n.textContent.replace(/\s+/g,'') : '';
     }
 
     root.addEventListener('click',function(e){
       var a=e.target.closest && e.target.closest('a.xref'); if(!a) return;
       var st=get(KEY,[]);
-      st.push({url:here(), y:window.scrollY, label:a.textContent});
+      st.push({url:here(), y:window.scrollY, label:originLabel(a)||a.textContent});
       set(KEY,st);
       if(a.getAttribute('data-inpage')){
         var el=document.getElementById(a.getAttribute('href').slice(1));

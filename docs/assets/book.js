@@ -70,6 +70,12 @@
         h.__t=lab;
       });
     }
+    /* h3 的「N.M」前缀也给个 id，正文里的 §N.M 才跳得过去 */
+    [].slice.call(document.querySelectorAll('.content h3')).forEach(function(h){
+      var m=/^\s*(\d+)\.(\d+)/.exec(h.textContent);
+      if(m && !h.id) h.id='sec-'+m[1]+'-'+m[2];
+    });
+
     /* 同一份数据渲染两处：侧栏小目录 + 右侧「本页目录」 */
     function fill(box){
       heads.forEach(function(el){
@@ -131,6 +137,62 @@
   }
   if(location.hash) setTimeout(function(){ reveal(location.hash.slice(1)); },0);
   window.addEventListener('hashchange',function(){ reveal(location.hash.slice(1)); });
+
+  /* ---- 正文里的 §N 交叉引用自动变成链接；跳转后右下角给一个「返回」 ---- */
+  (function(){
+    var root=document.querySelector('.content'); if(!root) return;
+    var RE=/(?:第\s*(\d+)\s*课\s*)?§\s*(\d+)(?:\.(\d+))?/g;
+    var SKIP={A:1,CODE:1,H1:1,H2:1,H3:1,SCRIPT:1,STYLE:1,BUTTON:1};
+    var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null), nodes=[], n;
+    while((n=walker.nextNode())){
+      if(!/§/.test(n.nodeValue)) continue;
+      var bad=false;
+      for(var q=n.parentNode;q&&q!==root;q=q.parentNode){ if(SKIP[q.tagName]){bad=true;break;} }
+      if(!bad) nodes.push(n);
+    }
+    nodes.forEach(function(t){
+      var out=document.createDocumentFragment(), last=0, m; RE.lastIndex=0;
+      while((m=RE.exec(t.nodeValue))){
+        out.appendChild(document.createTextNode(t.nodeValue.slice(last,m.index)));
+        var ch=m[1], sec=m[2], sub=m[3];
+        var id='sec-'+sec+(sub?'-'+sub:'');
+        var href=ch!==undefined ? 'ch'+ch+'.html#'+id : '#'+id;
+        /* 本页链接：目标不存在就不加链接，避免死链 */
+        if(ch===undefined && !document.getElementById(id)){
+          out.appendChild(document.createTextNode(m[0])); last=RE.lastIndex; continue;
+        }
+        var a=document.createElement('a');
+        a.className='xref'; a.href=href; a.textContent=m[0];
+        if(ch===undefined) a.setAttribute('data-inpage','1');
+        out.appendChild(a); last=RE.lastIndex;
+      }
+      out.appendChild(document.createTextNode(t.nodeValue.slice(last)));
+      t.parentNode.replaceChild(out,t);
+    });
+
+    /* 本页跳转：记下来处，右下角出现「返回」；点一次回去并消失 */
+    var back=document.createElement('button');
+    back.className='backjump'; back.type='button';
+    back.innerHTML='↩ 返回<span class="bj-t"></span>';
+    document.body.appendChild(back);
+    var from=null;
+    function hide(){ back.classList.remove('show'); from=null; }
+    root.addEventListener('click',function(e){
+      var a=e.target.closest('a.xref[data-inpage]'); if(!a) return;
+      var el=document.getElementById(a.getAttribute('href').slice(1)); if(!el) return;
+      e.preventDefault();
+      from=window.scrollY;
+      back.querySelector('.bj-t').textContent='　' + a.textContent + ' 之前';
+      jump(el.getBoundingClientRect().top+window.scrollY-14);
+      history.replaceState(null,'',a.getAttribute('href'));
+      back.classList.add('show');
+    });
+    back.addEventListener('click',function(){ if(from!==null) jump(from); hide(); });
+    /* 自己又滚回原处附近，就不用留着这个按钮了 */
+    window.addEventListener('scroll',function(){
+      if(from!==null && Math.abs(window.scrollY-from)<80) hide();
+    },{passive:true});
+  })();
 
   /* ---- ← / → 翻章 ---- */
   document.addEventListener('keydown',function(e){

@@ -296,3 +296,19 @@ table td .mj svg{vertical-align:-.15em}
 .hit{border-radius:5px;animation:hitflash 1.8s ease-out 1}
 @media(prefers-reduced-motion:reduce){ .hit{animation:none;background:var(--accent-soft)} }
 @media print{ .pagetoc{display:none!important} }
+
+/* ---- 正文里的 §N 交叉引用 ---- */
+.content a.xref{color:var(--accent);text-decoration:none;
+ border-bottom:1px solid var(--line-2);padding-bottom:1px;white-space:nowrap}
+.content a.xref:hover{border-bottom-color:var(--accent)}
+
+/* ---- 跳转之后的「返回」按钮：只在跳过之后出现 ---- */
+.backjump{position:fixed;right:20px;bottom:64px;z-index:41;display:none;
+ background:var(--accent);color:#fff;border:none;border-radius:999px;
+ padding:9px 16px;font-size:13px;font-family:inherit;cursor:pointer;
+ box-shadow:0 3px 14px rgba(0,0,0,.18)}
+.backjump.show{display:block}
+.backjump .bj-t{opacity:.8;font-size:12px}
+@media (min-width:1280px){ .backjump{right:calc(var(--pt-w) + 20px)} }
+@media (max-width:560px){ .backjump .bj-t{display:none} }
+@media print{ .backjump{display:none!important} }

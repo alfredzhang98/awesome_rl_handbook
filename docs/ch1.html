@@ -104,7 +104,7 @@
 <tr><td class="num">0</td><td class="num">0.0000</td><td class="num">0.0000</td></tr><tr><td class="num">1</td><td class="num">-1.0000</td><td class="num">-1.0000</td></tr><tr><td class="num">2</td><td class="num">-1.9000</td><td class="num">-1.9000</td></tr><tr><td class="num">3</td><td class="num">-2.7100</td><td class="num">-2.7100</td></tr><tr><td class="num">4</td><td class="num">-3.4390</td><td class="num">-3.4390</td></tr><tr><td class="num">5</td><td class="num">-4.0951</td><td class="num">-4.0951</td></tr><tr><td class="num">6</td><td class="num">-4.6856</td><td class="num">-4.6856</td></tr>
 </table>
 
-<div class="key">
+<div class="warn">
 <b>逐格核对，最大差 0.0。</b><b>但别把这两张表当成同一个东西。</b><i>d</i> 是「几步」，是这张地图的几何性质；值是「多少钱」，是打完折的账。它们在这里一一对应，只因为奖励结构特别干净（确定性 + 每步固定 −1）。§7 就是现成的反例：加上打滑之后，每格的最短路 <i>d</i> <b>一个都没变</b>，值却全变了，还有两格的最优动作翻了向。<b>之所以特意挑一个有闭式解的例子，是为了让你手里有一把不靠代码的尺子</b>——绝大多数问题没有这个待遇。<br><br>这不是巧合，是这一课后面全部结论的落脚点：<b>值迭代收敛到的那个东西，就是「最优地走下去能拿多少」这句话本身</b>。以后所有算法都在近似它，而近似得好不好，永远是拿这张表当尺子量的。
 </div>
 
@@ -514,9 +514,7 @@
 <li><b>收敛从 7 遍变成 32 遍</b>：确定性时值迭代是有限步精确收敛；随机之后它才真正变成「几何逼近」——每遍只把误差乘掉一个 <span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> 左右，永远差一点点。</li>
 </ul>
 
-<div class="key">
-<b>这一改动是通往 Stage 1 的门。</b>上面那三个数 0.90 / 0.05 / 0.05，是我写规则时定的。<strong>真机上没人会给你它们</strong>——地面多滑、轮子会不会空转，你只能推一下看看去哪了。<b>期望算不出来，就只能拿样本去估</b>：把方括号里那一项换成「我这次实际滑到的那一格」，就是下一课的全部内容。
-</div>
+<p>这一改动是通往 Stage 1 的门。</b>上面那三个数 0.90 / 0.05 / 0.05，是我写规则时定的。<strong>真机上没人会给你它们</strong>——地面多滑、轮子会不会空转，你只能推一下看看去哪了。<b>期望算不出来，就只能拿样本去估</b>：把方括号里那一项换成「我这次实际滑到的那一格」，就是下一课的全部内容。</p>
 
 <h2><span class="n">§ 8</span>表格法的三个前提</h2>
 

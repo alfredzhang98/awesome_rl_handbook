@@ -391,7 +391,7 @@
 <p><b>把刚才那件事写成定义。</b>策略评估要回答的是：<b>给定一个策略 π，每一格值多少</b>。上一节的 Bellman 期望方程说的是这张表必须满足什么，把它当成一条<b>更新规则</b>反复用，就是评估算法：</p>
 
 <div class="math"><div class="ubrow tight">
-  <span class="ub"><span class="ub-t"><i>V</i><sub>k+1</sub>(<i>s</i>) =&nbsp;</span></span><span class="ub"><span class="ub-t">Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>)</span><span class="ub-b">照策略<br>平均动作</span></span><span class="ub"><span class="ub-t">&nbsp;Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>)</span><span class="ub-b">照模型<br>平均落点</span></span><span class="ub"><span class="ub-t">&nbsp;[ <i>R</i>(<i>s</i>,<i>a</i>) + γ<i>V</i><sub>k</sub>(<i>s</i>′) ]</span><span class="ub-b">当场的账<br>+ 上一稿的未来</span></span>
+  <span class="ub"><span class="ub-t"><i>V</i><sub>k+1</sub>(<i>s</i>) =&nbsp;</span></span><span class="ub"><span class="ub-t">Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>)</span><span class="ub-b">照策略<br>平均动作</span></span><span class="ub"><span class="ub-t">&nbsp;Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>)</span><span class="ub-b">照模型<br>平均落点</span></span><span class="ub"><span class="ub-t">&nbsp;[ <i>r</i>(<i>s</i>,<i>a</i>) + γ<i>V</i><sub>k</sub>(<i>s</i>′) ]</span><span class="ub-b">当场的账<br>+ 上一稿的未来</span></span>
 </div></div>
 
 <p>这个式子读一遍就够了：<b>站在 <i>s</i>，照策略把每个动作按它的概率过一遍</b>，每个动作再<b>把可能的落点按概率过一遍</b>，各算「当场的账 + 打折后落点在<b>上一稿</b>里的值」，<b>全部加权平均，写成这一格的新值</b>。</p>
@@ -406,11 +406,11 @@
 
 <p>而因为 <i>T</i><sup>π</sup> 对 <i>V</i> 是线性的，那条不动点方程也可以<b>不迭代、直接解</b>——把它按矩阵写开：</p>
 
-<div class="math"><span class="plainmath"><i>V</i><sup>π</sup> = <i>R</i><sup>π</sup> + γ<i>P</i><sup>π</sup><i>V</i><sup>π</sup> &nbsp;⟹&nbsp; <i>V</i><sup>π</sup> = (<i>I</i> − γ<i>P</i><sup>π</sup>)<sup>−1</sup> <i>R</i><sup>π</sup></span></div>
+<div class="math"><span class="plainmath"><i>V</i><sup>π</sup> = <i>r</i><sup>π</sup> + γ<i>P</i><sup>π</sup><i>V</i><sup>π</sup> &nbsp;⟹&nbsp; <i>V</i><sup>π</sup> = (<i>I</i> − γ<i>P</i><sup>π</sup>)<sup>−1</sup> <i>r</i><sup>π</sup></span></div>
 
 <p>读一遍：<b>14 个未知数、14 条方程，一次矩阵求逆就把整张表解出来</b>，一轮迭代都不用跑。</p>
 
-<p class="small">其中 <i>P</i><sup>π</sup> 是 14×14 的转移矩阵（第 <i>s</i> 行第 <i>s</i>′ 列 = 照 π 走一步从 s 到 s′ 的概率），<i>R</i><sup>π</sup> 是 14 维的即时奖励向量。γ &lt; 1 保证 <i>I</i> − γ<i>P</i><sup>π</sup> 可逆，所以解<b>存在且唯一</b>。</p>
+<p class="small">其中 <i>P</i><sup>π</sup> 是 14×14 的转移矩阵（第 <i>s</i> 行第 <i>s</i>′ 列 = 照 π 走一步从 s 到 s′ 的概率），<i>r</i><sup>π</sup> 是 14 维的即时奖励向量。γ &lt; 1 保证 <i>I</i> − γ<i>P</i><sup>π</sup> 可逆，所以解<b>存在且唯一</b>。</p>
 
 <h3>5.1　迭代求解与直接求解</h3>
 
@@ -430,7 +430,7 @@
 
 <p><b>写成定义：</b>新策略在每一格挑「当场的账 + 打折后的落点分」最大的那个动作——也就是<b>对自己的分数表贪心一步</b>：</p>
 
-<div class="math"><span class="plainmath">π′(<i>s</i>) = argmax<sub><i>a</i></sub> [ <i>R</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i><sup>π</sup>(<i>s</i>′) ] = argmax<sub><i>a</i></sub> <i>Q</i><sup>π</sup>(<i>s</i>,<i>a</i>)</span></div>
+<div class="math"><span class="plainmath">π′(<i>s</i>) = argmax<sub><i>a</i></sub> [ <i>r</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i><sup>π</sup>(<i>s</i>′) ] = argmax<sub><i>a</i></sub> <i>Q</i><sup>π</sup>(<i>s</i>,<i>a</i>)</span></div>
 
 <p>这个式子读一遍就够了：<b>在当前状态 <i>s</i> 下，把每一个可能的动作 <i>a</i> 都试着算一遍未来期望回报，然后选出回报最大的那个动作。</b></p>
 
@@ -481,7 +481,7 @@
 
 <p><b>写成定义：</b>把评估那一步的 Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>) 直接换成 max<sub><i>a</i></sub>，评估与改进就合并成了一个动作：</p>
 
-<div class="math"><span class="plainmath"><i>V</i><sub>k+1</sub>(<i>s</i>) = max<sub><i>a</i></sub> [ <i>R</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i><sub>k</sub>(<i>s</i>′) ] = (<i>T</i>⋆<i>V</i><sub>k</sub>)(<i>s</i>)<br>算完之后再取一次 argmax，才得到策略：&nbsp; π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> [ <i>R</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i>⋆(<i>s</i>′) ]</span></div>
+<div class="math"><span class="plainmath"><i>V</i><sub>k+1</sub>(<i>s</i>) = max<sub><i>a</i></sub> [ <i>r</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i><sub>k</sub>(<i>s</i>′) ] = (<i>T</i>⋆<i>V</i><sub>k</sub>)(<i>s</i>)<br>算完之后再取一次 argmax，才得到策略：&nbsp; π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> [ <i>r</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i>⋆(<i>s</i>′) ]</span></div>
 
 <p>这个式子读一遍就够了：<b>站在 <i>s</i>，把 4 个动作各算一遍「当场的账 + 打折后落点在上一稿里的值」，直接取最大写回去</b>——不问策略说该走哪，就要最好的那一个。</p>
 

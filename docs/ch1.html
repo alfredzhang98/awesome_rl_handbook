@@ -61,7 +61,7 @@
 
 <p>「形式化」落到实处，就是把五样东西一一指认清楚。<b>合起来写成一个五元组，这就是 MDP 的全部定义：</b></p>
 
-<div class="math"><span class="plainmath">MDP = ( <i>S</i>, <i>A</i>, <i>P</i>, <i>R</i>, γ )</span></div>
+<div class="math"><span class="plainmath">MDP = ( <i>S</i>, <i>A</i>, <i>P</i>, <i>r</i>, γ )</span></div>
 
 <p class="small">五样填满，「最优策略」这四个字才有定义——<b>少一样，问题本身就没提清楚</b>，也就谈不上求解。</p>
 
@@ -69,11 +69,11 @@
 
 <table>
 <tr><th>MDP 的第几样</th><th>符号</th><th>这间仓库里是什么</th></tr>
-<tr><td><b>状态空间</b></td><td><span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.023ex;" xmlns="http://www.w3.org/2000/svg" width="1.061ex" height="1.023ex" role="img" focusable="false" viewBox="0 -442 469 452" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g></g></g></svg></span></td><td>AGV 在哪一格。14 个，(3,3) 是吸收态——进去就不出来</td></tr>
-<tr><td><b>动作空间</b></td><td><span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.023ex;" xmlns="http://www.w3.org/2000/svg" width="1.197ex" height="1.02ex" role="img" focusable="false" viewBox="0 -441 529 451" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D44E" xlink:href="#MJX-TEX-I-1D44E"></use></g></g></g></svg></span></td><td>上、下、左、右，4 个</td></tr>
-<tr><td><b>转移</b></td><td><span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.023ex;" xmlns="http://www.w3.org/2000/svg" width="1.689ex" height="1.74ex" role="img" focusable="false" viewBox="0 -759 746.5 769" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(502,363) scale(0.707)"><use data-c="2032" xlink:href="#MJX-TEX-V-2032"></use></g></g></g></g></svg></span></td><td><b>确定性</b>：选了方向就走那一格；出界或撞货架则原地不动。§7 会给它加上打滑</td></tr>
-<tr><td><b>奖励</b></td><td>−1</td><td>每走一步 −1，进桩之后为 0</td></tr>
-<tr><td><b>折扣</b></td><td><span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span></td><td>0.9。有效视野 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -1.126ex;" xmlns="http://www.w3.org/2000/svg" width="3.909ex" height="3.083ex" role="img" focusable="false" viewBox="0 -864.9 1727.6 1362.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mfrac"><g data-mml-node="mn" transform="translate(687,394) scale(0.707)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g><g data-mml-node="mrow" transform="translate(220,-345) scale(0.707)"><g data-mml-node="mn"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g><g data-mml-node="mo" transform="translate(500,0)"><use data-c="2212" xlink:href="#MJX-TEX-N-2212"></use></g><g data-mml-node="mi" transform="translate(1278,0)"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g><rect width="1487.6" height="60" x="120" y="220"></rect></g></g></g></svg></span> = 10 步</td></tr>
+<tr><td><b>状态空间</b></td><td><b><i>S</i></b></td><td>AGV 在哪一格。14 个，(3,3) 是吸收态——进去就不出来</td></tr>
+<tr><td><b>动作空间</b></td><td><b><i>A</i></b></td><td>上、下、左、右，4 个</td></tr>
+<tr><td><b>转移</b></td><td><b><i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>)</b></td><td><b>确定性</b>：选了方向就走那一格；出界或撞货架则原地不动。§7 会给它加上打滑</td></tr>
+<tr><td><b>奖励</b></td><td><b><i>r</i>(<i>s</i>,<i>a</i>)</b></td><td>每走一步 −1，进桩之后为 0</td></tr>
+<tr><td><b>折扣</b></td><td><b>γ</b></td><td>0.9。有效视野 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -1.126ex;" xmlns="http://www.w3.org/2000/svg" width="3.909ex" height="3.083ex" role="img" focusable="false" viewBox="0 -864.9 1727.6 1362.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mfrac"><g data-mml-node="mn" transform="translate(687,394) scale(0.707)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g><g data-mml-node="mrow" transform="translate(220,-345) scale(0.707)"><g data-mml-node="mn"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g><g data-mml-node="mo" transform="translate(500,0)"><use data-c="2212" xlink:href="#MJX-TEX-N-2212"></use></g><g data-mml-node="mi" transform="translate(1278,0)"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g><rect width="1487.6" height="60" x="120" y="220"></rect></g></g></g></svg></span> = 10 步</td></tr>
 </table>
 
 <div class="key">
@@ -209,7 +209,7 @@
 <p><b>它解决什么问题：</b>4.3 到 4.5 全是<b>定义</b>，写的都是一条无穷长的和——照着定义你一个数都算不出来。Bellman 方程把「今后能拿多少」改写成<b>「这一步 + 下一格的值」</b>，于是可以递推、可以解方程。<b>这是从理解走到能算的那一步。</b></p>
 
 <div class="math"><div class="ubrow tight">
-  <span class="ub"><span class="ub-t"><i>V</i><sup>π</sup>(<i>s</i>) =&nbsp;</span></span><span class="ub"><span class="ub-t">Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>)</span><span class="ub-b">你的选择<br>按 π 平均</span></span><span class="ub"><span class="ub-t">&nbsp;Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>)</span><span class="ub-b">环境的随机<br>按 P 平均</span></span><span class="ub"><span class="ub-t">&nbsp;[ <i>R</i>(<i>s</i>,<i>a</i>) + γ<i>V</i><sup>π</sup>(<i>s</i>′) ]</span><span class="ub-b">当场的账<br>+ 打折后的未来</span></span>
+  <span class="ub"><span class="ub-t"><i>V</i><sup>π</sup>(<i>s</i>) =&nbsp;</span></span><span class="ub"><span class="ub-t">Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>)</span><span class="ub-b">你的选择<br>按 π 平均</span></span><span class="ub"><span class="ub-t">&nbsp;Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>)</span><span class="ub-b">环境的随机<br>按 P 平均</span></span><span class="ub"><span class="ub-t">&nbsp;[ <i>r</i>(<i>s</i>,<i>a</i>) + γ<i>V</i><sup>π</sup>(<i>s</i>′) ]</span><span class="ub-b">当场的账<br>+ 打折后的未来</span></span>
 </div></div>
 
 <p>这个式子读一遍就够了：<b>在状态 <i>s</i> 下，按照策略 π 选择各个动作 <i>a</i></b>，<b>再考虑每个动作可能产生的所有下一状态 <i>s</i>′ 和奖励 <i>r</i></b>，把「当场的奖励 <i>r</i> ＋ 折扣后的下一状态价值 γ<i>V</i><sup>π</sup>(<i>s</i>′)」<b>按概率加权平均</b>。</p>
@@ -226,7 +226,7 @@
 
 <p>把 4.6 那个式子的外层求和换掉，就得到 <b>Bellman 最优方程</b>：</p>
 
-<div class="math"><span class="plainmath"><i>V</i>⋆(<i>s</i>) = max<sub><i>a</i></sub> [ <i>R</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i>⋆(<i>s</i>′) ]<br>π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> <i>Q</i>⋆(<i>s</i>,<i>a</i>)</span></div>
+<div class="math"><span class="plainmath"><i>V</i>⋆(<i>s</i>) = max<sub><i>a</i></sub> [ <i>r</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i>⋆(<i>s</i>′) ]<br>π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> <i>Q</i>⋆(<i>s</i>,<i>a</i>)</span></div>
 
 <p>读一遍：<b>在状态 <i>s</i> 下，把每个动作可能产生的下一状态按概率加权，算出「当场的奖励 + 折扣后的下一状态价值」，然后取最大的那个动作</b>；下面那行的 argmax 交出的则是取到最大值的<b>动作本身</b>。</p>
 
@@ -237,14 +237,14 @@
 <table>
 <tr><th>关系</th><th>式子</th><th>一句话</th></tr>
 <tr><td>V 由 Q 得到</td><td><span class="plainmath"><i>V</i><sup>π</sup>(<i>s</i>) = Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>)<i>Q</i><sup>π</sup>(<i>s</i>,<i>a</i>)</span></td><td>把固定住的第一步按策略平均掉</td></tr>
-<tr><td>Q 由 V 得到</td><td><span class="plainmath"><i>Q</i><sup>π</sup>(<i>s</i>,<i>a</i>) = <i>R</i>(<i>s</i>,<i>a</i>) + γΣ<sub><i>s</i>′</sub><i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>)<i>V</i><sup>π</sup>(<i>s</i>′)</span></td><td>先走一步，剩下的交给 V</td></tr>
+<tr><td>Q 由 V 得到</td><td><span class="plainmath"><i>Q</i><sup>π</sup>(<i>s</i>,<i>a</i>) = <i>r</i>(<i>s</i>,<i>a</i>) + γΣ<sub><i>s</i>′</sub><i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>)<i>V</i><sup>π</sup>(<i>s</i>′)</span></td><td>先走一步，剩下的交给 V</td></tr>
 <tr><td>优势</td><td><span class="plainmath"><i>A</i><sup>π</sup> = <i>Q</i><sup>π</sup> − <i>V</i><sup>π</sup></span></td><td>比按策略平均好多少</td></tr>
 <tr><td>最优</td><td><span class="plainmath"><i>V</i>⋆(<i>s</i>) = max<sub><i>a</i></sub> <i>Q</i>⋆(<i>s</i>,<i>a</i>)</span></td><td>平均换成取最大</td></tr>
 <tr><td>最优策略</td><td><span class="plainmath">π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> <i>Q</i>⋆(<i>s</i>,<i>a</i>)</span></td><td>取的不是值，是动作</td></tr>
 </table>
 
 <div class="warn">
-<b>读别的书时的一个坑：记号不统一。</b>Sutton &amp; Barto 用小写 <i>v</i><sub>π</sub>、<i>q</i><sub>π</sub>，本讲义统一用大写 <i>V</i>、<i>Q</i>，含义完全一样。奖励的下标也有两种写法：这里的 <i>R</i><sub>t+1</sub> 指「在时刻 <i>t</i> 行动之后收到的」，也有书把同一笔记成 <i>R</i><sub>t</sub>。<b>看一个新公式先确认这两件事，能省掉大量对不上号的困惑。</b>
+<b>读别的书时的一个坑：记号不统一。</b>Sutton &amp; Barto 用小写 <i>v</i><sub>π</sub>、<i>q</i><sub>π</sub>，本讲义统一用大写 <i>V</i>、<i>Q</i>，含义完全一样。<b>大小写也别混</b>：<i>r</i>(<i>s</i>,<i>a</i>) 是<b>奖励函数</b>（给定 s、a 就确定），<i>R</i><sub>t+1</sub> 是<b>某一次真的收到的那笔奖励</b>。奖励的下标也有两种写法：这里的 <i>R</i><sub>t+1</sub> 指「在时刻 <i>t</i> 行动之后收到的」，也有书把同一笔记成 <i>R</i><sub>t</sub>。<b>看一个新公式先确认这两件事，能省掉大量对不上号的困惑。</b>
 </div>
 
 

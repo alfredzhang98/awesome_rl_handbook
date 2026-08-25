@@ -244,28 +244,13 @@
 
 <h2><span class="n">§ 2</span>Bellman 最优方程</h2>
 
-<p class="small">§2 和 §3 是<b>这一课的原料，不是新内容</b>——两个方程第 1 课都给过了。这里重新摆出来，是因为后面每一个算法都是<b>把其中一个方程原样改写成更新规则</b>得到的，不先把每个记号认清楚，改写那一步就看不出来在改什么。</p>
+<p class="small"><b>§2 和 §3 只做一件事：把两个方程摆出来备用。</b>它们的定义、每个记号的含义、怎么从值函数一步步推出来，<b>第 1 课 §4 已经逐条讲过，这里不重复</b>。之所以要摆出来，是因为后面四个算法<b>各自都是把其中一个方程原样改写成更新规则</b>——不把式子放在眼前，改写那一步看不出改在哪儿。</p>
 
-<p>第 1 课的核心是这一行，它说的是「最优值必须自洽」：</p>
+<p>第 1 课的结论是这一行，它说的是「最优值必须自洽」：</p>
 
 <div class="math"><span class="mj mjd"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -1.625ex;" xmlns="http://www.w3.org/2000/svg" width="44.655ex" height="4.225ex" role="img" focusable="false" viewBox="0 -1149.5 19737.3 1867.6" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,413) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="mo" transform="translate(1264.9,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(1653.9,0)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(2122.9,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="mo" transform="translate(2789.6,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="munder" transform="translate(3845.4,0)"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g><g data-mml-node="mi" transform="translate(743.5,-611) scale(0.707)"><use data-c="1D44E" xlink:href="#MJX-TEX-I-1D44E"></use></g></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(5873.1,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="7B" xlink:href="#MJX-TEX-LO-7B"></use></g></g><g data-mml-node="mi" transform="translate(6540.1,0)"><use data-c="1D45F" xlink:href="#MJX-TEX-I-1D45F"></use></g><g data-mml-node="mo" transform="translate(6991.1,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(7380.1,0)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(7849.1,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(8293.7,0)"><use data-c="1D44E" xlink:href="#MJX-TEX-I-1D44E"></use></g><g data-mml-node="mo" transform="translate(8822.7,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="mo" transform="translate(9434,0)"><use data-c="2B" xlink:href="#MJX-TEX-N-2B"></use></g><g data-mml-node="mi" transform="translate(10434.2,0)"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g><g data-mml-node="mstyle" transform="translate(10977.2,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="msub" transform="translate(11144.2,0)"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D53C" xlink:href="#MJX-TEX-D-1D53C"></use></g></g><g data-mml-node="TeXAtom" transform="translate(700,-150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(502,289) scale(0.707)"><use data-c="2032" xlink:href="#MJX-TEX-V-2032"></use></g></g></g></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(12422,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="5B" xlink:href="#MJX-TEX-SO-5B"></use></g></g><g data-mml-node="msup" transform="translate(12839,0)"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,413) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="mo" transform="translate(14103.9,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="msup" transform="translate(14492.9,0)"><g data-mml-node="mi"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(502,413) scale(0.707)"><use data-c="2032" xlink:href="#MJX-TEX-V-2032"></use></g></g><g data-mml-node="mo" transform="translate(15239.3,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(15628.3,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="5D" xlink:href="#MJX-TEX-SO-5D"></use></g></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(16045.3,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="7D" xlink:href="#MJX-TEX-LO-7D"></use></g></g><g data-mml-node="mstyle" transform="translate(16712.3,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="mi" transform="translate(18712.3,0)"><use data-c="2200" xlink:href="#MJX-TEX-N-2200"></use></g><g data-mml-node="mi" transform="translate(19268.3,0)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g></g></g></svg></span></div>
 
-<p>这一行里出现了 <b>9 个记号</b>，下面一个不漏地过一遍。<b>这一课后面的每一件事，都只是在动其中某一个</b>——所以先把它们认清楚，比记住三个算法的名字要紧。</p>
-
-<table>
-<tr><th>记号</th><th>含义</th></tr>
-<tr><td><b>s</b></td><td><b>状态</b>。系统当前所处的情形；转移与奖励都只由它和所选动作决定</td></tr>
-<tr><td><b>a</b></td><td><b>动作</b>。在状态 s 下可以采取的一个选择</td></tr>
-<tr><td><b><i>V</i><sup>⋆</sup>(s)</b></td><td><b>最优值函数</b>。从 s 出发、此后一直按最优走法走，今后能拿到的折现总回报</td></tr>
-<tr><td><b>max<sub>a</sub></b></td><td><b>对动作取最大</b>。把花括号里的式子对每个可行动作各算一遍，取其中最大的那个</td></tr>
-<tr><td><b>r(s,a)</b></td><td><b>奖励函数</b>。在状态 s 选了动作 a，这一步当场收到的奖励</td></tr>
-<tr><td><b>γ</b></td><td><b>折扣因子</b>。把「一步之后」的收益折算成当前价值的系数，0 ≤ γ &lt; 1</td></tr>
-<tr><td><b>s′</b></td><td><b>后继状态</b>。走完这一步之后到达的那个状态</td></tr>
-<tr><td><b>𝔼<sub>s′</sub>[ · ]</b></td><td><b>对后继状态取期望</b>。按各个后继状态发生的概率，把括号里的值加权平均</td></tr>
-<tr><td><b>∀s</b></td><td><b>全称量词</b>。这个等式对状态空间里的每一个 s 都成立</td></tr>
-</table>
-
-<p>把这 9 个记号按功能归拢，方程就只剩三块，各管各的事：</p>
+<p>为了看清后面在改哪儿，把它<b>按功能分成三块</b>——这一课每个算法都只动其中一块：</p>
 
 <table>
 <colgroup><col style="width:7em"><col></colgroup>
@@ -275,36 +260,7 @@
 <tr><td><b>期望那一项</b></td><td><b>未来的账</b>：落到哪儿、那儿值多少，按概率加权后打 <span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> 折。确定性时它退化成「查一个数」，打滑时才真的要加权平均</td></tr>
 </table>
 
-<h3>2.1　转移概率 P(s′ | s, a)</h3>
-
-<p>上面那个 <b>𝔼<sub>s′</sub></b> 还只是个壳子：它说了「要对落点取平均」，<b>却没说落点是按什么概率抽出来的</b>。这件事不写下来，期望就落不成一个具体的数。</p>
-
-<p><b>落点为什么会不止一个？</b>第 1 课 §7 那条打滑规则就是最直接的例子：选定一个方向后，90% 概率照走，左右两个垂直方向各 5% 被地面带偏。于是「在格 (2,0) 选『下』」这一步，落点不是一个格子，而是三个格子上的一张<b>概率表</b>：</p>
-
-<table>
-<tr><th>落点 s′</th><th>概率</th><th>怎么来的</th></tr>
-<tr><td>格 30</td><td class="num">0.90</td><td>照着「下」走</td></tr>
-<tr><td>格 20</td><td class="num">0.05</td><td>偏左撞墙，留在原地——<b>落点可以是出发格自己</b></td></tr>
-<tr><td>格 21</td><td class="num">0.05</td><td>偏右</td></tr>
-</table>
-
-<p>把这样一张表<b>对每一对 (s, a) 都写下来</b>，得到的就是一个函数。它有名字：</p>
-
-<div class="big">P(s′ | s, a) ＝ 在状态 s 选了动作 a 的<b>条件下</b>，下一格恰好是 s′ 的概率。</div>
-
-<p>两件事一起交代清楚。<b>什么类型</b>：它不是一个数，而是<b>对每一对 (s, a) 各给出一张 s′ 上的概率分布</b>。<b>取值范围</b>：每一项都有 0 ≤ P(s′ | s, a) ≤ 1，并且对固定的 (s, a)，Σ<sub>s′</sub> P(s′ | s, a) = 1——走一步总得落在某一格，概率加起来必须是 1。中间那道竖线是<b>条件概率</b>的记法，不是除号，也不是绝对值。</p>
-
-<div class="warn">
-<b>它不是这一课新造出来的东西。</b>第 1 课 §2 把 MDP 拆成五样要素时，第三样「转移」就是它——只不过那时仓库是<b>确定性</b>的，P 只取 0 和 1（选了方向就 100% 走那一格），一张概率表退化成「查一个落点」，看不出它是个分布。要到第 1 课 §7 加上 10% 打滑，它才第一次取到 0 和 1 以外的值。<b>这一课把它单独命名，是因为 §10 会说明：这一课的三种方法，没有一种绕得开它。</b>
-</div>
-
-<p>有了 P，期望就不再是壳子了。<b>期望 ＝ 把每个可能落点的值，按它发生的概率加权求和</b>：</p>
-
-<div class="math"><div class="ubrow tight">
-  <span class="ub"><span class="ub-t">𝔼<sub>s′</sub>[ <i>V</i><sup>⋆</sup>(s′) ] =&nbsp;</span></span><span class="ub"><span class="ub-t">Σ<sub>s′</sub></span><span class="ub-b">把所有可能的<br>落点过一遍</span></span><span class="ub"><span class="ub-t">&nbsp;P(s′ | s, a)</span><span class="ub-b">落到 s′ 的<br>概率</span></span><span class="ub"><span class="ub-t">&nbsp;·&nbsp;<i>V</i><sup>⋆</sup>(s′)</span><span class="ub-b">那一格<br>值多少</span></span>
-</div></div>
-
-<p>于是整行方程写开就长这样。<b>这是这一课后面所有式子的原型</b>，往下每一个算法都只是在改它的某一块：</p>
+<p>第三块里那个期望，展开就是<b>按转移概率 <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) 加权求和</b>（<i>P</i> 是第 1 课 §2 五要素里的「转移」，它保证这个期望能落成一个具体的数）。整行写开就长这样，<b>这是这一课后面所有式子的原型</b>：</p>
 
 <div class="math"><div class="ubrow tight">
   <span class="ub"><span class="ub-t"><i>V</i><sup>⋆</sup>(s) =&nbsp;</span></span><span class="ub"><span class="ub-t">max<sub>a</sub></span><span class="ub-b">4 个动作里<br>挑最好的</span></span><span class="ub"><span class="ub-t">&nbsp;{&nbsp;</span></span><span class="ub"><span class="ub-t">r(s,a)</span><span class="ub-b">当场的账<br>这里恒为 −1</span></span><span class="ub"><span class="ub-t">&nbsp;+&nbsp;γ&nbsp;</span><span class="ub-b">打折<br>0.9</span></span><span class="ub"><span class="ub-t">Σ<sub>s′</sub> P(s′ | s, a) · <i>V</i><sup>⋆</sup>(s′)</span><span class="ub-b">未来的账：落点的值按概率加权</span></span><span class="ub"><span class="ub-t">&nbsp;}</span></span>

@@ -74,6 +74,14 @@
 <tr><td><b>折扣</b></td><td><b>γ</b></td><td>0.9。有效视野 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -1.126ex;" xmlns="http://www.w3.org/2000/svg" width="3.909ex" height="3.083ex" role="img" focusable="false" viewBox="0 -864.9 1727.6 1362.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mfrac"><g data-mml-node="mn" transform="translate(687,394) scale(0.707)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g><g data-mml-node="mrow" transform="translate(220,-345) scale(0.707)"><g data-mml-node="mn"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g><g data-mml-node="mo" transform="translate(500,0)"><use data-c="2212" xlink:href="#MJX-TEX-N-2212"></use></g><g data-mml-node="mi" transform="translate(1278,0)"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g><rect width="1487.6" height="60" x="120" y="220"></rect></g></g></g></svg></span> = 10 步</td></tr>
 </table>
 
+<p><b>五样里最需要多说一句的是转移 <i>P</i>。</b>它<b>不是一个数</b>——对<b>每一对 (s, a)</b>，它各给出一张「下一格可能是谁」的<b>概率表</b>：</p>
+
+<div class="big"><i>P</i>(<i>s</i>′ | <i>s</i>, <i>a</i>) ＝ 在状态 <i>s</i> 选了动作 <i>a</i> 的<b>条件下</b>，下一格恰好是 <i>s</i>′ 的概率。</div>
+
+<p>中间那道竖线是<b>条件概率</b>的记法，<b>不是除号，也不是绝对值</b>。取值上有 0 ≤ <i>P</i> ≤ 1，并且对固定的 (s, a)，<b>Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) = 1</b>——走一步总得落在某一格，概率加起来必须是 1。</p>
+
+<p class="small">这间仓库现在是<b>确定性</b>的，所以 <i>P</i> 只取 0 和 1（选了方向就 100% 走那一格），一张概率表退化成「查一个落点」，看不出它是个分布。要到 §7 加上 10% 打滑，它才第一次取到 0 和 1 以外的值。</p>
+
 <div class="key">
 <b>状态为什么只要「在哪一格」就够。</b>因为知道了格子编号，下一步会去哪、能拿多少奖励就全定了——<b>再多的历史也给不出额外信息</b>。这就是马尔可夫性对状态变量的要求。反过来说：如果地面打滑与否取决于上一步的速度，那「格子编号」就不够了，你得把速度也加进状态。<strong>状态选漏了，后面所有理论一句都不成立。</strong>
 </div>

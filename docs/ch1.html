@@ -206,6 +206,8 @@
   <span class="ub"><span class="ub-t"><i>V</i><sup>π</sup>(<i>s</i>) =&nbsp;</span></span><span class="ub"><span class="ub-t">Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>)</span><span class="ub-b">你的选择<br>按 π 平均</span></span><span class="ub"><span class="ub-t">&nbsp;Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>)</span><span class="ub-b">环境的随机<br>按 P 平均</span></span><span class="ub"><span class="ub-t">&nbsp;[ <i>R</i>(<i>s</i>,<i>a</i>) + γ<i>V</i><sup>π</sup>(<i>s</i>′) ]</span><span class="ub-b">当场的账<br>+ 打折后的未来</span></span>
 </div></div>
 
+<p>这个式子读一遍就够了：<b>在状态 <i>s</i> 下，按照策略 π 选择各个动作 <i>a</i></b>，<b>再考虑每个动作可能产生的所有下一状态 <i>s</i>′ 和奖励 <i>r</i></b>，把「当场的奖励 <i>r</i> ＋ 折扣后的下一状态价值 γ<i>V</i><sup>π</sup>(<i>s</i>′)」<b>按概率加权平均</b>。</p>
+
 <p><b>两层求和各管一件事</b>，缺一层这个式子就不成立。在这一课它们都是退化的：策略是确定性的（外层只剩一项）、转移也是确定性的（内层只剩一项），两个 Σ 一起塌掉，就还原成你熟悉的那一行 <span class="plainmath"><i>V</i>(<i>s</i>) = −1 + 0.9<i>V</i>(<i>s</i>′)</span>。<b>要到 §7 加上 10% 打滑，内层才真的展开成 0.90 / 0.05 / 0.05 三项。</b></p>
 
 <h3>4.7　Bellman 最优方程</h3>

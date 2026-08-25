@@ -213,7 +213,7 @@
 <b>换个方向递推，dp 也能给出策略。</b>从「还剩 0 步」开始往回推，每格改记「站这儿今后还能拿多少」，<code>argmax</code> 就从来路变成动作——那正是值迭代。<b>而 RL 只能要后者，因为一有随机性，事先排好的那条路就没法照着走了</b>：你规划好 →→→↓↓，第一步就被打滑带偏；而策略表里你飘到的那一格，照样写着该往哪走。
 </div>
 
-<p>下面几节的三件套，全是值迭代那一行的变体：<b>§4 策略评估</b>把 <code>max</code> 换成「照策略加权平均」，<b>§5 策略改进</b>再把它换回 <code>max</code>，<b>§6 策略迭代</b>是两者交替做到不动，而 <b>§7 值迭代</b>是把这一交替压到极端。</p>
+<p>下面几节的三件套，全是值迭代那一行的变体：<b>§5 策略评估</b>把 <code>max</code> 换成「照策略加权平均」，<b>§6 策略改进</b>再把它换回 <code>max</code>，<b>§7 策略迭代</b>是两者交替做到不动，而 <b>§8 值迭代</b>是把这一交替压到极端。</p>
 
 <p class="small">本节的每个数（各层 dp 表、三条撞在一起的路径、贪心的 9、最优的 18、157 条不出界序列）都由 <code>code/01_dp.ipynb</code> 跑出来，改 <code>grid</code> 或 <code>k</code> 重跑不到 1 秒。</p>
 
@@ -272,7 +272,7 @@
 <p>两件事一起交代清楚。<b>什么类型</b>：它不是一个数，而是<b>对每一对 (s, a) 各给出一张 s′ 上的概率分布</b>。<b>取值范围</b>：每一项都有 0 ≤ P(s′ | s, a) ≤ 1，并且对固定的 (s, a)，Σ<sub>s′</sub> P(s′ | s, a) = 1——走一步总得落在某一格，概率加起来必须是 1。中间那道竖线是<b>条件概率</b>的记法，不是除号，也不是绝对值。</p>
 
 <div class="warn">
-<b>它不是这一课新造出来的东西。</b>第 1 课 §2 把 MDP 拆成五样要素时，第三样「转移」就是它——只不过那时仓库是<b>确定性</b>的，P 只取 0 和 1（选了方向就 100% 走那一格），一张概率表退化成「查一个落点」，看不出它是个分布。要到第 1 课 §7 加上 10% 打滑，它才第一次取到 0 和 1 以外的值。<b>这一课把它单独命名，是因为 §9 会说明：这一课的三种方法，没有一种绕得开它。</b>
+<b>它不是这一课新造出来的东西。</b>第 1 课 §2 把 MDP 拆成五样要素时，第三样「转移」就是它——只不过那时仓库是<b>确定性</b>的，P 只取 0 和 1（选了方向就 100% 走那一格），一张概率表退化成「查一个落点」，看不出它是个分布。要到第 1 课 §7 加上 10% 打滑，它才第一次取到 0 和 1 以外的值。<b>这一课把它单独命名，是因为 §10 会说明：这一课的三种方法，没有一种绕得开它。</b>
 </div>
 
 <p>有了 P，期望就不再是壳子了。<b>期望 ＝ 把每个可能落点的值，按它发生的概率加权求和</b>：</p>
@@ -294,7 +294,7 @@
 <div class="math"><div class="chain">
 <span class="c-m"><i>Q</i><sup>⋆</sup>((2,2), 下) = −1 + 0.9 × Σ<sub>s′</sub> P(s′ | (2,2), 下) · <i>V</i><sup>⋆</sup>(s′)</span><span class="c-w">完整写法：这个 Σ 名义上有 14 项</span>
 <span class="c-m">= −1 + 0.9 × [ 1 × (−1) + 0 × ⋯ + 0 × ⋯ ]</span><span class="c-w">只有落点那一项的 P 是 1，其余 13 项被 0 抹掉</span>
-<span class="c-m">= <b>−1.9</b></span><span class="c-w">§9 那张 Q 表里「下」那一行，就是这个数</span>
+<span class="c-m">= <b>−1.9</b></span><span class="c-w">§10 那张 Q 表里「下」那一行，就是这个数</span>
 </div></div>
 
 <p class="small">对照第 1 课 §7 打滑版的同一套算术：格 (2,0) 选「下」是 −1 + 0.9 × [ 0.90×(−3.0579) + 0.05×(−3.7536) + 0.05×(−2.9829) ] = <b>−3.7801</b>。<b>式子一个字没变，变的只是 P 那一列的数</b>——确定性是「一个 1 加一堆 0」，打滑是「0.90 / 0.05 / 0.05」。这就是为什么那个 Σ 必须一直写在式子里：它不是装饰，是<b>留给 P 的位置</b>。</p>
@@ -302,9 +302,9 @@
 <div class="key">
 <b>这一课要回答的三个问题，全都藏在这行式子里。</b>
 <ul style="margin:8px 0 0">
-<li><b>把 <span class="mj"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="4.21ex" height="1.038ex" role="img" focusable="false" viewBox="0 -448 1861 459" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g></g></g></svg></span> 换成「照某个策略办」</b>，方程会变成什么样、还能不能解？—— §3、§4 <b>策略评估</b></li>
-<li><b>手上有了一张分数表，怎么用它改出更好的策略</b>，凭什么保证不会改坏？—— §5 <b>策略改进</b></li>
-<li><b>评估与改进交替做，和第 1 课那个「取最大写回去」是什么关系？</b>—— §6、§7、§8</li>
+<li><b>把 <span class="mj"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="4.21ex" height="1.038ex" role="img" focusable="false" viewBox="0 -448 1861 459" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g></g></g></svg></span> 换成「照某个策略办」</b>，方程会变成什么样、还能不能解？—— §3、§5 <b>策略评估</b></li>
+<li><b>手上有了一张分数表，怎么用它改出更好的策略</b>，凭什么保证不会改坏？—— §6 <b>策略改进</b></li>
+<li><b>评估与改进交替做，和第 1 课那个「取最大写回去」是什么关系？</b>—— §7、§8、§9</li>
 </ul>
 </div>
 
@@ -317,11 +317,37 @@
 <p>这个式子读一遍就够了：<b>在状态 <i>s</i> 下，按照策略 π 选择各个动作 <i>a</i></b>，<b>再考虑每个动作可能产生的所有下一状态 <i>s</i>′ 和奖励 <i>r</i></b>，把「当场的奖励 <i>r</i> ＋ 折扣后的下一状态价值 γ<i>V</i><sup>π</sup>(<i>s</i>′)」<b>按概率加权平均</b>。</p>
 
 <div class="key">
-<b>少了一个 <span class="mj"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="4.21ex" height="1.038ex" role="img" focusable="false" viewBox="0 -448 1861 459" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g></g></g></svg></span>，性质完全变了。</b>右边对 <i>V</i> 是<b>线性</b>的：一堆加法加一次代入，没有取极值这种「拐弯」的操作。<b>所以策略评估不只是「能迭代求解」，它还能直接解线性方程组</b>——14 个未知数、14 条方程，一次消元就出答案。§4 两条路都会走一遍，看它们对不对得上。<br><br>
+<b>少了一个 <span class="mj"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="4.21ex" height="1.038ex" role="img" focusable="false" viewBox="0 -448 1861 459" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g></g></g></svg></span>，性质完全变了。</b>右边对 <i>V</i> 是<b>线性</b>的：一堆加法加一次代入，没有取极值这种「拐弯」的操作。<b>所以策略评估不只是「能迭代求解」，它还能直接解线性方程组</b>——14 个未知数、14 条方程，一次消元就出答案。§5 两条路都会走一遍，看它们对不对得上。<br><br>
 而 <span class="mj"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.707ex" height="1.599ex" role="img" focusable="false" viewBox="0 -706.7 1196.6 706.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mo" transform="translate(793,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span> 因为带着 <span class="mj"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="4.21ex" height="1.038ex" role="img" focusable="false" viewBox="0 -448 1861 459" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g></g></g></svg></span> 是非线性的，你解不出闭式，只能一轮一轮刷。<strong>这一个字的差别，是这一课所有算法分岔的源头。</strong>
 </div>
 
-<h2><span class="n">§ 4</span>策略评估</h2>
+<hr>
+
+<h2><span class="n">§ 4</span>四件套的家谱</h2>
+
+<p>下面四节讲四个算法。<b>它们不是并列的四种发明，是同一个动作在两个开关下的四种组合</b>：<b>用哪个方程</b>（期望方程 / 最优方程），<b>每轮评估做多少</b>。先把地图摆出来：</p>
+
+<div class="dpx-code">动态规划 DP ── 把 Bellman 方程当成更新规则，反复用
+  ├─ 策略评估    用期望方程，Σ_a π 加权 ── 给定策略，把它的值表刷出来
+  ├─ 策略改进    对着值表取 argmax ──────── 给定值表，把策略改好
+  ├─ 策略迭代    评估到底 → 改进 → 再评估 ── 两者交替
+  └─ 值迭代      用最优方程，max_a ────── 评估只做一次，与改进合并</div>
+
+<p><b>值迭代不是和 DP 平级的东西，它是 DP 里的一个成员</b>——这一点最容易搞混。前面几课的例子分别站在哪儿：</p>
+
+<table>
+<tr><th>在哪一课</th><th>例子</th><th>更新式里有没有 max</th><th>属于哪一个</th></tr>
+<tr><td>第 0 课</td><td>五状态链（每格<b>只有一个动作</b>）</td><td><b>没有</b></td><td><b>策略评估</b>；因为候选只有一个，它与值迭代在那条链上完全重合，分不出来</td></tr>
+<tr><td>第 1 课</td><td>4×4 仓库（4 个动作）</td><td><b>有</b></td><td><b>值迭代</b>——max 到这里才第一次真正起作用</td></tr>
+<tr><td>本课 §1</td><td>3×4 得分网格</td><td>有，但比的是<b>来路</b></td><td><b>不在这棵树上</b>：它是前向 dp，算的是「走到这儿攒了多少」，不是 MDP 的值函数</td></tr>
+<tr><td>本课 §5–§8</td><td>4×4 仓库</td><td>两种都有</td><td><b>四件全齐</b></td></tr>
+</table>
+
+<p class="small">所以第 1 课其实是<b>抄了近路</b>：它跳过评估与改进，直接端出「用最优方程、每格更新一次」这一条，因为那是最短、最快能算出一张表的路。这一课把跳过的部分补回来。</p>
+
+<hr>
+
+<h2><span class="n">§ 5</span>策略评估</h2>
 
 <p>先找个策略来评。挑一个足够简单、能一眼看穿的：<b>不管在哪一格，一律往右走</b>（撞墙就留在原地）。它的分数表长这样：</p>
 
@@ -357,7 +383,7 @@
 
 <p class="small">其中 <i>P</i><sup>π</sup> 是 14×14 的转移矩阵（第 <i>s</i> 行第 <i>s</i>′ 列 = 照 π 走一步从 s 到 s′ 的概率），<i>R</i><sup>π</sup> 是 14 维的即时奖励向量。γ &lt; 1 保证 <i>I</i> − γ<i>P</i><sup>π</sup> 可逆，所以解<b>存在且唯一</b>。</p>
 
-<h3>4.1　迭代求解与直接求解</h3>
+<h3>5.1　迭代求解与直接求解</h3>
 
 <p><b>路一：反复代入。</b>随便填一张表，然后照着策略一遍遍刷，直到不动。这就是把 <span class="mj"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.819ex" height="1.532ex" role="img" focusable="false" viewBox="0 -677 1246.1 677" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mi" transform="translate(793,363) scale(0.707)"><use data-c="1D70B" xlink:href="#MJX-TEX-I-1D70B"></use></g></g></g></g></svg></span> 反复作用——和第 1 课一模一样的收缩论证，所以它必然收敛。这次花了 <b>264 轮</b>。</p>
 
@@ -369,7 +395,7 @@
 
 <p class="small">既然能一次解出来，为什么还要迭代？因为消元的代价是状态数的三次方（14 格无所谓，百万格就免谈），而且<b>一旦转移规则不在手里，方程根本列不出来</b>——迭代那条路只需要「能采样」，这就是它能一直延续到深度强化学习的原因。</p>
 
-<h2><span class="n">§ 5</span>策略改进</h2>
+<h2><span class="n">§ 6</span>策略改进</h2>
 
 <p>手上有了 <i>V</i><sup>π</sup>，改策略的办法很直白：<b>在每一格重新把 4 个动作试一遍，谁的「当场的账 + 打折后的落点分」最高就改选谁</b>。这一步叫<b>贪心改进</b>，它和第 1 课的一次备份是同一个动作，区别只在于结果写去哪里——备份写回值表，改进写回策略。</p>
 
@@ -394,7 +420,7 @@
 
 <p class="small">注意一个反直觉的细节：这一次改进之后，左上角的值<b>还是 -10.0</b>。10 个格子改了方向，但改完仍然到不了桩——只是从「撞墙」变成了「绕圈」。<b>改进保证不变差，可没保证一步到位。</b></p>
 
-<h2><span class="n">§ 6</span>策略迭代</h2>
+<h2><span class="n">§ 7</span>策略迭代</h2>
 
 <p><b>写成定义：</b>评估与改进交替，直到策略不再变化：</p>
 
@@ -414,7 +440,7 @@
 策略迭代有一个重要性质：<b>策略只有有限多种</b>（这里 13 格各 4 选 1），而每轮都严格变好、绝不回头，所以它<b>必然在有限轮内停</b>。值迭代没有这个保证，它是几何逼近，理论上永远差一点点（第 1 课那间仓库因为是确定性最短路才恰好精确收敛）。
 </div>
 
-<h2><span class="n">§ 7</span>值迭代</h2>
+<h2><span class="n">§ 8</span>值迭代</h2>
 
 <p><b>值迭代第 1 课就用过了，这里再出现一次不是重讲——是它的身份变了。</b>第 1 课把它当作「解 Bellman 最优方程的一个办法」直接端出来，你只知道它管用；放进这一节的序列里才看得清楚：<b>它是策略迭代把评估砍到只剩一次的产物</b>，不是另外冒出来的一个算法。顺带把层级也摆正：<b>dp 是一类做法</b>（把 Bellman 方程当更新规则反复用），<b>值迭代只是其中一个成员</b>，策略评估、策略改进、策略迭代是另外几个。</p>
 
@@ -443,7 +469,7 @@
 
 <p class="small">「备份」的口径统一成<b>一次动作评估</b>——算一次「r + γ·落点的值」。所以：评估一轮 = 13 次（每格只算它选定的那个动作），取最大或改进一轮 = 52 次（每格 4 个动作全试）。</p>
 
-<h2><span class="n">§ 8</span>计算代价</h2>
+<h2><span class="n">§ 9</span>计算代价</h2>
 
 <div class="key">
 <b>策略迭代的轮数最少（5 轮），总账却贵了 39 倍</b>（14079 次备份 vs 值迭代的 364 次）。原因就一句话：<strong>「轮」不是一个统一的计量单位</strong>——策略迭代的一轮里塞了 264 次评估扫描，而值迭代的一轮只有一次。<br><br>
@@ -452,7 +478,7 @@
 
 <p class="small">这条轴还有一个更重要的下游：<b>后面 Stage 2 的 actor-critic，骨架就是 <i>m</i> 很小的策略迭代</b>——critic 做几步不完全的评估，actor 做一次不彻底的改进，交替进行。你在这张表上看到的权衡，会原样出现在那里，只不过评估从「扫全表」换成了「采几条轨迹」。</p>
 
-<h2><span class="n">§ 9</span>对转移模型的依赖</h2>
+<h2><span class="n">§ 10</span>对转移模型的依赖</h2>
 
 <p>回头看改进那一步，把它完整写出来：</p>
 
@@ -460,7 +486,7 @@
 
 <p><b>要选出最好的动作，你必须知道每个动作会把你带到哪儿、概率各是多少。</b>这一课的三件套——评估、改进、值迭代——没有一件能绕开这个 P。<b>而真机上没有人会给你 P。</b></p>
 
-<h3>9.1　动作值函数 Q</h3>
+<h3>10.1　动作值函数 Q</h3>
 
 <p>解法很简单：<b>与其存「这一格值多少」，不如直接存「在这一格做这个动作值多少」</b>。后者就是 <b>Q</b>：</p>
 
@@ -484,7 +510,7 @@
 <strong>Stage 1 要做的，就是把 Q 里的数从「算出来」换成「撞出来」</strong>：不再查 P，而是真的走一步、看看落到哪、拿到多少，然后把 Q 往那个方向挪一点。三件套里唯一被保留下来的，是「评估 ↔ 改进交替」这个骨架；而它得以保留靠的正是 Q。
 </div>
 
-<h2><span class="n">§ 10</span>本章小结</h2>
+<h2><span class="n">§ 11</span>本章小结</h2>
 
 <ol>
 <li><b>Bellman 最优方程里只有三样东西</b>：取最大（决策）、当场的账、打折后的未来。取最大是唯一让它非线性的部件。</li>

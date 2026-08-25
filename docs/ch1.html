@@ -86,23 +86,9 @@
 <b>状态为什么只要「在哪一格」就够。</b>因为知道了格子编号，下一步会去哪、能拿多少奖励就全定了——<b>再多的历史也给不出额外信息</b>。这就是马尔可夫性对状态变量的要求。反过来说：如果地面打滑与否取决于上一步的速度，那「格子编号」就不够了，你得把速度也加进状态。<strong>状态选漏了，后面所有理论一句都不成立。</strong>
 </div>
 
-<h2><span class="n">§ 3</span>最优值函数与最优策略</h2>
+<h2><span class="n">§ 3</span>值表与闭式核对</h2>
 
-<p><b>这两个名字第 0 课已经出现过</b>：§7 用「预算无限时的那个答案」定义了 <i>V</i>⋆，§8 给了 π⋆ 是「对 <i>V</i>⋆ 一步贪心」。<b>这一节不重讲，只补第 0 课给不出的那一半</b>——那条链上每格只有一条路，<b>压根没有第二个策略可比</b>，所以「最优」是相对什么取的，在那里看不出来。</p>
-
-<div class="big"><b>「最优」是相对<u>所有策略</u>取的。</b>每格有 4 个动作，策略就有无数种；<b>最优值函数 <i>V</i>⋆ 是在这无数种里逐格取最好</b>——在状态 <i>s</i> 下从现在开始按最优方式行动，所能获得的最大期望累计回报。</div>
-
-<div class="math"><span class="plainmath"><i>V</i>⋆(<i>s</i>) = max<sub>π</sub> <i>V</i><sup>π</sup>(<i>s</i>)</span></div>
-
-<p>读一遍：<b>把所有可能的策略各评一遍，每一格各自取其中最大的那个值。</b>注意最大是<b>逐格</b>取的——「存在同一个策略，能让每一格同时最优」这件事并不显然，§4.7 会说清楚它为什么成立。（<i>V</i><sup>π</sup> 是「照策略 π 走能拿多少」，§4.3 展开讲。）</p>
-
-<p><b>π⋆ 那一半不用重讲</b>：第 0 课 §8 的一步贪心原样成立——<b>站在 <i>s</i>，把每个动作各试一步，谁的「当场的账 + 打折后的落点值」最大就选谁</b>。这里只多一处：落点可能不止一个，所以那一项要按转移概率加权：</p>
-
-<div class="math"><span class="plainmath">π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> [ <i>r</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i>⋆(<i>s</i>′) ]</span></div>
-
-<div class="key"><b>一张表给数，另一张表给动作，而给动作的那张可以由给数的那张直接读出来。</b>这是这一课后面所有内容的骨架：<b>先想办法把 <i>V</i>⋆ 算出来（§5 值迭代），π⋆ 就是顺手一取的事</b>。方括号里那一块 §4.4 会命名为 <i>Q</i>⋆(<i>s</i>,<i>a</i>)，于是上式简写成 <span class="plainmath">π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> <i>Q</i>⋆(<i>s</i>,<i>a</i>)</span>。</div>
-
-<p><b>现在把这张表拿到手。</b>跑一遍值迭代（§5 讲怎么跑），得到的就是 <span class="mj"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.862ex" height="1.649ex" role="img" focusable="false" viewBox="0 -706.7 1264.9 728.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span>——顺便把每一格的最优动作也标上：</p>
+<p>上一课那条链上，值是一格一格刷出来的。<b>这间仓库也一样，只是每格多了 4 个动作要比。</b>跑一遍值迭代（§5 讲怎么跑），得到的就是下面这张表——<b>每格一个数 <span class="mj"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.862ex" height="1.649ex" role="img" focusable="false" viewBox="0 -706.7 1264.9 728.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span>，外加每格一个箭头 π⋆</b>：</p>
 
 <div class="figwrap"><svg class="gridsvg" viewBox="0 0 316 316" xmlns="http://www.w3.org/2000/svg"><defs><marker id="gah" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--accent)"/></marker></defs><rect x="26" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="59" y="64">-4.686</text><path class="g-arrow" d="M59 72 l0 14" marker-end="url(#gah)"/><rect x="92" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.437" stroke="var(--line-2)"/><text class="g-num" x="125" y="64">-4.095</text><path class="g-arrow" d="M116 79 l18 0" marker-end="url(#gah)"/><rect x="158" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.367" stroke="var(--line-2)"/><text class="g-num" x="191" y="64">-3.439</text><path class="g-arrow" d="M191 72 l0 14" marker-end="url(#gah)"/><rect x="224" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.437" stroke="var(--line-2)"/><text class="g-num" x="257" y="64">-4.095</text><path class="g-arrow" d="M257 72 l0 14" marker-end="url(#gah)"/><rect x="26" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.437" stroke="var(--line-2)"/><text class="g-num" x="59" y="130">-4.095</text><path class="g-arrow" d="M59 138 l0 14" marker-end="url(#gah)"/><rect x="92" y="92" width="66" height="66" fill="var(--ink-3)" fill-opacity=".28" stroke="var(--line-2)"/><text class="g-lbl" x="125" y="129">货架</text><rect x="158" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.289" stroke="var(--line-2)"/><text class="g-num" x="191" y="130">-2.710</text><path class="g-arrow" d="M191 138 l0 14" marker-end="url(#gah)"/><rect x="224" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.367" stroke="var(--line-2)"/><text class="g-num" x="257" y="130">-3.439</text><path class="g-arrow" d="M266 145 l-18 0" marker-end="url(#gah)"/><rect x="26" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.367" stroke="var(--line-2)"/><text class="g-num" x="59" y="196">-3.439</text><path class="g-arrow" d="M59 204 l0 14" marker-end="url(#gah)"/><rect x="92" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.289" stroke="var(--line-2)"/><text class="g-num" x="125" y="196">-2.710</text><path class="g-arrow" d="M125 204 l0 14" marker-end="url(#gah)"/><rect x="158" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.203" stroke="var(--line-2)"/><text class="g-num" x="191" y="196">-1.900</text><path class="g-arrow" d="M191 204 l0 14" marker-end="url(#gah)"/><rect x="224" y="158" width="66" height="66" fill="var(--ink-3)" fill-opacity=".28" stroke="var(--line-2)"/><text class="g-lbl" x="257" y="195">货架</text><rect x="26" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.289" stroke="var(--line-2)"/><text class="g-num" x="59" y="262">-2.710</text><path class="g-arrow" d="M50 277 l18 0" marker-end="url(#gah)"/><rect x="92" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.203" stroke="var(--line-2)"/><text class="g-num" x="125" y="262">-1.900</text><path class="g-arrow" d="M116 277 l18 0" marker-end="url(#gah)"/><rect x="158" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.107" stroke="var(--line-2)"/><text class="g-num" x="191" y="262">-1.000</text><path class="g-arrow" d="M182 277 l18 0" marker-end="url(#gah)"/><rect x="224" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.000" stroke="var(--line-2)"/><circle cx="257" cy="257" r="13" fill="none" stroke="var(--accent)" stroke-width="2"/><text class="g-num" x="257" y="262">0.000</text></svg></div>
 
@@ -148,7 +134,7 @@
 
 <h3>4.1　回报 G</h3>
 
-<p>回报在<b>第 0 课 §10</b> 已经定义过，这里只回忆一行——它把「今后能拿多少」从一句话变成一个能算、能取平均的量：</p>
+<p>回报<b>上一课已经定义过</b>，这里只回忆一行——它把「今后能拿多少」从一句话变成一个能算、能取平均的量：</p>
 
 <div class="math"><span class="plainmath"><i>G</i><sub>t</sub> = Σ<sub>k=0</sub><sup>∞</sup> γ<sup>k</sup><i>R</i><sub>t+k+1</sub> = <i>R</i><sub>t+1</sub> + γ<i>R</i><sub>t+2</sub> + γ²<i>R</i><sub>t+3</sub> + ⋯</span></div>
 
@@ -182,7 +168,7 @@
 
 <h3>4.4　动作价值 Q<sup>π</sup></h3>
 
-<p>第 0 课 §8 已经给 <i>Q</i>⋆ 起过名字——那条链上每格只有一个动作，所以它和 <i>V</i>⋆ 是同一组数。<b>这一课每格有 4 个动作，它才第一次和 <i>V</i> 分开，也才看得出它是干什么用的。</b></p>
+<p><i>Q</i>⋆ 这个名字上一课出现过——那条链上每格只有一个动作，所以它和 <i>V</i>⋆ 是同一组数。<b>这一课每格有 4 个动作，它才第一次和 <i>V</i> 分开，也才看得出它是干什么用的。</b></p>
 
 <p><b>它解决什么问题：</b>手上只有 <i>V</i> 时，要挑动作就必须先知道<b>每个动作会落到哪</b>——也就是必须有转移 <i>P</i>。<i>Q</i> 把这一步预先算好存起来，<b>选动作退化成在这一行里挑最大</b>。这一条是后面能彻底拿掉模型的关键。</p>
 
@@ -236,7 +222,7 @@
 
 <h3>4.7　Bellman 最优方程</h3>
 
-<p>第 0 课 §7 用「预算无限」讲过 <i>V</i>⋆，也讲过为什么它的方程两边是同一个函数（<b>不动点</b>）——那套论证这里一个字都不用改。缺的只是一句<b>相对于策略</b>的准确定义：</p>
+<p>上一课用「预算无限」讲过 <i>V</i>⋆，也讲过为什么它的方程两边是同一个函数（<b>不动点</b>）——那套论证这里一个字都不用改。缺的只是一句<b>相对于策略</b>的准确定义：</p>
 
 <div class="math"><span class="plainmath"><i>V</i>⋆(<i>s</i>) = max<sub>π</sub> <i>V</i><sup>π</sup>(<i>s</i>)，对每一个 <i>s</i> 都成立</span></div>
 
@@ -420,7 +406,7 @@
 <b>界是保守的</b>（第 1 轮：界说 9.0，实际 3.69），<b>但它是你在不知道答案时唯一能算出来的东西</b>。注意那个放大倍数 <span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span>/(1−<span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span>) = 9：<strong>它是这一课所有误差的公共放大器</strong>——迭代没刷够、模型不准、函数逼近有偏差，最后都要乘上它才是值函数上的误差。<span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> 越接近 1，你对每一处近似的容忍度就越低（0.99 时这个倍数是 99）。
 </div>
 
-<div class="warn"><b>那个 7 遍不是 γ 给的，是这间仓库的尺寸给的。</b>确定性最短路有一条比收缩性更强的性质——<b>预算够了就精确</b>：离桩 d 步的格子，只要预算 k ≥ d，再多给也不会更好，所以 V<sub>k</sub>(s) <b>直接等于</b> V⋆(s)，一格不差（上面「离桩 d 步的格子正好在第 d 轮变准」就是它）。最远的格子离桩 6 步，第 6 遍全表算准，第 7 遍用来确认没有改动，于是 <b>7 ＝ d<sub>max</sub> + 1</b>。把 γ 换成 0.5、0.99、0.999 重跑，<b>仍然是 7 遍</b>——γ 只改每一格的数值，不改「消息要传几格」。<br><br><b>「V⋆ 不是 k→∞ 才有的吗，怎么 7 遍就到了？」</b>因为<b>极限不等于「要走无穷步才到」</b>——1, 1, 1, … 的极限也是 1，第一项就到了。这里正是这一类：预算 k ≥ d 之后，<b>多给的那些步根本没有奖励可拿</b>（车已经停在桩里，账早停了），于是 V<sub>d</sub> ＝ V<sub>d+1</sub> ＝ ⋯ ＝ V⋆，序列<b>从第 d 遍起就是常数</b>。对照第 0 课那条链：<i>s</i><sub>E</sub> 一直发分，预算每加 1 就还能多吃一口 γ<sup>k−1</sup>——越来越小但<b>永远大于 0</b>，所以 V<sub>k</sub> 严格递增、永远碰不到 6.5610，极限只在 ∞ 处取到，「66 遍」是<b>人划的精度线</b>，不是收敛。<br><br><b>顺带澄清一件常搞混的事：刷 7 遍不等于要存 7 张表。</b>值迭代自始至终只有一张 14 个数的表（两张表的写法也就 28 个数），7 是<b>覆写的次数</b>，不是表的层数。第 2 课 §1 那个前向 <code>dp[k][i][j]</code> 才真的有 K+1 层——<b>那里的 k 是表的一个维度，这里的 k 不进表</b>。</div>
+<div class="warn"><b>那个 7 遍不是 γ 给的，是这间仓库的尺寸给的。</b>确定性最短路有一条比收缩性更强的性质——<b>预算够了就精确</b>：离桩 d 步的格子，只要预算 k ≥ d，再多给也不会更好，所以 V<sub>k</sub>(s) <b>直接等于</b> V⋆(s)，一格不差（上面「离桩 d 步的格子正好在第 d 轮变准」就是它）。最远的格子离桩 6 步，第 6 遍全表算准，第 7 遍用来确认没有改动，于是 <b>7 ＝ d<sub>max</sub> + 1</b>。把 γ 换成 0.5、0.99、0.999 重跑，<b>仍然是 7 遍</b>——γ 只改每一格的数值，不改「消息要传几格」。<br><br><b>「V⋆ 不是 k→∞ 才有的吗，怎么 7 遍就到了？」</b>因为<b>极限不等于「要走无穷步才到」</b>——1, 1, 1, … 的极限也是 1，第一项就到了。这里正是这一类：预算 k ≥ d 之后，<b>多给的那些步根本没有奖励可拿</b>（车已经停在桩里，账早停了），于是 V<sub>d</sub> ＝ V<sub>d+1</sub> ＝ ⋯ ＝ V⋆，序列<b>从第 d 遍起就是常数</b>。对照第 0 课那条链：<i>s</i><sub>E</sub> 一直发分，预算每加 1 就还能多吃一口 γ<sup>k−1</sup>——越来越小但<b>永远大于 0</b>，所以 V<sub>k</sub> 严格递增、永远碰不到 6.5610，极限只在 ∞ 处取到，「66 遍」是<b>人划的精度线</b>，不是收敛。<br><br><b>顺带澄清一件常搞混的事：刷 7 遍不等于要存 7 张表。</b>值迭代自始至终只有一张 14 个数的表（两张表的写法也就 28 个数），7 是<b>覆写的次数</b>，不是表的层数。第 2 课那个前向 <code>dp[k][i][j]</code> 才真的有 K+1 层——<b>那里的 k 是表的一个维度，这里的 k 不进表</b>。</div>
 
 <p>那什么时候才轮到 γ 说话？<b>一有随机性就轮到了。</b>精确收敛是确定性独有的福利；把组件里的「打滑」拉起来，值迭代立刻退回几何逼近——永远差一点点，只能靠阈值停手。同一间仓库、同样 γ = 0.9，只是加了 10% 打滑：</p>
 

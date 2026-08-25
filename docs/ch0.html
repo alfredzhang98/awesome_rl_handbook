@@ -230,11 +230,11 @@
 
 <p>递推只有一条通用原则：<b>从你已经知道答案的那一端开始，往未知的方向推</b>。两边都照这条办，只是「已知的那一端」不在同一头。</p>
 
-<p>第 2 课 §1 那个网格 dp，白给的是<b>起点的处境</b>——「走了 0 步、站在 (0,0)、攒了 1 分」，这不用算。于是 <code>dp[0]</code> 是种子。这一课白给的是另一头——<b><span class="sym">V<sub>0</sub></span> = 0</b>，一步都不许走，当然一分也拿不到。于是 <span class="sym">V<sub>0</sub></span> 是种子。</p>
+<p>后面第 2 课有一个从起点往前推的网格 dp，那里白给的是<b>起点的处境</b>——「走了 0 步、站在 (0,0)、攒了 1 分」，这不用算。于是 <code>dp[0]</code> 是种子。这一课白给的是另一头——<b><span class="sym">V<sub>0</sub></span> = 0</b>，一步都不许走，当然一分也拿不到。于是 <span class="sym">V<sub>0</sub></span> 是种子。</p>
 
 <table>
 <tr><th></th><th>白给的那一端</th><th>往哪个方向推</th><th>一格里存的是</th></tr>
-<tr><td><b>第 2 课 §1 的 <code>dp[k]</code></b></td><td>起点：走了 0 步</td><td>k 变大 ＝ 走得更多</td><td>到这儿<b>已攒</b>的分</td></tr>
+<tr><td><b>第 2 课那个前向 <code>dp[k]</code></b></td><td>起点：走了 0 步</td><td>k 变大 ＝ 走得更多</td><td>到这儿<b>已攒</b>的分</td></tr>
 <tr><td><b>这一课的 <span class="sym">V<sub>k</sub></span></b></td><td>预算 0：一步不许走</td><td>k 变大 ＝ <b>预算更多</b></td><td>从这儿<b>今后能拿</b>的分</td></tr>
 </table>
 
@@ -376,7 +376,7 @@
 
 <p class="small">这条链上每个状态只有一个动作，所以 <i>Q</i>⋆(<i>s</i><sub>A</sub>, 前进) = <i>V</i>⋆(<i>s</i><sub>A</sub>) = 6.5610，两者完全重合，看不出差别。<b>要到第 1 课那间每格有 4 个动作的仓库里，它们才真正分开</b>——而分开之后 <i>Q</i> 会比 <i>V</i> 更好用：用 <i>V</i> 挑动作，必须先知道每个动作会落到哪；用 <i>Q</i> 只要在这一行里挑最大。</p>
 
-<p class="small"><b>带不带星也要分清。</b><i>V</i>⋆ 和 <i>Q</i>⋆ 说的是「<b>最优地</b>走下去能拿多少」；不带星的 <i>V</i> 和 <i>Q</i> 说的是「照<b>某个给定的</b>走法能拿多少」。这条链上只有一种走法，所以两组数完全一样，看不出区别——<b>等有了可挑的动作，它们才分家</b>（第 1 课 §4）。</p>
+<p class="small"><b>带不带星也要分清。</b><i>V</i>⋆ 和 <i>Q</i>⋆ 说的是「<b>最优地</b>走下去能拿多少」；不带星的 <i>V</i> 和 <i>Q</i> 说的是「照<b>某个给定的</b>走法能拿多少」。这条链上只有一种走法，所以两组数完全一样，看不出区别——<b>等有了可挑的动作，它们才分家</b>。</p>
 
 
 <div class="big">
@@ -389,7 +389,7 @@
 <p class="small">而<strong>整个强化学习在做的，就是在没有地图的情况下，一边走一边把这张图画出来。</strong></p>
 
 <style>
-/* §9 的不等式用等宽块展示，样式与第 2 课 §1 的一致 */
+/* §9 的不等式用等宽块展示，样式与第 2 课一致 */
 .dpx-code{background:var(--code-bg);border-radius:10px;padding:13px 17px;margin:16px 0;
   font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.85;
   white-space:pre;overflow-x:auto;color:var(--ink-2)}
@@ -432,7 +432,7 @@
 
 <div class="key"><b>两种收敛，别混。</b>终点之后还有奖励（本课这条链）＝ 只能几何逼近，遍数由 <span class="sym">γ</span> 和精度定，<span class="sym">γ</span> 越接近 1 越慢，大致 1/(1−<span class="sym">γ</span>) 的量级（<span class="sym">γ</span> ＝ 0.99 要 917 遍）；终点之后没有奖励、且转移确定（第 1 课的仓库）＝ 有限遍精确收敛，遍数 ＝ 最远距离 + 1，与 <span class="sym">γ</span> 无关。</div>
 
-<div class="warn"><b>还有一件最容易搞混的事：刷 k 遍不等于要存 k 张表。</b>值迭代自始至终只有<b>一张 5 个数的表</b>（写成两张的话也就 10 个数），<span class="sym">k</span> 是<b>覆写的次数</b>，不是表的层数——你不需要「准备一张 7 层以上的表」。真正有 <span class="sym">K</span>+1 层的是第 2 课 §1 那个前向 <code>dp[k][i][j]</code>：那里的 <span class="sym">k</span> 是表的一个维度，这里的 <span class="sym">k</span> 不进表。</div>
+<div class="warn"><b>还有一件最容易搞混的事：刷 k 遍不等于要存 k 张表。</b>值迭代自始至终只有<b>一张 5 个数的表</b>（写成两张的话也就 10 个数），<span class="sym">k</span> 是<b>覆写的次数</b>，不是表的层数——你不需要「准备一张 7 层以上的表」。真正有 <span class="sym">K</span>+1 层的是第 2 课那个前向 <code>dp[k][i][j]</code>：那里的 <span class="sym">k</span> 是表的一个维度，这里的 <span class="sym">k</span> 不进表。</div>
 
 <hr>
 

@@ -88,18 +88,23 @@
 
 <h2><span class="n">§ 3</span>最优值函数与最优策略</h2>
 
-<p><b>这一节要定的是两样东西，它们成对出现，也构成这一课的主线。</b></p>
+<p><b>这一节要定的是两样东西，它们成对出现，也构成这一课的主线。先给定义和式子，再回到仓库里看它们长什么样。</b></p>
 
-<div class="big">
-<b>最优值函数 <i>V</i>⋆</b>：每个状态<b>一个数</b>——从这一格出发、此后每一步都挑最好的走，今后能拿到的折现总回报。整张填满的表就是 <i>V</i>⋆。<br>
-<b>最优策略 π⋆</b>：每个状态<b>一个动作</b>——在这一格该往哪走。整张填满的表就是 π⋆。
-</div>
+<div class="big"><b>最优值函数 <i>V</i>⋆</b>：在状态 <i>s</i> 下，<b>从现在开始按最优方式行动</b>，所能获得的最大期望累计回报。</div>
 
-<p><b>两者的关系是这一课后面所有内容的骨架：一张表给数，另一张表给动作，而给动作的那张可以由给数的那张直接读出来。</b>站在 <i>s</i>，把 4 个动作各试一步，谁的「当场的账 + 打折后的落点值」最大就选谁——这一步叫<b>一步贪心</b>，第 0 课 §8 已经在那条链上演过，§4.7 会把它写成 π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> <i>Q</i>⋆(<i>s</i>,<i>a</i>)。</p>
+<div class="math"><span class="plainmath"><i>V</i>⋆(<i>s</i>) = max<sub>π</sub> <i>V</i><sup>π</sup>(<i>s</i>)</span></div>
 
-<p>先把这张表拿到手。跑一遍值迭代（§5 讲怎么跑），得到的就是 <span class="mj"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.862ex" height="1.649ex" role="img" focusable="false" viewBox="0 -706.7 1264.9 728.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span>。跑一遍值迭代（§5 讲怎么跑），得到的就是这张表——顺便把最优动作也标上：</p>
+<p>读一遍：<b>把所有可能的策略都试一遍，每一格各自取其中最大的那个值。</b>注意最大是<b>逐格</b>取的——「存在同一个策略能让每一格同时最优」这件事并不显然，§4.7 会说清楚。</p>
 
-<p class="small">这里先把表拿到手，<b>「最优」到底是相对什么取的，正式定义在 §4.7</b>（一句话：在所有策略里逐格取最好）。顺序是有意的——先有能核对的数字，再看定义会省力得多。</p>
+<div class="big"><b>最优策略 π⋆</b>：在每个状态下，<b>都选择能使未来期望累计回报最大的动作</b>的那个策略。</div>
+
+<div class="math"><span class="plainmath">π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> [ <i>r</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i>⋆(<i>s</i>′) ]</span></div>
+
+<p>读一遍：<b>站在 <i>s</i>，把每个动作各试一步，算「当场的账 + 打折后的落点值」，挑出最大的那个动作。</b>方括号里那一块 §4.4 会命名为 <i>Q</i>⋆(<i>s</i>,<i>a</i>)，于是这一行可以简写成 <span class="plainmath">π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> <i>Q</i>⋆(<i>s</i>,<i>a</i>)</span>。</p>
+
+<div class="key"><b>两者的关系是这一课后面所有内容的骨架：一张表给数，另一张表给动作，而给动作的那张可以由给数的那张直接读出来。</b>上面那一步叫<b>一步贪心</b>——<b>有了 <i>V</i>⋆，选动作就不必再想整个未来，只看一步</b>。第 0 课 §8 已经在那条五格链上演过一次。</div>
+
+<p><b>现在把这张表拿到手。</b>跑一遍值迭代（§5 讲怎么跑），得到的就是 <span class="mj"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.862ex" height="1.649ex" role="img" focusable="false" viewBox="0 -706.7 1264.9 728.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span>——顺便把每一格的最优动作也标上：</p>
 
 <div class="figwrap"><svg class="gridsvg" viewBox="0 0 316 316" xmlns="http://www.w3.org/2000/svg"><defs><marker id="gah" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--accent)"/></marker></defs><rect x="26" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="59" y="64">-4.686</text><path class="g-arrow" d="M59 72 l0 14" marker-end="url(#gah)"/><rect x="92" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.437" stroke="var(--line-2)"/><text class="g-num" x="125" y="64">-4.095</text><path class="g-arrow" d="M116 79 l18 0" marker-end="url(#gah)"/><rect x="158" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.367" stroke="var(--line-2)"/><text class="g-num" x="191" y="64">-3.439</text><path class="g-arrow" d="M191 72 l0 14" marker-end="url(#gah)"/><rect x="224" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.437" stroke="var(--line-2)"/><text class="g-num" x="257" y="64">-4.095</text><path class="g-arrow" d="M257 72 l0 14" marker-end="url(#gah)"/><rect x="26" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.437" stroke="var(--line-2)"/><text class="g-num" x="59" y="130">-4.095</text><path class="g-arrow" d="M59 138 l0 14" marker-end="url(#gah)"/><rect x="92" y="92" width="66" height="66" fill="var(--ink-3)" fill-opacity=".28" stroke="var(--line-2)"/><text class="g-lbl" x="125" y="129">货架</text><rect x="158" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.289" stroke="var(--line-2)"/><text class="g-num" x="191" y="130">-2.710</text><path class="g-arrow" d="M191 138 l0 14" marker-end="url(#gah)"/><rect x="224" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.367" stroke="var(--line-2)"/><text class="g-num" x="257" y="130">-3.439</text><path class="g-arrow" d="M266 145 l-18 0" marker-end="url(#gah)"/><rect x="26" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.367" stroke="var(--line-2)"/><text class="g-num" x="59" y="196">-3.439</text><path class="g-arrow" d="M59 204 l0 14" marker-end="url(#gah)"/><rect x="92" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.289" stroke="var(--line-2)"/><text class="g-num" x="125" y="196">-2.710</text><path class="g-arrow" d="M125 204 l0 14" marker-end="url(#gah)"/><rect x="158" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.203" stroke="var(--line-2)"/><text class="g-num" x="191" y="196">-1.900</text><path class="g-arrow" d="M191 204 l0 14" marker-end="url(#gah)"/><rect x="224" y="158" width="66" height="66" fill="var(--ink-3)" fill-opacity=".28" stroke="var(--line-2)"/><text class="g-lbl" x="257" y="195">货架</text><rect x="26" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.289" stroke="var(--line-2)"/><text class="g-num" x="59" y="262">-2.710</text><path class="g-arrow" d="M50 277 l18 0" marker-end="url(#gah)"/><rect x="92" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.203" stroke="var(--line-2)"/><text class="g-num" x="125" y="262">-1.900</text><path class="g-arrow" d="M116 277 l18 0" marker-end="url(#gah)"/><rect x="158" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.107" stroke="var(--line-2)"/><text class="g-num" x="191" y="262">-1.000</text><path class="g-arrow" d="M182 277 l18 0" marker-end="url(#gah)"/><rect x="224" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.000" stroke="var(--line-2)"/><circle cx="257" cy="257" r="13" fill="none" stroke="var(--accent)" stroke-width="2"/><text class="g-num" x="257" y="262">0.000</text></svg></div>
 
@@ -347,6 +352,10 @@
 <p><b>先说清这一节要证的是什么。</b></p>
 
 <div class="big"><b>γ-压缩</b>：把<b>任意两张</b>值表各喂给 <i>T</i>⋆ 刷一遍，它们之间的距离<b>至少缩小到原来的 γ 倍</b>。<br><b>唯一不动点</b>：喂进去出来还是自己的那张表<b>只有一张</b>，它就是 <i>V</i>⋆。</div>
+
+<div class="math"><span class="plainmath">‖<i>T</i>⋆<i>V</i> − <i>T</i>⋆<i>W</i>‖<sub>∞</sub> ≤ γ ‖<i>V</i> − <i>W</i>‖<sub>∞</sub>&nbsp;&nbsp;（γ-压缩）&nbsp;&nbsp;&nbsp; <i>V</i>⋆ = <i>T</i>⋆<i>V</i>⋆&nbsp;&nbsp;（唯一不动点）</span></div>
+
+<p>读一遍：<b>上一行说两张表刷完之后距离至少缩到原来的 γ 倍</b>（‖·‖<sub>∞</sub> 是「逐格相减取绝对值，再挑最大的那个」，下面马上解释）；<b>下一行说有且只有一张表喂进去出来还是它自己</b>，那张就是 <i>V</i>⋆。</p>
 
 <p><b>这两件事合起来一次给出三个结论</b>：<i>V</i>⋆ 存在且唯一、从任何初值出发都收敛、刷 <i>k</i> 遍误差最多剩 γ<sup><i>k</i></sup>。下面从一行不等式开始——<b>两个 <span class="mj"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="4.21ex" height="1.038ex" role="img" focusable="false" viewBox="0 -448 1861 459" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g></g></g></svg></span> 之差，不超过逐项之差里最大的那个</b>：</p>
 

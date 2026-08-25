@@ -77,7 +77,7 @@
 </table>
 
 <div class="key">
-<b>状态为什么只要「在哪一格」就够。</b>因为知道了格子编号，下一步会去哪、能拿多少奖励就全定了——<b>再多的历史也给不出额外信息</b>。这就是马尔可夫性对状态变量的要求。反过来说：如果地面打滑与否取决于上一步的速度，那「格子编号」就不够了，你得把速度也塞进状态。<strong>状态选漏了，后面所有理论一句都不成立。</strong>
+<b>状态为什么只要「在哪一格」就够。</b>因为知道了格子编号，下一步会去哪、能拿多少奖励就全定了——<b>再多的历史也给不出额外信息</b>。这就是马尔可夫性对状态变量的要求。反过来说：如果地面打滑与否取决于上一步的速度，那「格子编号」就不够了，你得把速度也加进状态。<strong>状态选漏了，后面所有理论一句都不成立。</strong>
 </div>
 
 <h2><span class="n">§ 3</span>最优值函数与最优策略</h2>
@@ -172,7 +172,7 @@
 
 <p>这个式子读一遍就够了：<b>在状态 <i>s</i> 下先把第一步定死为 <i>a</i>，之后一直照策略 π 走，所能拿到的回报的平均值。</b></p>
 
-<p><b>和 <i>V</i> 的差别只有一句话：<i>Q</i> 多钉死了第一步</b>，之后的走法完全一样。所以把第一步按策略平均掉，就回到 <i>V</i>：</p>
+<p><b>和 <i>V</i> 的差别只有一句话：<i>Q</i> 多固定了第一步</b>，之后的走法完全一样。所以把第一步按策略平均掉，就回到 <i>V</i>：</p>
 
 <div class="math"><span class="plainmath"><i>V</i><sup>π</sup>(<i>s</i>) = Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>) <i>Q</i><sup>π</sup>(<i>s</i>,<i>a</i>)</span></div>
 
@@ -214,7 +214,7 @@
 
 <p>这个式子读一遍就够了：<b>在状态 <i>s</i> 下，按照策略 π 选择各个动作 <i>a</i></b>，<b>再考虑每个动作可能产生的所有下一状态 <i>s</i>′ 和奖励 <i>r</i></b>，把「当场的奖励 <i>r</i> ＋ 折扣后的下一状态价值 γ<i>V</i><sup>π</sup>(<i>s</i>′)」<b>按概率加权平均</b>。</p>
 
-<p><b>两层求和各管一件事</b>，缺一层这个式子就不成立。在这一课它们都是退化的：策略是确定性的（外层只剩一项）、转移也是确定性的（内层只剩一项），两个 Σ 一起塌掉，就还原成你熟悉的那一行 <span class="plainmath"><i>V</i>(<i>s</i>) = −1 + 0.9<i>V</i>(<i>s</i>′)</span>。<b>要到 §7 加上 10% 打滑，内层才真的展开成 0.90 / 0.05 / 0.05 三项。</b></p>
+<p><b>两层求和各管一件事</b>，缺一层这个式子就不成立。在这一课它们都是退化的：策略是确定性的（外层只剩一项）、转移也是确定性的（内层只剩一项），两个 Σ 各自只剩一项，于是还原成你熟悉的那一行 <span class="plainmath"><i>V</i>(<i>s</i>) = −1 + 0.9<i>V</i>(<i>s</i>′)</span>。<b>要到 §7 加上 10% 打滑，内层才真的展开成 0.90 / 0.05 / 0.05 三项。</b></p>
 
 <h3>4.7　Bellman 最优方程</h3>
 
@@ -236,7 +236,7 @@
 
 <table>
 <tr><th>关系</th><th>式子</th><th>一句话</th></tr>
-<tr><td>V 由 Q 得到</td><td><span class="plainmath"><i>V</i><sup>π</sup>(<i>s</i>) = Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>)<i>Q</i><sup>π</sup>(<i>s</i>,<i>a</i>)</span></td><td>把钉死的第一步按策略平均掉</td></tr>
+<tr><td>V 由 Q 得到</td><td><span class="plainmath"><i>V</i><sup>π</sup>(<i>s</i>) = Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>)<i>Q</i><sup>π</sup>(<i>s</i>,<i>a</i>)</span></td><td>把固定住的第一步按策略平均掉</td></tr>
 <tr><td>Q 由 V 得到</td><td><span class="plainmath"><i>Q</i><sup>π</sup>(<i>s</i>,<i>a</i>) = <i>R</i>(<i>s</i>,<i>a</i>) + γΣ<sub><i>s</i>′</sub><i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>)<i>V</i><sup>π</sup>(<i>s</i>′)</span></td><td>先走一步，剩下的交给 V</td></tr>
 <tr><td>优势</td><td><span class="plainmath"><i>A</i><sup>π</sup> = <i>Q</i><sup>π</sup> − <i>V</i><sup>π</sup></span></td><td>比按策略平均好多少</td></tr>
 <tr><td>最优</td><td><span class="plainmath"><i>V</i>⋆(<i>s</i>) = max<sub><i>a</i></sub> <i>Q</i>⋆(<i>s</i>,<i>a</i>)</span></td><td>平均换成取最大</td></tr>
@@ -265,7 +265,7 @@
 <b>把右边这一部分单独拿出来，喂给<u>任意</u>一张表，就得到一台机器。</b>它就是 <b>Bellman 最优算子</b> <span class="mj"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.707ex" height="1.599ex" role="img" focusable="false" viewBox="0 -706.7 1196.6 706.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mo" transform="translate(793,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span>。费这个劲给一个动作起名字，是因为起了名字之后，下面两句才写得出来，而这一课后面全部结论都是它们的展开：
 <ul style="margin:8px 0 0">
 <li><span class="mj"><svg style="vertical-align: -0.471ex;" xmlns="http://www.w3.org/2000/svg" width="12.449ex" height="2.069ex" role="img" focusable="false" viewBox="0 -706.7 5502.6 914.6" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mi" transform="translate(616,-150) scale(0.707)"><use data-c="1D458" xlink:href="#MJX-TEX-I-1D458"></use></g></g><g data-mml-node="mo" transform="translate(1312.2,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="msup" transform="translate(2368,0)"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mo" transform="translate(793,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="msub" transform="translate(3564.5,0)"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="TeXAtom" transform="translate(616,-150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D458" xlink:href="#MJX-TEX-I-1D458"></use></g><g data-mml-node="mo" transform="translate(521,0)"><use data-c="2212" xlink:href="#MJX-TEX-N-2212"></use></g><g data-mml-node="mn" transform="translate(1299,0)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g></g></g></g></g></svg></span>：刷 <i>k</i> 遍 = 同一台机器作用 <i>k</i> 次。「会不会收敛」于是变成「反复作用同一台机器会不会稳下来」——这个问题数学里有现成答案（§6）。</li>
-<li><span class="mj"><svg style="vertical-align: -0.186ex;" xmlns="http://www.w3.org/2000/svg" width="11.448ex" height="1.784ex" role="img" focusable="false" viewBox="0 -706.7 5059.8 788.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="mo" transform="translate(1542.6,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="msup" transform="translate(2598.4,0)"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mo" transform="translate(793,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="msup" transform="translate(3795,0)"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span>：作用一次不变。Bellman 方程从 14 条等式塌缩成<b>一个不动点条件</b>。</li>
+<li><span class="mj"><svg style="vertical-align: -0.186ex;" xmlns="http://www.w3.org/2000/svg" width="11.448ex" height="1.784ex" role="img" focusable="false" viewBox="0 -706.7 5059.8 788.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="mo" transform="translate(1542.6,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="msup" transform="translate(2598.4,0)"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mo" transform="translate(793,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="msup" transform="translate(3795,0)"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span>：作用一次不变。Bellman 方程从 14 条等式合并成<b>一个不动点条件</b>。</li>
 </ul>
 </div>
 
@@ -273,7 +273,7 @@
 
 <h3>5.1　一次备份</h3>
 
-<p><b>「一次备份」就是这台机器落到某一格上的动作</b>：把这一格的 4 个动作试一遍，各算「当场的 −1 + 0.9 × 旧表里落点的值」，取最大写回去。<b>一格一次备份；14 格全做一遍叫「刷一遍」</b>。下面把其中一次摊开——取格子 (2,2)，用<b>已经收敛的</b> <span class="mj"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.862ex" height="1.649ex" role="img" focusable="false" viewBox="0 -706.7 1264.9 728.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span> 当旧表：</p>
+<p><b>「一次备份」就是这台机器落到某一格上的动作</b>：把这一格的 4 个动作试一遍，各算「当场的 −1 + 0.9 × 旧表里落点的值」，取最大写回去。<b>一格一次备份；14 格全做一遍叫「刷一遍」</b>。下面把其中一次展开——取格子 (2,2)，用<b>已经收敛的</b> <span class="mj"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.862ex" height="1.649ex" role="img" focusable="false" viewBox="0 -706.7 1264.9 728.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span> 当旧表：</p>
 
 <table>
 <tr><th>试的动作</th><th>当场拿到</th><th>落到哪</th><th>落点的值 <span class="mj"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.862ex" height="1.649ex" role="img" focusable="false" viewBox="0 -706.7 1264.9 728.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span></th><th>合计 −1 + 0.9 × 落点值</th></tr>
@@ -286,7 +286,7 @@
 
 <h3>5.2　一遍扫描</h3>
 
-<p>下面这个组件就是这间仓库。每按一次「算一格」做一次备份，<b>盯着数字从充电桩往外一圈圈长出来</b>。</p>
+<p>下面这个组件就是这间仓库。每按一次「算一格」做一次备份，<b>盯着数字从充电桩往外一圈圈变准</b>。</p>
 
 <div class="wgt" id="gw">
   <div class="wgt-head">交互 · 刷一遍 = 作用一次 T⋆</div>
@@ -317,7 +317,7 @@
 
 <div class="key">
 <b>深色数字表示这一格已经和最终答案一模一样了。</b>规律干净得可以当定理背：<b>离充电桩 <i>d</i> 步的格子，正好在第 <i>d</i> 轮变准</b>——14 格无一例外。所以刷 <b>7 遍</b>之后整张表精确收敛（最远的格子离桩 6 步，第 7 遍确认没有任何改动）。<br><br>
-<strong>这就是稀疏奖励难学的全部原因</strong>：信息只能顺着转移图一格一格往回爬。起点离目标 50 步，就至少要刷 50 遍才知道有这回事——跟算法聪不聪明无关。
+<strong>这就是稀疏奖励难学的全部原因</strong>：信息只能顺着转移图一格一格往回传。起点离目标 50 步，就至少要刷 50 遍才知道有这回事——跟算法聪不聪明无关。
 </div>
 
 <h2><span class="n">§ 6</span>γ-压缩与唯一不动点</h2>
@@ -366,7 +366,7 @@
 <span class="c-m">对每一格 s 都成立 ⟹ ‖T⋆<i>V</i> − T⋆<i>W</i>‖<sub>∞</sub> ≤ 0.9 · ‖<i>V</i> − <i>W</i>‖<sub>∞</sub></span><span class="c-w">左边再对所有格子取最大，就是两张新表之间的距离</span>
 </div></div>
 
-<p class="small"><b>整条证明里只有第四行用到了 sup 范数</b>，而它用的正是 sup 范数的定义：<b>一个子集里的最大值，不会超过全集里的最大值</b>。换成别的度量这一步立刻塌——比如把「最大的差」换成「平均的差」，那 4 个落点的平均差<u>完全可能</u>大于全表的平均差（它们可能恰好是差得最狠的 4 格）。<strong>Stage 1 的致命三角就是从换范数开始出事的</strong>，那里的投影算子只在「按数据分布加权的平均」下才听话，两个范数对不上，这条链子就断了。</p>
+<p class="small"><b>整条证明里只有第四行用到了 sup 范数</b>，而它用的正是 sup 范数的定义：<b>一个子集里的最大值，不会超过全集里的最大值</b>。换成别的度量这一步立刻不成立——比如把「最大的差」换成「平均的差」，那 4 个落点的平均差<u>完全可能</u>大于全表的平均差（它们可能恰好是差得最狠的 4 格）。<strong>Stage 1 的致命三角就是从换范数开始出事的</strong>，那里的投影算子只在「按数据分布加权的平均」下才听话，两个范数对不上，这条链子就断了。</p>
 
 <p>把其中一张取成真答案 <span class="mj"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.862ex" height="1.649ex" role="img" focusable="false" viewBox="0 -706.7 1264.9 728.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span>，就得到你要的那句话——因为 <span class="mj"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.862ex" height="1.649ex" role="img" focusable="false" viewBox="0 -706.7 1264.9 728.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span> 喂进机器出来还是它自己（<span class="mj"><svg style="vertical-align: -0.186ex;" xmlns="http://www.w3.org/2000/svg" width="11.448ex" height="1.784ex" role="img" focusable="false" viewBox="0 -706.7 5059.8 788.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="mo" transform="translate(1542.6,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="msup" transform="translate(2598.4,0)"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mo" transform="translate(793,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="msup" transform="translate(3795,0)"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span>）：<b>每刷一遍，你离答案的距离最多剩 0.9 倍</b>；刷 <i>k</i> 遍最多剩 <span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="2.366ex" height="2.42ex" role="img" focusable="false" viewBox="0 -853.7 1045.7 1069.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g><g data-mml-node="mi" transform="translate(627.3,363) scale(0.707)"><use data-c="1D458" xlink:href="#MJX-TEX-I-1D458"></use></g></g></g></g></svg></span>。距离只能往下掉、而且掉得不比几何级数慢，所以一定收敛，并且只能收敛到<b>一个</b>地方（Banach 不动点定理）。<b>这条证明里没有用到「线性」「二次」「连续」中的任何一个</b>，所以它在后面每一个 Stage 都还成立。</p>
 
@@ -387,7 +387,7 @@
 <b>界是保守的</b>（第 1 轮：界说 9.0，实际 3.69），<b>但它是你在不知道答案时唯一能算出来的东西</b>。注意那个放大倍数 <span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span>/(1−<span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span>) = 9：<strong>它是这一课所有误差的公共放大器</strong>——迭代没刷够、模型不准、函数逼近有偏差，最后都要乘上它才是值函数上的误差。<span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> 越接近 1，你对每一处近似的容忍度就越低（0.99 时这个倍数是 99）。
 </div>
 
-<div class="warn"><b>那个 7 遍不是 γ 给的，是这间仓库的尺寸给的。</b>确定性最短路有一条比收缩性更强的性质——<b>预算够了就精确</b>：离桩 d 步的格子，只要预算 k ≥ d，再多给也不会更好，所以 V<sub>k</sub>(s) <b>直接等于</b> V⋆(s)，一格不差（上面「离桩 d 步的格子正好在第 d 轮变准」就是它）。最远的格子离桩 6 步，第 6 遍全表算准，第 7 遍用来确认没有改动，于是 <b>7 ＝ d<sub>max</sub> + 1</b>。把 γ 换成 0.5、0.99、0.999 重跑，<b>仍然是 7 遍</b>——γ 只改每一格的数值，不改「消息要爬几格」。<br><br><b>「V⋆ 不是 k→∞ 才有的吗，怎么 7 遍就到了？」</b>因为<b>极限不等于「要走无穷步才到」</b>——1, 1, 1, … 的极限也是 1，第一项就到了。这里正是这一类：预算 k ≥ d 之后，<b>多给的那些步根本没有奖励可拿</b>（车已经停在桩里，账早停了），于是 V<sub>d</sub> ＝ V<sub>d+1</sub> ＝ ⋯ ＝ V⋆，序列<b>从第 d 遍起就是常数</b>。对照第 0 课那条链：<i>s</i><sub>E</sub> 一直发分，预算每加 1 就还能多吃一口 γ<sup>k−1</sup>——越来越小但<b>永远大于 0</b>，所以 V<sub>k</sub> 严格递增、永远碰不到 6.5610，极限只在 ∞ 处取到，「66 遍」是<b>人划的精度线</b>，不是收敛。<br><br><b>顺带澄清一件常搞混的事：刷 7 遍不等于要存 7 张表。</b>值迭代自始至终只有一张 14 个数的表（两张表的写法也就 28 个数），7 是<b>覆写的次数</b>，不是表的层数。第 2 课 §1 那个前向 <code>dp[k][i][j]</code> 才真的有 K+1 层——<b>那里的 k 是表的一个维度，这里的 k 不进表</b>。</div>
+<div class="warn"><b>那个 7 遍不是 γ 给的，是这间仓库的尺寸给的。</b>确定性最短路有一条比收缩性更强的性质——<b>预算够了就精确</b>：离桩 d 步的格子，只要预算 k ≥ d，再多给也不会更好，所以 V<sub>k</sub>(s) <b>直接等于</b> V⋆(s)，一格不差（上面「离桩 d 步的格子正好在第 d 轮变准」就是它）。最远的格子离桩 6 步，第 6 遍全表算准，第 7 遍用来确认没有改动，于是 <b>7 ＝ d<sub>max</sub> + 1</b>。把 γ 换成 0.5、0.99、0.999 重跑，<b>仍然是 7 遍</b>——γ 只改每一格的数值，不改「消息要传几格」。<br><br><b>「V⋆ 不是 k→∞ 才有的吗，怎么 7 遍就到了？」</b>因为<b>极限不等于「要走无穷步才到」</b>——1, 1, 1, … 的极限也是 1，第一项就到了。这里正是这一类：预算 k ≥ d 之后，<b>多给的那些步根本没有奖励可拿</b>（车已经停在桩里，账早停了），于是 V<sub>d</sub> ＝ V<sub>d+1</sub> ＝ ⋯ ＝ V⋆，序列<b>从第 d 遍起就是常数</b>。对照第 0 课那条链：<i>s</i><sub>E</sub> 一直发分，预算每加 1 就还能多吃一口 γ<sup>k−1</sup>——越来越小但<b>永远大于 0</b>，所以 V<sub>k</sub> 严格递增、永远碰不到 6.5610，极限只在 ∞ 处取到，「66 遍」是<b>人划的精度线</b>，不是收敛。<br><br><b>顺带澄清一件常搞混的事：刷 7 遍不等于要存 7 张表。</b>值迭代自始至终只有一张 14 个数的表（两张表的写法也就 28 个数），7 是<b>覆写的次数</b>，不是表的层数。第 2 课 §1 那个前向 <code>dp[k][i][j]</code> 才真的有 K+1 层——<b>那里的 k 是表的一个维度，这里的 k 不进表</b>。</div>
 
 <p>那什么时候才轮到 γ 说话？<b>一有随机性就轮到了。</b>精确收敛是确定性独有的福利；把组件里的「打滑」拉起来，值迭代立刻退回几何逼近——永远差一点点，只能靠阈值停手。同一间仓库、同样 γ = 0.9，只是加了 10% 打滑：</p>
 
@@ -463,7 +463,7 @@
 所以准确的说法不是「最优策略翻了向」，而是：<b>确定性时这两格各有两个并列最优，打滑把平局打破了</b>，随机性挑走了<b>离墙远</b>的那个。这是「鲁棒」两个字第一次以数字的形式出现。另一格 (21) 是完全一样的故事。
 </div>
 
-<p>把上面这套算法接到组件上——<b>默认就带 10% 打滑</b>，每一步的算式行会把三个落点的概率、值和加权和全摊开：</p>
+<p>把上面这套算法接到组件上——<b>默认就带 10% 打滑</b>，每一步的算式行会把三个落点的概率、值和加权和全部列出：</p>
 
 <div class="wgt" id="sw">
   <div class="wgt-head">交互 · 打滑之后的同一台机器</div>
@@ -502,7 +502,7 @@
 
 <h2><span class="n">§ 8</span>表格法的三个前提</h2>
 
-<p>这间仓库里值迭代赢得很干净：52 个状态-动作对，7 遍扫描，误差有界、什么时候能停也算得出来。但这份干净是买来的——<b>它同时用掉了三个前提，而真问题里一个都不成立</b>。每塌掉一个，就对应后面的一步：</p>
+<p>这间仓库里值迭代赢得很干净：52 个状态-动作对，7 遍扫描，误差有界、什么时候能停也算得出来。但这份干净是买来的——<b>它同时用掉了三个前提，而真问题里一个都不成立</b>。每失效一个，就对应后面的一步：</p>
 
 <table>
 <tr><th>这一课默认成立的</th><th>真问题里为什么不成立</th><th>由此引出</th></tr>
@@ -512,7 +512,7 @@
 </table>
 
 <div class="key">
-<b>三条不是各塌各的，前两条一起塌的时候最危险。</b>状态多到必须用函数逼近，模型又拿不到、只能靠自举，再加上 off-policy，三者凑齐就是<b>致命三角</b>。此时 <b>§6 那套收缩论证的前提当场消失</b>：那里的每一步都建立在「反复作用同一台算子、每一格独立地被精确更新」之上，而函数逼近意味着改一格会牵动一片，自举意味着目标自己也在动。定理没了，收敛就不再有保证——<a href="index.html#s1-4">Stage 1 ④</a> 要按回去的正是这一样东西。
+<b>三条不是各自独立失效的，前两条同时失效时最危险。</b>状态多到必须用函数逼近，模型又拿不到、只能靠自举，再加上 off-policy，三者凑齐就是<b>致命三角</b>。此时 <b>§6 那套收缩论证的前提当场消失</b>：那里的每一步都建立在「反复作用同一台算子、每一格独立地被精确更新」之上，而函数逼近意味着改一格会牵动一片，自举意味着目标自己也在动。定理没了，收敛就不再有保证——<a href="index.html#s1-4">Stage 1 ④</a> 要按回去的正是这一样东西。
 </div>
 
 
@@ -580,7 +580,7 @@
 </table>
 
 <div class="key">
-<b>轮数为什么炸了。</b>确定性时值迭代 7 遍就<u>精确</u>到底：每一格的账是一个有限项的和（最远 6 步，走到就结束）。一带上概率，车永远有一支还在路上，账变成一条无穷长的级数，只能按几何速度一遍遍往下磨——收敛的<b>速度</b>由 0.9 兜住，收敛的<b>时刻</b>由你要的精度定。<br><br>
+<b>轮数为什么炸了。</b>确定性时值迭代 7 遍就<u>精确</u>到底：每一格的账是一个有限项的和（最远 6 步，走到就结束）。一带上概率，车永远有一支还在路上，账变成一条无穷长的级数，只能按几何速度一遍遍往下逼近——收敛的<b>速度</b>由 0.9 兜住，收敛的<b>时刻</b>由你要的精度定。<br><br>
 <b>「鲁棒」在这张图上值多少钱。</b>把确定性算出来的策略原样扔到 40% 打滑的地上跑（只做策略评估，不重算），(0,0) 比重算过的策略只亏 <b>0.0589</b>，亏得最惨的 (2,1) 也只亏 <b>0.2303</b>。所以打滑改变的主要不是走法，而是<b>报价</b>：同一趟活从 -4.69 变成 -6.57。策略的鲁棒性和值的鲁棒性是两件事，这里第一次分开。
 </div>
 </div>
@@ -660,7 +660,7 @@
 <b>③ 误差都要过同一个放大器。</b>你能拿来停机的只有后验界，倍数 γ/(1−γ)，本课是 9 倍。迭代没刷够、模型不准、函数逼近有偏差，最后都要乘上它才是值函数上的误差。
 </div>
 
-<p><b>而这一切站在三个前提上：</b>格子能枚举、转移 <i>P</i> 在手、max 取得精确。真问题里一个都不成立——§8 把这三条逐条摊开，并指出各自由后面哪一步接手。</p>
+<p><b>而这一切站在三个前提上：</b>格子能枚举、转移 <i>P</i> 在手、max 取得精确。真问题里一个都不成立——§8 把这三条逐条列出，并指出各自由后面哪一步接手。</p>
 
 <footer>
 <b>下一课回到同一间仓库，把「这张表到底该怎么算出来」讲全：给定一个策略怎么给它打分（策略评估）、怎么照着分数把策略改好（策略改进），以及本课用的值迭代其实是这两件事的一个极端特例。顺带把 V 与 Q 的分工分清楚——那是 Stage 1 能拿掉模型的关键。<br>

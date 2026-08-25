@@ -91,7 +91,7 @@
 
 <h3>1.1　路径像树一样散开</h3>
 
-<p>从起点开始，每一步、每个位置都往四个方向分叉，<b>树杈的数目按 4<sup>k</sup> 涨</b>。但格子总共只有 12 个，可达的位置数根本涨不动。把前四层摆出来（<code>·</code> 表示 <code>−∞</code>，即这一步到不了）：</p>
+<p>从起点开始，每一步、每个位置都往四个方向分叉，<b>树杈的数目按 4<sup>k</sup> 涨</b>。但格子总共只有 12 个，可达的位置数根本涨不动。把六层全摆出来（<code>·</code> 表示 <code>−∞</code>，即这一步到不了）：</p>
 
 <div class="dpx-grids">
 <div class="dpx-g"><div class="cap">dp[0] · 1 格可达</div>
@@ -113,9 +113,25 @@
 <table><tr><td class="off">·</td><td>3</td><td class="off">·</td><td>7</td></tr>
 <tr><td class="hl">5</td><td class="off">·</td><td>2</td><td class="off">·</td></tr>
 <tr><td class="off">·</td><td>4</td><td class="off">·</td><td class="off">·</td></tr></table></div>
+
+<div class="dpx-g"><div class="cap">dp[4] · 6 格可达</div>
+<table><tr><td>6</td><td class="off">·</td><td>9</td><td class="off">·</td></tr>
+<tr><td class="off">·</td><td>8</td><td class="off">·</td><td>8</td></tr>
+<tr><td>9</td><td class="off">·</td><td>6</td><td class="off">·</td></tr></table></div>
+
+<div class="dpx-g"><div class="cap">dp[5] · 6 格可达</div>
+<table><tr><td class="off">·</td><td>8</td><td class="off">·</td><td>14</td></tr>
+<tr><td>9</td><td class="off">·</td><td>7</td><td class="off">·</td></tr>
+<tr><td class="off">·</td><td>8</td><td class="off">·</td><td class="gl">18</td></tr></table></div>
 </div>
 
 <p>逐层数一遍可达格数：<b>1 → 2 → 4 → 5 → 6 → 6</b>，第 4 步就到顶了。到顶的原因有两条：网格一共 12 格；而且每走一步 <code>i+j</code> 的奇偶必翻，所以第 k 步只可能站在奇偶与 k 一致的那 6 格里。等走到第 5 步，树杈已经有 4<sup>5</sup> = 1024 条，落点却仍然只有 6 个。</p>
+
+<p><b>最后一层就是答案。</b>终点 (2,3) 到起点的曼哈顿距离正好是 5，所以它<b>第一次可达就是第 5 步</b>——<code>dp[5][2][3] = <b>18</b></code>，这就是走满 5 步能拿到的最高分。倒着追一遍每一格是从哪儿来的，路径只有一条：</p>
+
+<div class="dpx-code">(0,0) <b>→</b> (0,1) <b>→</b> (0,2) <b>→</b> (0,3) <b>↓</b> (1,3) <b>↓</b> (2,3)<br>逐格得分　 1 &nbsp;&nbsp;−1 &nbsp;&nbsp;&nbsp;2 &nbsp;&nbsp;&nbsp;5 &nbsp;&nbsp;&nbsp;1 &nbsp;&nbsp;10 &nbsp;&nbsp;＝&nbsp; <b>18</b></div>
+
+<p class="small">它<b>一步都没浪费</b>：5 步是最短路的长度，而这条最短路又恰好穿过右上角那串高分格（5 和 10）。注意这不是必然的——如果把 K 放宽到 6，最优解就变成 <code>dp[6][2][2] = 20</code>，<b>反而不停在终点</b>，因为多出来的那一步可以在 10 分格和它旁边来回蹭分。</p>
 
 <div class="key"><b>DP 能成立，全部理由就在这个对比里。</b>树杈按 4<sup>k</sup> 涨，落点被 12 格封死，所以从第 2 步起就<b>必然</b>有大量树杈掉进同一个格子。有多少条路径走到这儿并不重要，重要的只是<b>它们此刻站在哪儿</b>。</div>
 

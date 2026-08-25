@@ -302,13 +302,15 @@ table td .mj svg{vertical-align:-.15em}
  border-bottom:1px solid var(--line-2);padding-bottom:1px;white-space:nowrap}
 .content a.xref:hover{border-bottom-color:var(--accent)}
 
-/* ---- 跳转之后的「返回」按钮：只在跳过之后出现 ---- */
-.backjump{position:fixed;right:20px;bottom:64px;z-index:41;display:none;
+/* ---- 跳转之后的「返回」按钮：叠在「回到顶部」正上方 ---- */
+.backjump{position:fixed;right:20px;bottom:70px;z-index:41;display:none;
+ align-items:center;gap:6px;
  background:var(--accent);color:#fff;border:none;border-radius:999px;
- padding:9px 16px;font-size:13px;font-family:inherit;cursor:pointer;
- box-shadow:0 3px 14px rgba(0,0,0,.18)}
-.backjump.show{display:block}
-.backjump .bj-t{opacity:.8;font-size:12px}
+ padding:9px 15px;font-size:12.5px;font-family:inherit;line-height:1.2;cursor:pointer;
+ box-shadow:0 3px 14px rgba(0,0,0,.2);max-width:min(74vw,260px)}
+.backjump.show{display:inline-flex}
+.backjump .bj-i{font-size:14px;opacity:.9}
+.backjump .bj-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.backjump:hover{filter:brightness(1.08)}
 @media (min-width:1280px){ .backjump{right:calc(var(--pt-w) + 20px)} }
-@media (max-width:560px){ .backjump .bj-t{display:none} }
 @media print{ .backjump{display:none!important} }

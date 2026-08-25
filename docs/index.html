@@ -147,7 +147,7 @@
       <li><b>条件期望与全期望公式</b>：E[X] = E[ E[X | Y] ]。「先走一步、再看剩下的」之所以能拆开写，全靠这一条——Bellman 方程本身就是它的一个实例</li>
       <li><b>马尔可夫性</b>：给定当前状态，未来与历史无关。它是「值只写成 s 的函数」这件事成立的前提；一旦不成立，就是 POMDP</li>
       <li><b>大数定律</b>：样本均值收敛到期望。蒙特卡罗为什么能用真实回报当目标，理由只有这一条</li>
-      <li><b>偏差与方差</b>：E[估计] − 真值，以及估计自己抖得多厉害。MC 与 TD 的全部取舍就摆在这两个词上，后面每一个算法都会再称一次这杆秤</li>
+      <li><b>偏差与方差</b>：E[估计] − 真值，以及估计自己的波动有多大。MC 与 TD 的全部取舍就摆在这两个词上，后面每一个算法都会再称一次这杆秤</li>
     </ul>
     <div class="substep" id="s0-7">⑦ 数学工具 · 线性代数　<span class="loc">随用随查</span></div>
     <ul class="algos">
@@ -222,7 +222,7 @@
     <h4>核心知识点理解</h4>
     <ul class="algos take">
       <li><b>Bellman 方程不是计算公式，是一致性条件</b>——满足它的函数只有一个，那就是答案。所有 TD 类算法都只做一件事：测量不自洽，再把值往减小不自洽的方向推一小步。</li>
-      <li><b>一次备份，消息只往外走一格</b>——起点离目标 50 步，就得刷满 51 遍才第一次在起点看见非零值——稀疏奖励难学的全部原因在这里，跟算法聪不聪明无关。</li>
+      <li><b>一次备份，消息只往外走一格</b>——起点离目标 50 步，就得刷满 51 遍才第一次在起点看见非零值——稀疏奖励难学的全部原因在这里，这不是算法设计的问题，是信息传播速度决定的。</li>
       <li><b>收缩只需要两条性质：单调性 + 常数平移</b>——多线性插值两条都满足，所以 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="4.516ex" height="1.538ex" role="img" focusable="false" viewBox="0 -680 1996.1 680" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="3A0" xlink:href="#MJX-TEX-N-3A0"></use></g><g data-mml-node="msup" transform="translate(750,0)"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mi" transform="translate(793,363) scale(0.707)"><use data-c="1D70B" xlink:href="#MJX-TEX-I-1D70B"></use></g></g></g></g></svg></span> 安全；最小二乘投影不满足单调性，它在 sup 范数下的放大倍数没有上界——<b>Stage 1</b> 的致命三角就是从这里开始坏的。</li>
       <li><b><span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> 不是超参数，是问题定义的一部分</b>——它同时是三样东西：你声明关心多长的未来、所有误差界里的放大器 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -1.126ex;" xmlns="http://www.w3.org/2000/svg" width="3.909ex" height="3.083ex" role="img" focusable="false" viewBox="0 -864.9 1727.6 1362.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mfrac"><g data-mml-node="mn" transform="translate(687,394) scale(0.707)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g><g data-mml-node="mrow" transform="translate(220,-345) scale(0.707)"><g data-mml-node="mn"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g><g data-mml-node="mo" transform="translate(500,0)"><use data-c="2212" xlink:href="#MJX-TEX-N-2212"></use></g><g data-mml-node="mi" transform="translate(1278,0)"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g><rect width="1487.6" height="60" x="120" y="220"></rect></g></g></g></svg></span>、以及算力的乘数（<span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span>=0.99 要 917 遍值迭代才把误差压到 0.01，0.9 只要 66 遍）。</li>
       <li><b><span class="mj"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.862ex" height="1.649ex" role="img" focusable="false" viewBox="0 -706.7 1264.9 728.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span> 是一张地形图</b>——最优控制就是永远沿最陡的方向下坡。地图一旦到手，全局规划退化成局部的、瞬时的动作；RL 的全部工作，是在没有地图的情况下一边走一边把它画出来。</li>
@@ -243,7 +243,7 @@
 
 <section class="stage" id="s1">
   <div class="stage-head"><span class="num">STAGE 1</span><h2>off-policy 与深度价值方法</h2></div>
-  <p class="why">Stage 0 结束时，你已经能在不知道模型的情况下评估并改进策略了，但学到的只是「含探索在内的自己」。这一阶段换成 <b>off-policy</b>：<b>行为可以随便探索，学的却是最优策略</b>。四步——① Q-learning 把目标换成 max → ② 一条轨迹能挖出多少信息 → ③ 表装不下时换成网络 → ④ 稳定性坏掉之后用三个补丁按回去。</p>
+  <p class="why">Stage 0 结束时，你已经能在不知道模型的情况下评估并改进策略了，但学到的只是「含探索在内的自己」。这一阶段换成 <b>off-policy</b>：<b>行为可以随便探索，学的却是最优策略</b>。四步——① Q-learning 把目标换成 max → ② 一条轨迹能挖出多少信息 → ③ 表装不下时换成网络 → ④ 稳定性失效之后用三个补丁补回来。</p>
 
   <details class="pending">
     <summary>完整知识点清单（等写到这一课时逐条展开）</summary>
@@ -283,7 +283,7 @@
       <li><b>Double DQN</b>：解耦选择与评估，直接对应本阶段 ① 里那个最大化偏差</li>
       <li><b>Dueling 架构</b>：<span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="17.232ex" height="2.753ex" role="img" focusable="false" viewBox="0 -967 7616.4 1217" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D444" xlink:href="#MJX-TEX-I-1D444"></use></g><g data-mml-node="mo" transform="translate(1068.8,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mi" transform="translate(2124.6,0)"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(3115.8,0)"><use data-c="2B" xlink:href="#MJX-TEX-N-2B"></use></g><g data-mml-node="mo" transform="translate(4116,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(4505,0)"><use data-c="1D434" xlink:href="#MJX-TEX-I-1D434"></use></g><g data-mml-node="mo" transform="translate(5477.2,0)"><use data-c="2212" xlink:href="#MJX-TEX-N-2212"></use></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(6477.4,0)"><g data-mml-node="mover"><g data-mml-node="mi"><use data-c="1D434" xlink:href="#MJX-TEX-I-1D434"></use></g><g data-mml-node="mo" transform="translate(514,277) translate(-250 0)"><use data-c="AF" xlink:href="#MJX-TEX-N-AF"></use></g></g></g><g data-mml-node="mo" transform="translate(7227.4,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g></g></g></svg></span> 与可辨识性问题</li>
       <li><b>Prioritized Experience Replay</b>：IS 权重修正引入的偏差</li>
-      <li><b>n-step DQN</b>、<b>Rainbow</b>（消融实验本身就是很好的教材）</li>
+      <li><b>n-step DQN</b>、<b>Rainbow</b>（那篇消融实验值得逐条读）</li>
       <li><b>分布型 RL（distributional）</b>：C51、QR-DQN、IQN——分布 Bellman 算子在 Wasserstein 度量下的收缩性 <span class="opt">数学向，推荐</span></li>
     </ul></div>
   </details>
@@ -306,7 +306,7 @@
       <li><b>把期望换成采样，把赋值换成挪一点</b>——α 的含义就一句话：这一个样本我给它多少信任。</li>
       <li><b>SARSA 与 Q-learning 学的不是同一个东西</b>：一个学「含探索的自己」，一个学「一个它并没有在执行的策略」。</li>
       <li><b>n 和 λ 是同一把旋钮的两种拧法</b>，而最优的永远在中间——两个极端都不是。</li>
-      <li><b>致命三角不是「三条腿齐了必炸」，是一条危险性提示</b>：同一份代码只换随机种子，可能 7 个炸、1 个稳。</li>
+      <li><b>致命三角不是「三条腿齐了必炸」，是一条危险性提示</b>：同一份代码只换随机种子，可能 7 次发散、1 次收敛。</li>
       <li><b>泛化是收益，越过数学上限是代价</b>：逼近器能让你用更少参数追平表格法，也能让学出来的值整团越过数学上限。</li>
       <li><b>DQN 三个补丁各修一处</b>：target network 补收敛性本身，replay 补数据分布，Double 补 max 的偏差。</li>
     </ul>
@@ -314,7 +314,7 @@
 
   <div class="block">
     <h4>为什么会有这一步</h4>
-    <table class="ledger"><tr><th>上一步的极限</th><td>SARSA 评估的是「含探索在内的当前策略」，探索得越多、学到的策略越保守；而且数据用过一次就作废，无法复用旧经验。</td></tr><tr><th>这一步的做法</th><td>① <b>把目标里的采样动作换成 max</b>（Q-learning），行为与目标分家；② 用一条轨迹的多步信息（n-step、TD(λ)、Dyna）；③ <b>用函数代替表</b>（线性逼近 → 神经网络）；④ <b>三个补丁</b>把坏掉的东西按回去（DQN）。</td></tr><tr><th>解决了什么</th><td>不需要模型；状态空间可以很大甚至连续；见过一个状态能泛化到附近没见过的状态。</td></tr><tr><th>又引入了什么</th><td>① <b>自举有偏</b>，MC 无偏但方差大；② <b>max 放大估计误差</b>（Jensen）；③ <b>致命三角</b>：函数逼近 + 自举 + off-policy 三者齐了，收敛保证全部失效；④ 样本效率低——每一步都要真的和环境交互。</td></tr><tr><th>于是下一步</th><td>值方法要靠 argmax<sub>a</sub> 选动作，<b>动作一连续就没法枚举</b>；而且它学到的策略是隐式的、不可导。<b>直接把策略当参数优化 → Stage 2。</b></td></tr></table>
+    <table class="ledger"><tr><th>上一步的极限</th><td>SARSA 评估的是「含探索在内的当前策略」，探索得越多、学到的策略越保守；而且数据用过一次就作废，无法复用旧经验。</td></tr><tr><th>这一步的做法</th><td>① <b>把目标里的采样动作换成 max</b>（Q-learning），行为与目标分家；② 用一条轨迹的多步信息（n-step、TD(λ)、Dyna）；③ <b>用函数代替表</b>（线性逼近 → 神经网络）；④ <b>三个补丁</b>把失效的那几样补回来（DQN）。</td></tr><tr><th>解决了什么</th><td>不需要模型；状态空间可以很大甚至连续；见过一个状态能泛化到附近没见过的状态。</td></tr><tr><th>又引入了什么</th><td>① <b>自举有偏</b>，MC 无偏但方差大；② <b>max 放大估计误差</b>（Jensen）；③ <b>致命三角</b>：函数逼近 + 自举 + off-policy 三者齐了，收敛保证全部失效；④ 样本效率低——每一步都要真的和环境交互。</td></tr><tr><th>于是下一步</th><td>值方法要靠 argmax<sub>a</sub> 选动作，<b>动作一连续就没法枚举</b>；而且它学到的策略是隐式的、不可导。<b>直接把策略当参数优化 → Stage 2。</b></td></tr></table>
   </div>
   <div class="stage-links"><span class="lb">讲义</span><span class="todo">待写</span></div>
 </section>
@@ -378,7 +378,7 @@
 
   <div class="block">
     <h4>为什么会有这一步</h4>
-    <table class="ledger"><tr><th>上一步的极限</th><td>argmax 要枚举动作；策略藏在 Q 表背后，没法直接约束「这一步别改太多」。</td></tr><tr><th>这一步的做法</th><td>把策略写成带参数的分布 π<sub>θ</sub>(a|s)，用<b>策略梯度定理</b>直接对回报求导；再用 critic 估值降方差（Actor-Critic）。</td></tr><tr><th>解决了什么</th><td>连续动作可以直接输出；策略天然随机（自带探索）；目标函数可导，能用现成的优化器。</td></tr><tr><th>又引入了什么</th><td>① <b>方差极大</b>（单条轨迹的梯度估计几乎全是噪声）；② <b>on-policy</b>：数据用一次就得扔，样本效率更低；③ 步子迈大了策略会崩，而「多大算大」在参数空间里没有意义。</td></tr><tr><th>于是下一步</th><td>三条分支各修一条：<b>并行采样</b>提吞吐（A2C/A3C）、<b>信任域</b>限制每次更新的幅度（TRPO → PPO → GRPO）、<b>确定性策略 + replay</b> 把样本效率换回来（DDPG → TD3 → SAC）。</td></tr></table>
+    <table class="ledger"><tr><th>上一步的极限</th><td>argmax 要枚举动作；策略藏在 Q 表背后，没法直接约束「这一步别改太多」。</td></tr><tr><th>这一步的做法</th><td>把策略写成带参数的分布 π<sub>θ</sub>(a|s)，用<b>策略梯度定理</b>直接对回报求导；再用 critic 估值降方差（Actor-Critic）。</td></tr><tr><th>解决了什么</th><td>连续动作可以直接输出；策略天然随机（自带探索）；目标函数可导，能用现成的优化器。</td></tr><tr><th>又引入了什么</th><td>① <b>方差极大</b>（单条轨迹的梯度估计几乎全是噪声）；② <b>on-policy</b>：数据用一次就作废，样本效率更低；③ 步子迈大了策略会崩，而「多大算大」在参数空间里没有意义。</td></tr><tr><th>于是下一步</th><td>三条分支各修一条：<b>并行采样</b>提吞吐（A2C/A3C）、<b>信任域</b>限制每次更新的幅度（TRPO → PPO → GRPO）、<b>确定性策略 + replay</b> 把样本效率换回来（DDPG → TD3 → SAC）。</td></tr></table>
   </div>
   <div class="stage-links"><span class="lb">讲义</span><span class="todo">待写</span></div>
 </section>
@@ -387,7 +387,7 @@
 
 <section class="stage" id="s3">
   <div class="stage-head"><span class="num">STAGE 3</span><h2>模仿学习与逆强化学习</h2></div>
-  <p class="why">奖励函数写不出来的时候怎么办：<b>行为克隆</b>为什么会漂、<b>DAgger</b> 怎么把它拉回来、<b>逆强化学习</b>怎么从示范里把奖励反推出来。</p>
+  <p class="why">奖励函数写不出来的时候怎么办：<b>行为克隆</b>为什么会越走越偏、<b>DAgger</b> 怎么把它拉回来、<b>逆强化学习</b>怎么从示范里把奖励反推出来。</p>
 
   <details class="pending">
     <summary>完整知识点清单（等写到这一课时逐条展开）</summary>
@@ -418,7 +418,7 @@
     <div class="block">
     <ul class="algos">
       <li><b>分布偏移与外推误差</b>：为什么直接跑 off-policy 算法会灾难性失败（OOD 动作被 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="4.21ex" height="1.038ex" role="img" focusable="false" viewBox="0 -448 1861 459" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g></g></g></svg></span> 挑出来）</li>
-      <li><b>策略约束类</b>：BCQ、BEAR、TD3+BC（后者简单到只加一项 BC 正则，效果却很好）</li>
+      <li><b>策略约束类</b>：BCQ、BEAR、TD3+BC（后者只加一项 BC 正则，效果却不输复杂方法）</li>
       <li><b>值正则类</b>：<b>CQL</b>——保守 Q 的下界证明</li>
       <li><b>免查询类</b>：<b>IQL</b>（expectile 回归，完全不评估 OOD 动作）</li>
       <li><b>序列建模视角</b>：Decision Transformer、Trajectory Transformer</li>
@@ -428,7 +428,7 @@
 
   <div class="block">
     <h4>为什么会有这一步</h4>
-    <table class="ledger"><tr><th>上一步的极限</th><td>前面都假设<b>还能和环境交互</b>。真机、医疗、推荐系统里，交互要么昂贵要么不允许。</td></tr><tr><th>这一步的做法</th><td>只从一个<b>固定数据集</b>里学，训练全程不采新数据。</td></tr><tr><th>解决了什么</th><td>能把历史数据变成策略；训练过程完全离线、可复现。</td></tr><tr><th>又引入了什么</th><td><b>外推误差</b>：max 会挑中数据里没有的动作，而那些动作的值是网络凭空外推的——越训越偏。</td></tr><tr><th>于是下一步</th><td>三类修法：约束策略别偏离数据（BCQ/TD3+BC）、给 OOD 动作的值压一个下界（CQL）、干脆不查询 OOD 动作（IQL）。</td></tr></table>
+    <table class="ledger"><tr><th>上一步的极限</th><td>前面都假设<b>还能和环境交互</b>。真机、医疗、推荐系统里，交互要么昂贵要么不允许。</td></tr><tr><th>这一步的做法</th><td>只从一个<b>固定数据集</b>里学，训练全程不采新数据。</td></tr><tr><th>解决了什么</th><td>能把历史数据变成策略；训练过程完全离线、可复现。</td></tr><tr><th>又引入了什么</th><td><b>外推误差</b>：max 会挑中数据里没有的动作，而那些动作的值是网络凭空外推的——越训越偏。</td></tr><tr><th>于是下一步</th><td>三类修法：约束策略别偏离数据（BCQ/TD3+BC）、给 OOD 动作的值压一个下界（CQL）、直接不查询 OOD 动作（IQL）。</td></tr></table>
   </div>
   <div class="stage-links"><span class="lb">讲义</span><span class="todo">待写</span></div>
 </section>
@@ -461,7 +461,7 @@
 
   <div class="block">
     <h4>为什么会有这一步</h4>
-    <table class="ledger"><tr><th>上一步的极限</th><td>仿真里训好的策略搬到真实系统上会掉性能；换一个任务又得从头训。</td></tr><tr><th>这一步的做法</th><td>域随机化与鲁棒 RL（把差异当噪声练进去）、Meta-RL（学会快速适应）、以及贯穿全书的<b>探索</b>问题：该往哪儿试。</td></tr><tr><th>解决了什么</th><td>策略能跨越仿真-现实的差距；新任务用少量数据就能适应。</td></tr><tr><th>又引入了什么</th><td>随机化过度会让策略过分保守；探索的理论保证目前只在老虎机和表格 MDP 上干净，深度 RL 里基本靠启发式。</td></tr><tr><th>于是下一步</th><td>这一层没有标准答案，属于开放问题。</td></tr></table>
+    <table class="ledger"><tr><th>上一步的极限</th><td>仿真里训好的策略搬到真实系统上会掉性能；换一个任务又得从头训。</td></tr><tr><th>这一步的做法</th><td>域随机化与鲁棒 RL（把差异当噪声练进去）、Meta-RL（学会快速适应）、以及贯穿全书的<b>探索</b>问题：该往哪儿试。</td></tr><tr><th>解决了什么</th><td>策略能跨越仿真-现实的差距；新任务用少量数据就能适应。</td></tr><tr><th>又引入了什么</th><td>随机化过度会让策略过分保守；探索的理论保证目前只在老虎机和表格 MDP 上完整，深度 RL 里基本靠启发式。</td></tr><tr><th>于是下一步</th><td>这一层没有标准答案，属于开放问题。</td></tr></table>
   </div>
   <div class="stage-links"><span class="lb">讲义</span><span class="todo">待写</span></div>
 </section>
@@ -488,7 +488,7 @@
     <div class="substep" id="s6-2">LLM / VLA 中的 RL</div>
     <ul class="algos">
       <li><b>RLHF 流程</b>：偏好数据 → Bradley–Terry 奖励模型 → PPO with KL penalty</li>
-      <li><b>DPO</b>：把 RLHF 的约束优化解析求解，消掉奖励模型的推导（非常漂亮，值得亲手推）</li>
+      <li><b>DPO</b>：把 RLHF 的约束优化解析求解，消掉奖励模型的推导（推导本身值得亲手过一遍）</li>
       <li><b>GRPO</b>：去掉 critic，用组内相对优势——本质是带 baseline 的 REINFORCE</li>
       <li><b>RLVR</b>：可验证奖励下的推理训练</li>
       <li><b>VLA 上的应用</b>：<span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.375ex;" xmlns="http://www.w3.org/2000/svg" width="2.277ex" height="1.35ex" role="img" focusable="false" viewBox="0 -431 1006.6 596.6" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D70B" xlink:href="#MJX-TEX-I-1D70B"></use></g><g data-mml-node="mn" transform="translate(603,-150) scale(0.707)"><use data-c="30" xlink:href="#MJX-TEX-N-30"></use></g></g></g></g></svg></span>、OpenVLA 及其后训练 <span class="opt">与你的方向直接相关</span></li>

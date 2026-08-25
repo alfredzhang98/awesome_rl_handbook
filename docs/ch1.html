@@ -88,21 +88,19 @@
 
 <h2><span class="n">§ 3</span>最优值函数与最优策略</h2>
 
-<p><b>这一节要定的是两样东西，它们成对出现，也构成这一课的主线。先给定义和式子，再回到仓库里看它们长什么样。</b></p>
+<p><b>这两个名字第 0 课已经出现过</b>：§7 用「预算无限时的那个答案」定义了 <i>V</i>⋆，§8 给了 π⋆ 是「对 <i>V</i>⋆ 一步贪心」。<b>这一节不重讲，只补第 0 课给不出的那一半</b>——那条链上每格只有一条路，<b>压根没有第二个策略可比</b>，所以「最优」是相对什么取的，在那里看不出来。</p>
 
-<div class="big"><b>最优值函数 <i>V</i>⋆</b>：在状态 <i>s</i> 下，<b>从现在开始按最优方式行动</b>，所能获得的最大期望累计回报。</div>
+<div class="big"><b>「最优」是相对<u>所有策略</u>取的。</b>每格有 4 个动作，策略就有无数种；<b>最优值函数 <i>V</i>⋆ 是在这无数种里逐格取最好</b>——在状态 <i>s</i> 下从现在开始按最优方式行动，所能获得的最大期望累计回报。</div>
 
 <div class="math"><span class="plainmath"><i>V</i>⋆(<i>s</i>) = max<sub>π</sub> <i>V</i><sup>π</sup>(<i>s</i>)</span></div>
 
-<p>读一遍：<b>把所有可能的策略都试一遍，每一格各自取其中最大的那个值。</b>注意最大是<b>逐格</b>取的——「存在同一个策略能让每一格同时最优」这件事并不显然，§4.7 会说清楚。</p>
+<p>读一遍：<b>把所有可能的策略各评一遍，每一格各自取其中最大的那个值。</b>注意最大是<b>逐格</b>取的——「存在同一个策略，能让每一格同时最优」这件事并不显然，§4.7 会说清楚它为什么成立。（<i>V</i><sup>π</sup> 是「照策略 π 走能拿多少」，§4.3 展开讲。）</p>
 
-<div class="big"><b>最优策略 π⋆</b>：在每个状态下，<b>都选择能使未来期望累计回报最大的动作</b>的那个策略。</div>
+<p><b>π⋆ 那一半不用重讲</b>：第 0 课 §8 的一步贪心原样成立——<b>站在 <i>s</i>，把每个动作各试一步，谁的「当场的账 + 打折后的落点值」最大就选谁</b>。这里只多一处：落点可能不止一个，所以那一项要按转移概率加权：</p>
 
 <div class="math"><span class="plainmath">π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> [ <i>r</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i>⋆(<i>s</i>′) ]</span></div>
 
-<p>读一遍：<b>站在 <i>s</i>，把每个动作各试一步，算「当场的账 + 打折后的落点值」，挑出最大的那个动作。</b>方括号里那一块 §4.4 会命名为 <i>Q</i>⋆(<i>s</i>,<i>a</i>)，于是这一行可以简写成 <span class="plainmath">π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> <i>Q</i>⋆(<i>s</i>,<i>a</i>)</span>。</p>
-
-<div class="key"><b>两者的关系是这一课后面所有内容的骨架：一张表给数，另一张表给动作，而给动作的那张可以由给数的那张直接读出来。</b>上面那一步叫<b>一步贪心</b>——<b>有了 <i>V</i>⋆，选动作就不必再想整个未来，只看一步</b>。第 0 课 §8 已经在那条五格链上演过一次。</div>
+<div class="key"><b>一张表给数，另一张表给动作，而给动作的那张可以由给数的那张直接读出来。</b>这是这一课后面所有内容的骨架：<b>先想办法把 <i>V</i>⋆ 算出来（§5 值迭代），π⋆ 就是顺手一取的事</b>。方括号里那一块 §4.4 会命名为 <i>Q</i>⋆(<i>s</i>,<i>a</i>)，于是上式简写成 <span class="plainmath">π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> <i>Q</i>⋆(<i>s</i>,<i>a</i>)</span>。</div>
 
 <p><b>现在把这张表拿到手。</b>跑一遍值迭代（§5 讲怎么跑），得到的就是 <span class="mj"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.862ex" height="1.649ex" role="img" focusable="false" viewBox="0 -706.7 1264.9 728.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g></g></g></svg></span>——顺便把每一格的最优动作也标上：</p>
 

@@ -298,6 +298,8 @@
   <span class="ub"><span class="ub-t"><i>V</i><sup>⋆</sup>(s) =&nbsp;</span></span><span class="ub"><span class="ub-t">max<sub>a</sub></span><span class="ub-b">4 个动作里<br>挑最好的</span></span><span class="ub"><span class="ub-t">&nbsp;{&nbsp;</span></span><span class="ub"><span class="ub-t">r(s,a)</span><span class="ub-b">当场的账<br>这里恒为 −1</span></span><span class="ub"><span class="ub-t">&nbsp;+&nbsp;γ&nbsp;</span><span class="ub-b">打折<br>0.9</span></span><span class="ub"><span class="ub-t">Σ<sub>s′</sub> P(s′ | s, a) · <i>V</i><sup>⋆</sup>(s′)</span><span class="ub-b">未来的账：落点的值按概率加权</span></span><span class="ub"><span class="ub-t">&nbsp;}</span></span>
 </div></div>
 
+<p>这个式子读一遍就够了：<b>站在 <i>s</i>，把 4 个动作各试一遍</b>——每个动作算「这一步当场收多少，加上落点的值按概率加权后打一个 γ 折」——<b>取其中最大的那个数，就是 <i>V</i>⋆(<i>s</i>)</b>。</p>
+
 <p>拿一个真数字对一遍。<b>这一课的仓库是确定性的</b>（打滑那版留在第 1 课 §7），所以 P 只取 0 和 1：在格 (2,2) 选「下」，落点 100% 是那一格，其余 13 格的概率全是 0，那个 Σ 里只剩一项活着——</p>
 
 <div class="math"><div class="chain">
@@ -346,15 +348,21 @@
   <span class="ub"><span class="ub-t"><i>V</i><sub>k+1</sub>(<i>s</i>) =&nbsp;</span></span><span class="ub"><span class="ub-t">Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>)</span><span class="ub-b">照策略<br>平均动作</span></span><span class="ub"><span class="ub-t">&nbsp;Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>)</span><span class="ub-b">照模型<br>平均落点</span></span><span class="ub"><span class="ub-t">&nbsp;[ <i>R</i>(<i>s</i>,<i>a</i>) + γ<i>V</i><sub>k</sub>(<i>s</i>′) ]</span><span class="ub-b">当场的账<br>+ 上一稿的未来</span></span>
 </div></div>
 
+<p>这个式子读一遍就够了：<b>站在 <i>s</i>，照策略把每个动作按它的概率过一遍</b>，每个动作再<b>把可能的落点按概率过一遍</b>，各算「当场的账 + 打折后落点在<b>上一稿</b>里的值」，<b>全部加权平均，写成这一格的新值</b>。</p>
+
 <p>这一步有两个名字要记住。把<b>全部 14 格挨个更新一遍</b>叫做一次<b>扫描（sweep）</b>；而算 <i>V</i><sub>k+1</sub>(<i>s</i>) 时用的是<b>另一个状态的估计值</b> <i>V</i><sub>k</sub>(<i>s</i>′)、而不是等一整条轨迹跑完的真实回报，这叫<b>自举（bootstrapping）</b>——<b>拿一个估计去更新另一个估计</b>。这两个词后面每一课都会用到。</p>
 
 <p>右下角那个下标是关键：<b>算新表只读旧表</b>（<i>V</i><sub>k</sub>），和第 0 课「预算记账」的规矩一模一样。写成算子就是一行：</p>
 
 <div class="math"><span class="plainmath"><i>V</i><sub>k+1</sub> = <i>T</i><sup>π</sup><i>V</i><sub>k</sub>，&nbsp; 收敛到唯一解 &nbsp;<i>V</i><sup>π</sup> = <i>T</i><sup>π</sup><i>V</i><sup>π</sup></span></div>
 
+<p>算子写法读一遍：<b>把上面那一整套动作打包成一台机器 <i>T</i><sup>π</sup>，喂进旧表、吐出新表，反复喂到新表和旧表一模一样</b>——那张不再变的表就是 <i>V</i><sup>π</sup>。</p>
+
 <p>而因为 <i>T</i><sup>π</sup> 对 <i>V</i> 是线性的，那条不动点方程也可以<b>不迭代、直接解</b>——把它按矩阵写开：</p>
 
 <div class="math"><span class="plainmath"><i>V</i><sup>π</sup> = <i>R</i><sup>π</sup> + γ<i>P</i><sup>π</sup><i>V</i><sup>π</sup> &nbsp;⟹&nbsp; <i>V</i><sup>π</sup> = (<i>I</i> − γ<i>P</i><sup>π</sup>)<sup>−1</sup> <i>R</i><sup>π</sup></span></div>
+
+<p>读一遍：<b>14 个未知数、14 条方程，一次矩阵求逆就把整张表解出来</b>，一轮迭代都不用跑。</p>
 
 <p class="small">其中 <i>P</i><sup>π</sup> 是 14×14 的转移矩阵（第 <i>s</i> 行第 <i>s</i>′ 列 = 照 π 走一步从 s 到 s′ 的概率），<i>R</i><sup>π</sup> 是 14 维的即时奖励向量。γ &lt; 1 保证 <i>I</i> − γ<i>P</i><sup>π</sup> 可逆，所以解<b>存在且唯一</b>。</p>
 
@@ -378,7 +386,9 @@
 
 <div class="math"><span class="plainmath">π′(<i>s</i>) = argmax<sub><i>a</i></sub> [ <i>R</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i><sup>π</sup>(<i>s</i>′) ] = argmax<sub><i>a</i></sub> <i>Q</i><sup>π</sup>(<i>s</i>,<i>a</i>)</span></div>
 
-<p>注意方括号里那一坨正是第 1 课 §4.4 的 <i>Q</i><sup>π</sup>——<b>「改进」就是把 Q 表的每一行取 argmax</b>，没有别的内容。</p>
+<p>这个式子读一遍就够了：<b>在当前状态 <i>s</i> 下，把每一个可能的动作 <i>a</i> 都试着算一遍未来期望回报，然后选出回报最大的那个动作。</b></p>
+
+<p>方括号里那一项正是第 1 课 §4.4 的 <i>Q</i><sup>π</sup>，所以<b>「改进」就是把 Q 表的每一行取 argmax</b>，没有别的内容。它和 §2 那个 <i>V</i>⋆ 的式子长得几乎一样，差别只在：<b>max 取的是那个最大的<u>数</u>，argmax 取的是<u>达到它的那个动作</u></b>。</p>
 
 <p>对「一律往右」做一次改进，<b>10 个格子换了方向</b>：</p>
 
@@ -422,6 +432,8 @@
 <p><b>写成定义：</b>把评估那一步的 Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>) 直接换成 max<sub><i>a</i></sub>，评估与改进就合并成了一个动作：</p>
 
 <div class="math"><span class="plainmath"><i>V</i><sub>k+1</sub>(<i>s</i>) = max<sub><i>a</i></sub> [ <i>R</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i><sub>k</sub>(<i>s</i>′) ] = (<i>T</i>⋆<i>V</i><sub>k</sub>)(<i>s</i>)<br>算完之后再取一次 argmax，才得到策略：&nbsp; π⋆(<i>s</i>) = argmax<sub><i>a</i></sub> [ <i>R</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i>⋆(<i>s</i>′) ]</span></div>
+
+<p>这个式子读一遍就够了：<b>站在 <i>s</i>，把 4 个动作各算一遍「当场的账 + 打折后落点在上一稿里的值」，直接取最大写回去</b>——不问策略说该走哪，就要最好的那一个。</p>
 
 <p><b>和评估式逐字对比，差别只有一处</b>：<span class="plainmath">Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>)</span> 换成了 <span class="plainmath">max<sub><i>a</i></sub></span>。这也是为什么值迭代<b>不需要显式存策略</b>——策略藏在那个 max 里，最后才取出来一次。</p>
 

@@ -281,4 +281,18 @@ table td .mj svg{vertical-align:-.15em}
   .pagetoc a.cur{color:var(--accent);border-left-color:var(--accent)}
   .pagetoc a.cur .sn{opacity:1}
 }
+/* 窄屏：列多的表格自己横向滚，别把整页顶出横条 */
+@media(max-width:720px){
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table::-webkit-scrollbar{height:6px}
+  table::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:99px}
+}
+/* 从别处跳进来的锚点（路线图的知识点小标题）：留出吸顶余量，并闪一下 */
+.substep{scroll-margin-top:80px}
+@keyframes hitflash{
+  0%,55%{background:var(--accent-soft);box-shadow:0 0 0 7px var(--accent-soft)}
+  100%  {background:transparent;box-shadow:0 0 0 7px transparent}
+}
+.hit{border-radius:5px;animation:hitflash 1.8s ease-out 1}
+@media(prefers-reduced-motion:reduce){ .hit{animation:none;background:var(--accent-soft)} }
 @media print{ .pagetoc{display:none!important} }

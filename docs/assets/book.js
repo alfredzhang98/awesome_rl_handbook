@@ -7,6 +7,13 @@
   function jump(y){ try{ window.scrollTo({top:y,behavior:'instant'}); }
                     catch(e){ window.scrollTo(0,y); } }
 
+  /* 吸顶条会盖住落点。h2 自带上边距还看得见，但 .substep 这种裸行会整条藏进去，
+     所以落点统一把吸顶条的高度让出来 */
+  function headroom(){
+    var tb=document.querySelector('header.topbar');
+    return (tb&&getComputedStyle(tb).position!=='static' ? tb.getBoundingClientRect().height : 0)+14;
+  }
+
   function toggle(open){ sb.classList.toggle('open',open); mask.classList.toggle('show',open); }
   if(btn) btn.addEventListener('click',function(){ toggle(!sb.classList.contains('open')); });
   if(mask) mask.addEventListener('click',function(){ toggle(false); });
@@ -75,7 +82,7 @@
         /* 长页面上平滑滚动会走很久，目录跳转改成即时定位 */
         a.addEventListener('click',function(e){
           e.preventDefault();
-          jump(el.getBoundingClientRect().top+window.scrollY-14);
+          jump(el.getBoundingClientRect().top+window.scrollY-headroom());
           history.replaceState(null,'','#'+el.id);
           if(window.innerWidth<=1080) toggle(false);
         });
@@ -110,11 +117,20 @@
   window.addEventListener('resize',upd); upd();
   if(totop) totop.addEventListener('click',function(e){ e.preventDefault(); jump(0); });
 
-  /* 带 #hash 打开时，同样即时定位（正文很长，平滑滚动会走很久） */
-  if(location.hash){
-    var t=document.getElementById(location.hash.slice(1));
-    if(t) setTimeout(function(){ jump(t.getBoundingClientRect().top+window.scrollY-14); },0);
+  /* 带 #hash 打开时，同样即时定位（正文很长，平滑滚动会走很久）。
+     目标若埋在折叠的 <details> 里（路线图的知识点清单就是），先把外层逐层展开再定位，
+     然后闪一下——不然跳到长清单中间，读者不知道该看哪一行 */
+  function reveal(id){
+    var t=id&&document.getElementById(id);
+    if(!t) return;
+    for(var p=t.parentNode;p&&p.nodeType===1;p=p.parentNode)
+      if(p.tagName.toLowerCase()==='details') p.open=true;
+    jump(t.getBoundingClientRect().top+window.scrollY-headroom());
+    t.classList.remove('hit'); void t.offsetWidth;   /* 连点同一个链接也要重新闪 */
+    t.classList.add('hit');
   }
+  if(location.hash) setTimeout(function(){ reveal(location.hash.slice(1)); },0);
+  window.addEventListener('hashchange',function(){ reveal(location.hash.slice(1)); });
 
   /* ---- ← / → 翻章 ---- */
   document.addEventListener('keydown',function(e){

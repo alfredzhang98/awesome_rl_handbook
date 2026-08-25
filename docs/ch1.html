@@ -130,7 +130,7 @@
 
 <h3>4.1　回报 G</h3>
 
-<p>回报在<b>第 0 课 §9</b> 已经定义过，这里只回忆一行——它把「今后能拿多少」从一句话变成一个能算、能取平均的量：</p>
+<p>回报在<b>第 0 课 §10</b> 已经定义过，这里只回忆一行——它把「今后能拿多少」从一句话变成一个能算、能取平均的量：</p>
 
 <div class="math"><span class="plainmath"><i>G</i><sub>t</sub> = Σ<sub>k=0</sub><sup>∞</sup> γ<sup>k</sup><i>R</i><sub>t+k+1</sub> = <i>R</i><sub>t+1</sub> + γ<i>R</i><sub>t+2</sub> + γ²<i>R</i><sub>t+3</sub> + ⋯</span></div>
 
@@ -164,7 +164,7 @@
 
 <h3>4.4　动作价值 Q<sup>π</sup></h3>
 
-<p>第 0 课 §7 已经给 <i>Q</i>⋆ 起过名字——那条链上每格只有一个动作，所以它和 <i>V</i>⋆ 是同一组数。<b>这一课每格有 4 个动作，它才第一次和 <i>V</i> 分开，也才看得出它是干什么用的。</b></p>
+<p>第 0 课 §8 已经给 <i>Q</i>⋆ 起过名字——那条链上每格只有一个动作，所以它和 <i>V</i>⋆ 是同一组数。<b>这一课每格有 4 个动作，它才第一次和 <i>V</i> 分开，也才看得出它是干什么用的。</b></p>
 
 <p><b>它解决什么问题：</b>手上只有 <i>V</i> 时，要挑动作就必须先知道<b>每个动作会落到哪</b>——也就是必须有转移 <i>P</i>。<i>Q</i> 把这一步预先算好存起来，<b>选动作退化成在这一行里挑最大</b>。这一条是后面能彻底拿掉模型的关键。</p>
 
@@ -210,7 +210,7 @@
 
 <h3>4.7　Bellman 最优方程</h3>
 
-<p>第 0 课 §6 用「预算无限」讲过 <i>V</i>⋆，也讲过为什么它的方程两边是同一个函数（<b>不动点</b>）——那套论证这里一个字都不用改。缺的只是一句<b>相对于策略</b>的准确定义：</p>
+<p>第 0 课 §7 用「预算无限」讲过 <i>V</i>⋆，也讲过为什么它的方程两边是同一个函数（<b>不动点</b>）——那套论证这里一个字都不用改。缺的只是一句<b>相对于策略</b>的准确定义：</p>
 
 <div class="math"><span class="plainmath"><i>V</i>⋆(<i>s</i>) = max<sub>π</sub> <i>V</i><sup>π</sup>(<i>s</i>)，对每一个 <i>s</i> 都成立</span></div>
 
@@ -375,6 +375,49 @@
 <b>界是保守的</b>（第 1 轮：界说 9.0，实际 3.69），<b>但它是你在不知道答案时唯一能算出来的东西</b>。注意那个放大倍数 <span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span>/(1−<span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span>) = 9：<strong>它是这一课所有误差的公共放大器</strong>——迭代没刷够、模型不准、函数逼近有偏差，最后都要乘上它才是值函数上的误差。<span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> 越接近 1，你对每一处近似的容忍度就越低（0.99 时这个倍数是 99）。
 </div>
 
+<div class="warn"><b>那个 7 遍不是 γ 给的，是这间仓库的尺寸给的。</b>确定性最短路有一条比收缩性更强的性质——<b>预算够了就精确</b>：离桩 d 步的格子，只要预算 k ≥ d，再多给也不会更好，所以 V<sub>k</sub>(s) <b>直接等于</b> V⋆(s)，一格不差（上面「离桩 d 步的格子正好在第 d 轮变准」就是它）。最远的格子离桩 6 步，第 6 遍全表算准，第 7 遍用来确认没有改动，于是 <b>7 ＝ d<sub>max</sub> + 1</b>。把 γ 换成 0.5、0.99、0.999 重跑，<b>仍然是 7 遍</b>——γ 只改每一格的数值，不改「消息要爬几格」。<br><br><b>「V⋆ 不是 k→∞ 才有的吗，怎么 7 遍就到了？」</b>因为<b>极限不等于「要走无穷步才到」</b>——1, 1, 1, … 的极限也是 1，第一项就到了。这里正是这一类：预算 k ≥ d 之后，<b>多给的那些步根本没有奖励可拿</b>（车已经停在桩里，账早停了），于是 V<sub>d</sub> ＝ V<sub>d+1</sub> ＝ ⋯ ＝ V⋆，序列<b>从第 d 遍起就是常数</b>。对照第 0 课那条链：<i>s</i><sub>E</sub> 一直发分，预算每加 1 就还能多吃一口 γ<sup>k−1</sup>——越来越小但<b>永远大于 0</b>，所以 V<sub>k</sub> 严格递增、永远碰不到 6.5610，极限只在 ∞ 处取到，「66 遍」是<b>人划的精度线</b>，不是收敛。<br><br><b>顺带澄清一件常搞混的事：刷 7 遍不等于要存 7 张表。</b>值迭代自始至终只有一张 14 个数的表（两张表的写法也就 28 个数），7 是<b>覆写的次数</b>，不是表的层数。第 2 课 §1 那个前向 <code>dp[k][i][j]</code> 才真的有 K+1 层——<b>那里的 k 是表的一个维度，这里的 k 不进表</b>。</div>
+
+<p>那什么时候才轮到 γ 说话？<b>一有随机性就轮到了。</b>精确收敛是确定性独有的福利；把组件里的「打滑」拉起来，值迭代立刻退回几何逼近——永远差一点点，只能靠阈值停手。同一间仓库、同样 γ = 0.9，只是加了 10% 打滑：</p>
+
+<table>
+<tr><th>停机阈值</th><th class="num">确定性</th><th class="num">打滑 10%</th></tr>
+<tr><td>10⁻³</td><td class="num">7 遍</td><td class="num">13 遍</td></tr>
+<tr><td>10⁻⁶</td><td class="num">7 遍</td><td class="num">19 遍</td></tr>
+<tr><td>10⁻¹²</td><td class="num">7 遍</td><td class="num">32 遍</td></tr>
+</table>
+
+<p>确定性那一列纹丝不动——它第 7 遍就<b>精确</b>归零了，阈值订多严都一样。§7 里说的「7 遍变成 32 遍」正是打滑那一列的最后一行（跑到机器精度）。在这种一般情形下，遍数由 γ 和精度<b>一起</b>定：把 ‖V<sub>k</sub> − V⋆‖<sub>∞</sub> ≤ γ<sup>k</sup>‖V<sub>0</sub> − V⋆‖<sub>∞</sub> 反解，要把误差压到 ε 需要</p>
+
+<div class="math">k ≥ ln( ε(1−γ) / R<sub>max</sub> ) ⁄ ln γ</div>
+
+<table>
+<tr><th class="num">γ</th><th class="num">有效视野 1/(1−γ)</th><th class="num">放大器 γ/(1−γ)</th><th class="num">要刷几遍</th></tr>
+<tr><td class="num">0.5</td><td class="num">2</td><td class="num">1</td><td class="num">8</td></tr>
+<tr><td class="num">0.9</td><td class="num">10</td><td class="num">9</td><td class="num">66</td></tr>
+<tr><td class="num">0.95</td><td class="num">20</td><td class="num">19</td><td class="num">149</td></tr>
+<tr><td class="num">0.99</td><td class="num">100</td><td class="num">99</td><td class="num">917</td></tr>
+<tr><td class="num">0.999</td><td class="num">1 000</td><td class="num">999</td><td class="num">11 508</td></tr>
+</table>
+
+<p class="small">最后一列取 ε = 0.01、R<sub>max</sub> = 1、V<sub>0</sub> = 0。它是那条界给出的<b>上界</b>，真实问题常常快得多——但增长的量级就是这个：<b>γ 每往 1 靠近一位，遍数大约乘 10</b>。</p>
+
+<p><b>所以「几遍」有两套算法，别混用。</b>确定性最短路里遍数由<b>距离</b>决定，与 γ 无关；一旦有随机性，遍数由 <b>γ 和精度</b>决定，大致按 1/(1−γ) 涨。这间仓库里那个漂亮的 7 不是一般规律——<b>它是这一课每个数都能手算的原因，也是它最不像真实问题的地方</b>。</p>
+
+<p>判断该用哪一套，只要问两句：<b>终点之后还发奖励吗？转移是确定的吗？</b>三个例子并排：</p>
+
+<table>
+<tr><th></th><th>第 0 课 五状态链</th><th>本课 4×4 仓库</th><th>仓库 + 10% 打滑</th></tr>
+<tr><td><b>终点之后还发奖励</b></td><td>发（<i>s</i><sub>E</sub> 每步 +1）</td><td>不发（进桩账就停）</td><td>不发</td></tr>
+<tr><td><b>转移</b></td><td>确定</td><td>确定</td><td>随机</td></tr>
+<tr><td><b>收敛类型</b></td><td>几何逼近，<b>永不精确</b></td><td><b>有限遍精确</b></td><td>几何逼近</td></tr>
+<tr><td><b>遍数由谁决定</b></td><td>γ 和精度</td><td><b>距离</b>（与 γ 无关）</td><td>γ 和精度</td></tr>
+<tr><td><b>要刷几遍</b></td><td class="num">66（ε = 0.01）</td><td class="num">7 ＝ d<sub>max</sub> + 1</td><td class="num">13 / 19 / 32</td></tr>
+<tr><td><b>怎么停</b></td><td>订阈值，看 Δ</td><td>整表不再改动</td><td>订阈值，看 Δ</td></tr>
+</table>
+
+<p class="small">链那一列的 66 遍是第 0 课 §9 算出来的（γ = 0.9，差距要小于 0.01）；打滑那一列的 13 / 19 / 32 对应阈值 10⁻³ / 10⁻⁶ / 10⁻¹²，就是上面那张表。<b>同一间仓库，只是把落点从「一格」换成「三格的分布」，第一列的做法就整个失效了</b>——精确收敛靠的是「预算够了就到顶」，而随机之后永远有一条越来越细的尾巴够不到底。</p>
+
+
 <h2><span class="n">§ 7</span>随机转移与期望</h2>
 
 <p>只改一条规则：<b>选定一个方向，有 10% 的概率被地面带偏</b>——左右两个垂直方向各 5%。撞墙撞货架照旧算「留在原地」。</p>
@@ -451,13 +494,13 @@
 
 <table>
 <tr><th>这一课默认成立的</th><th>真问题里为什么不成立</th><th>由此引出</th></tr>
-<tr><td><b>状态能一个个枚举</b><br>14 格全刷一遍</td><td>换成 100×100 的仓库图，再加上朝向与载货状态，格数指数级增长；机械臂 6 个关节各分 121 格就是 9.85×10²⁴ 格——表存不下，也刷不完</td><td><b><a href="index.html#s1">Stage 1 ③</a></b><br>把表换成函数：值函数逼近</td></tr>
-<tr><td><b>转移规则在你手上</b><br>落点直接查规则</td><td>真机上地面多滑、轮子打不打转、货架有没有被挪走，没人会告诉你。你能拿到的只有一条条采样出来的轨迹</td><td><b><a href="index.html#s1">Stage 1 ①</a></b><br>期望换采样：Q-learning</td></tr>
-<tr><td><b>动作能枚举，取 max 是精确的</b><br>4 个方向逐个试</td><td>连续的速度与转角没法逐个试；就算硬离散化，动作数也随关节数指数级涨</td><td><b><a href="index.html#s2">Stage 2</a></b><br>不再枚举：直接把策略当参数优化</td></tr>
+<tr><td><b>状态能一个个枚举</b><br>14 格全刷一遍</td><td>换成 100×100 的仓库图，再加上朝向与载货状态，格数指数级增长；机械臂 6 个关节各分 121 格就是 9.85×10²⁴ 格——表存不下，也刷不完</td><td><b><a href="index.html#s1-3">Stage 1 ③</a></b><br>把表换成函数：值函数逼近</td></tr>
+<tr><td><b>转移规则在你手上</b><br>落点直接查规则</td><td>真机上地面多滑、轮子打不打转、货架有没有被挪走，没人会告诉你。你能拿到的只有一条条采样出来的轨迹</td><td><b><a href="index.html#s1-1">Stage 1 ①</a></b><br>期望换采样：Q-learning</td></tr>
+<tr><td><b>动作能枚举，取 max 是精确的</b><br>4 个方向逐个试</td><td>连续的速度与转角没法逐个试；就算硬离散化，动作数也随关节数指数级涨</td><td><b><a href="index.html#s2-1">Stage 2 ①</a></b><br>不再枚举：直接把策略当参数优化</td></tr>
 </table>
 
 <div class="key">
-<b>三条不是各塌各的，前两条一起塌的时候最危险。</b>状态多到必须用函数逼近，模型又拿不到、只能靠自举，再加上 off-policy，三者凑齐就是<b>致命三角</b>。此时 <b>§6 那套收缩论证的前提当场消失</b>：那里的每一步都建立在「反复作用同一台算子、每一格独立地被精确更新」之上，而函数逼近意味着改一格会牵动一片，自举意味着目标自己也在动。定理没了，收敛就不再有保证——<a href="index.html#s1">Stage 1 ④</a> 要按回去的正是这一样东西。
+<b>三条不是各塌各的，前两条一起塌的时候最危险。</b>状态多到必须用函数逼近，模型又拿不到、只能靠自举，再加上 off-policy，三者凑齐就是<b>致命三角</b>。此时 <b>§6 那套收缩论证的前提当场消失</b>：那里的每一步都建立在「反复作用同一台算子、每一格独立地被精确更新」之上，而函数逼近意味着改一格会牵动一片，自举意味着目标自己也在动。定理没了，收敛就不再有保证——<a href="index.html#s1-4">Stage 1 ④</a> 要按回去的正是这一样东西。
 </div>
 
 
@@ -577,7 +620,7 @@
 
 <p>整章的概念收在下面这张图里。<b>每一格三行：名字、式子、一句能读懂的话</b>——箭头是「怎么从上一个推出下一个」。名字记不住不要紧，<b>先看那句话和那个箭头</b>。</p>
 
-<div class="vfwrap"><svg class="vfsvg" viewBox="0 0 680 890" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="值函数家族关系图：回报、策略、状态价值、动作价值、优势、Bellman 期望方程、最优值函数、最优策略"><defs><marker id="vfa" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs><rect class="bx hi" x="180" y="40" width="320" height="84" rx="10"/><text class="t" x="340" y="61">回报 G<tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"></tspan></text><text class="f" x="340" y="81">G<tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"></tspan> = Σ<tspan dy="4" font-size="8.5">k</tspan><tspan dy="-4"></tspan> γ<tspan dy="-5" font-size="8.5">k</tspan><tspan dy="5"></tspan>R<tspan dy="4" font-size="8.5">t+k+1</tspan><tspan dy="-4"></tspan></text><text class="d" x="340" y="100">从这一刻起，往后所有奖励打折加起来。</text><text class="d" x="340" y="114">走一条轨迹得一个数——它是样本，不是估计</text><rect class="bx hi" x="180" y="164" width="320" height="84" rx="10"/><text class="t" x="340" y="185">策略 π(a|s)</text><text class="f" x="340" y="205">Σ<tspan dy="4" font-size="8.5">a</tspan><tspan dy="-4"></tspan> π(a|s) = 1</text><text class="d" x="340" y="224">在状态 s 时该怎么挑动作。</text><text class="d" x="340" y="238">环境是给定的，它是你唯一能改的东西</text><rect class="bx" x="20" y="288" width="300" height="84" rx="10"/><text class="t" x="170" y="309">状态价值 V<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s)</text><text class="f" x="170" y="329">E<tspan dy="4" font-size="8.5">π</tspan><tspan dy="-4"></tspan>[ G<tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"></tspan> | S<tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"></tspan>=s ]</text><text class="d" x="170" y="348">站在 s，此后一直照 π 走，</text><text class="d" x="170" y="362">平均能拿多少</text><rect class="bx" x="360" y="288" width="300" height="84" rx="10"/><text class="t" x="510" y="309">动作价值 Q<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s,a)</text><text class="f" x="510" y="329">E<tspan dy="4" font-size="8.5">π</tspan><tspan dy="-4"></tspan>[ G<tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"></tspan> | S<tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"></tspan>=s, A<tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"></tspan>=a ]</text><text class="d" x="510" y="348">站在 s，这一步先走 a，</text><text class="d" x="510" y="362">之后才照 π 走，平均能拿多少</text><rect class="bx" x="150" y="412" width="380" height="84" rx="10"/><text class="t" x="340" y="433">优势 A<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s,a)</text><text class="f" x="340" y="453">A<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s,a) = Q<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s,a) − V<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s)</text><text class="d" x="340" y="472">在状态 s 下选动作 a，相比于「按当前策略正常发挥」，</text><text class="d" x="340" y="486">到底好多少。按策略平均必然等于 0</text><rect class="bx" x="100" y="536" width="480" height="84" rx="10"/><text class="t" x="340" y="557">Bellman 期望方程</text><text class="f" x="340" y="577">V<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s) = Σ<tspan dy="4" font-size="8.5">a</tspan><tspan dy="-4"></tspan> π(a|s) Σ<tspan dy="4" font-size="8.5">s′</tspan><tspan dy="-4"></tspan> P(s′|s,a) [ R + γV<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5"></tspan>(s′) ]</text><text class="d" x="340" y="596">把无穷长的和改写成「这一步 + 下一格的值」。</text><text class="d" x="340" y="610">定义只能拿来理解，方程才能拿来计算</text><rect class="bx hi" x="100" y="660" width="480" height="84" rx="10"/><text class="t" x="340" y="681">最优值函数 V⋆ / Q⋆</text><text class="f" x="340" y="701">V⋆(s) = max<tspan dy="4" font-size="8.5">a</tspan><tspan dy="-4"></tspan> [ R + γ Σ<tspan dy="4" font-size="8.5">s′</tspan><tspan dy="-4"></tspan> P(s′|s,a) V⋆(s′) ]</text><text class="d" x="340" y="720">所有走法里最好的那一种能拿多少。</text><text class="d" x="340" y="734">与上式只差一处：Σ_a π 换成 max_a，于是变成非线性</text><rect class="bx hi" x="180" y="784" width="320" height="84" rx="10"/><text class="t" x="340" y="805">最优策略 π⋆</text><text class="f" x="340" y="825">π⋆(s) = argmax<tspan dy="4" font-size="8.5">a</tspan><tspan dy="-4"></tspan> Q⋆(s,a)</text><text class="d" x="340" y="844">有了 Q⋆，选动作只剩「这一行里挑最大」。</text><text class="d" x="340" y="858">max 取的是值，argmax 取的是动作</text><path class="ln" d="M340,124 V164" marker-end="url(#vfa)"/><text class="el" x="340" y="148">要先说清按谁的走法算</text><path class="ln" d="M340,248 V268 H170 V288" marker-end="url(#vfa)"/><text class="el" x="168" y="282">对 G 取期望</text><path class="ln" d="M340,248 V268 H510 V288" marker-end="url(#vfa)"/><text class="el" x="512" y="282">多钉死第一步</text><path class="ln dash" d="M170,372 V392 H230 V412" marker-end="url(#vfa)"/><text class="el" x="150" y="406">当基准</text><path class="ln dash" d="M510,372 V392 H450 V412" marker-end="url(#vfa)"/><text class="el" x="530" y="406">相减</text><path class="ln" d="M340,496 V536" marker-end="url(#vfa)"/><text class="el" x="340" y="520">展开一步，写成递推</text><path class="ln em" d="M340,620 V660" marker-end="url(#vfa)"/><text class="el em" x="340" y="644">Σₐπ 换成 maxₐ</text><path class="ln" d="M340,744 V784" marker-end="url(#vfa)"/><text class="el" x="340" y="768">取 argmax</text></svg></div>
+<div class="vfwrap"><svg class="vfsvg" viewBox="0 0 680 946" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="值函数家族关系图：回报、策略、状态价值、动作价值、优势、Bellman 期望方程、最优值函数、最优策略"><defs><marker id="vfa" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs><rect class="bx hi" x="180" y="40" width="320" height="92" rx="10"/><text class="t" x="340" y="61">回报 G<tspan dy="4" font-size="8.5">t</tspan></text><text class="f" x="340" y="83">G<tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"> = Σ</tspan><tspan dy="4" font-size="8.5">k</tspan><tspan dy="-4"> γ</tspan><tspan dy="-5" font-size="8.5">k</tspan><tspan dy="5">R</tspan><tspan dy="4" font-size="8.5">t+k+1</tspan></text><text class="d" x="340" y="103">从这一刻起，往后所有奖励打折加起来。</text><text class="d" x="340" y="118">走一条轨迹得一个数——它是样本，不是估计</text><rect class="bx hi" x="180" y="172" width="320" height="92" rx="10"/><text class="t" x="340" y="193">策略 π(a|s)</text><text class="f" x="340" y="215">Σ<tspan dy="4" font-size="8.5">a</tspan><tspan dy="-4"> π(a|s) = 1</tspan></text><text class="d" x="340" y="235">在状态 s 时该怎么挑动作。</text><text class="d" x="340" y="250">环境是给定的，它是你唯一能改的东西</text><rect class="bx" x="20" y="304" width="300" height="92" rx="10"/><text class="t" x="170" y="325">状态价值 V<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5">(s)</tspan></text><text class="f" x="170" y="347">E<tspan dy="4" font-size="8.5">π</tspan><tspan dy="-4">[ G</tspan><tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"> | S</tspan><tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4">=s ]</tspan></text><text class="d" x="170" y="367">站在 s，此后一直照 π 走，</text><text class="d" x="170" y="382">平均能拿多少</text><rect class="bx" x="360" y="304" width="300" height="92" rx="10"/><text class="t" x="510" y="325">动作价值 Q<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5">(s,a)</tspan></text><text class="f" x="510" y="347">E<tspan dy="4" font-size="8.5">π</tspan><tspan dy="-4">[ G</tspan><tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4"> | S</tspan><tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4">=s, A</tspan><tspan dy="4" font-size="8.5">t</tspan><tspan dy="-4">=a ]</tspan></text><text class="d" x="510" y="367">站在 s，这一步先走 a，</text><text class="d" x="510" y="382">之后才照 π 走，平均能拿多少</text><rect class="bx" x="150" y="436" width="380" height="92" rx="10"/><text class="t" x="340" y="457">优势 A<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5">(s,a)</tspan></text><text class="f" x="340" y="479">A<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5">(s,a) = Q</tspan><tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5">(s,a) − V</tspan><tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5">(s)</tspan></text><text class="d" x="340" y="499">在状态 s 下选动作 a，相比于「按当前策略正常发挥」，</text><text class="d" x="340" y="514">到底好多少。按策略平均必然等于 0</text><rect class="bx" x="100" y="568" width="480" height="92" rx="10"/><text class="t" x="340" y="589">Bellman 期望方程</text><text class="f" x="340" y="611">V<tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5">(s) = Σ</tspan><tspan dy="4" font-size="8.5">a</tspan><tspan dy="-4"> π(a|s) Σ</tspan><tspan dy="4" font-size="8.5">s′</tspan><tspan dy="-4"> P(s′|s,a) [ R + γV</tspan><tspan dy="-5" font-size="8.5">π</tspan><tspan dy="5">(s′) ]</tspan></text><text class="d" x="340" y="631">把无穷长的和改写成「这一步 + 下一格的值」。</text><text class="d" x="340" y="646">定义只能拿来理解，方程才能拿来计算</text><rect class="bx hi" x="100" y="700" width="480" height="92" rx="10"/><text class="t" x="340" y="721">最优值函数 V⋆ / Q⋆</text><text class="f" x="340" y="743">V⋆(s) = max<tspan dy="4" font-size="8.5">a</tspan><tspan dy="-4"> [ R + γ Σ</tspan><tspan dy="4" font-size="8.5">s′</tspan><tspan dy="-4"> P(s′|s,a) V⋆(s′) ]</tspan></text><text class="d" x="340" y="763">所有走法里最好的那一种能拿多少。</text><text class="d" x="340" y="778">与上式只差一处：Σ<tspan dy="3" font-size="7.5">a</tspan><tspan dy="-3">π 换成 max</tspan><tspan dy="3" font-size="7.5">a</tspan><tspan dy="-3">，于是变成非线性</tspan></text><rect class="bx hi" x="180" y="832" width="320" height="92" rx="10"/><text class="t" x="340" y="853">最优策略 π⋆</text><text class="f" x="340" y="875">π⋆(s) = argmax<tspan dy="4" font-size="8.5">a</tspan><tspan dy="-4"> Q⋆(s,a)</tspan></text><text class="d" x="340" y="895">有了 Q⋆，选动作只剩「这一行里挑最大」。</text><text class="d" x="340" y="910">max 取的是值，argmax 取的是动作</text><path class="ln" d="M340,132 V172" marker-end="url(#vfa)"/><text class="el r" x="348" y="152">要先说清按谁的走法算</text><path class="ln" d="M340,264 V284 H170 V304" marker-end="url(#vfa)"/><text class="el l" x="162" y="294">对 G 取期望</text><path class="ln" d="M340,264 V284 H510 V304" marker-end="url(#vfa)"/><text class="el r" x="518" y="294">多钉死第一步</text><path class="ln dash" d="M170,396 V416 H230 V436" marker-end="url(#vfa)"/><text class="el l" x="162" y="406">当基准</text><path class="ln dash" d="M510,396 V416 H450 V436" marker-end="url(#vfa)"/><text class="el r" x="518" y="406">相减</text><path class="ln" d="M340,528 V568" marker-end="url(#vfa)"/><text class="el r" x="348" y="548">展开一步，写成递推</text><path class="ln em" d="M340,660 V700" marker-end="url(#vfa)"/><text class="el r em" x="348" y="680">Σ<tspan dy="3" font-size="7.5">a</tspan><tspan dy="-3">π 换成 max</tspan><tspan dy="3" font-size="7.5">a</tspan></text><path class="ln" d="M340,792 V832" marker-end="url(#vfa)"/><text class="el r" x="348" y="812">取 argmax</text></svg></div>
 <style>
 .vfwrap{margin:22px 0}
 .vfsvg{width:100%;max-width:680px;display:block;margin:0 auto;color:var(--accent)}
@@ -593,6 +636,8 @@
 .vfsvg .ln.dash{stroke:var(--line-2);stroke-width:1.4;stroke-dasharray:4 3}
 .vfsvg .el{fill:var(--ink-3);font-size:10.5px}
 .vfsvg .el.em{fill:var(--accent);font-weight:600}
+.vfsvg .el.l{text-anchor:end}
+.vfsvg .el.r{text-anchor:start}
 @media(max-width:620px){.vfwrap{overflow-x:auto}.vfsvg{min-width:600px}}
 </style>
 

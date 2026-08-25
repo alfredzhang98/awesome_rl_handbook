@@ -4,53 +4,53 @@
       <root>
         <mxCell id="0"/><mxCell id="1" parent="0"/>
 
-        <mxCell id="n1" value="&lt;b&gt;回报 G&lt;sub&gt;t&lt;/sub&gt;&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;G&lt;sub&gt;t&lt;/sub&gt; = Σ&lt;sub&gt;k&lt;/sub&gt; γ&lt;sup&gt;k&lt;/sup&gt;R&lt;sub&gt;t+k+1&lt;/sub&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;从这一刻起，往后所有奖励打折加起来。&lt;br&gt;走一条轨迹得一个数——它是样本，不是估计&lt;/font&gt;"
-                style="rounded=1;arcSize=12;html=1;fillColor=#f3ece3;strokeColor=#8a5a2b;fontColor=#1c1b19;fontSize=13;verticalAlign=middle;"
-                vertex="1" parent="1"><mxGeometry x="180" y="40" width="320" height="84" as="geometry"/></mxCell>
+        <mxCell id="n1" value="&lt;b&gt;回报 G&lt;sub&gt;t&lt;/sub&gt;&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;G&lt;sub&gt;t&lt;/sub&gt; = Σ&lt;sub&gt;k&lt;/sub&gt; γ&lt;sup&gt;k&lt;/sup&gt;R&lt;sub&gt;t+k+1&lt;/sub&gt;&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;color:#7d7a73;font-size:11px&quot;&gt;从这一刻起，往后所有奖励打折加起来。&lt;br&gt;走一条轨迹得一个数——它是样本，不是估计&lt;/font&gt;"
+                style="rounded=1;arcSize=12;html=1;fillColor=#f3ece3;strokeColor=#8a5a2b;fontColor=#1c1b19;fontSize=13;verticalAlign=middle;spacingTop=2;spacingBottom=2;"
+                vertex="1" parent="1"><mxGeometry x="180" y="40" width="320" height="92" as="geometry"/></mxCell>
 
-        <mxCell id="n2" value="&lt;b&gt;策略 π(a|s)&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;Σ&lt;sub&gt;a&lt;/sub&gt; π(a|s) = 1&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;在状态 s 时该怎么挑动作。&lt;br&gt;环境给定，&lt;b&gt;它是你唯一能改的东西&lt;/b&gt;&lt;/font&gt;"
-                style="rounded=1;arcSize=12;html=1;fillColor=#f3ece3;strokeColor=#8a5a2b;fontColor=#1c1b19;fontSize=13;"
-                vertex="1" parent="1"><mxGeometry x="180" y="164" width="320" height="84" as="geometry"/></mxCell>
+        <mxCell id="n2" value="&lt;b&gt;策略 π(a|s)&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;Σ&lt;sub&gt;a&lt;/sub&gt; π(a|s) = 1&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;color:#7d7a73;font-size:11px&quot;&gt;在状态 s 时该怎么挑动作。&lt;br&gt;环境是给定的，&lt;b&gt;它是你唯一能改的东西&lt;/b&gt;&lt;/font&gt;"
+                style="rounded=1;arcSize=12;html=1;fillColor=#f3ece3;strokeColor=#8a5a2b;fontColor=#1c1b19;fontSize=13;verticalAlign=middle;spacingTop=2;spacingBottom=2;"
+                vertex="1" parent="1"><mxGeometry x="180" y="172" width="320" height="92" as="geometry"/></mxCell>
 
-        <mxCell id="n3" value="&lt;b&gt;状态价值 V&lt;sup&gt;π&lt;/sup&gt;(s)&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;E&lt;sub&gt;π&lt;/sub&gt;[ G&lt;sub&gt;t&lt;/sub&gt; | S&lt;sub&gt;t&lt;/sub&gt;=s ]&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;站在 s，此后&lt;b&gt;一直照 π 走&lt;/b&gt;，&lt;br&gt;平均能拿多少&lt;/font&gt;"
-                style="rounded=1;arcSize=12;html=1;fillColor=#faf9f7;strokeColor=#e5e2dc;fontColor=#1c1b19;fontSize=13;"
-                vertex="1" parent="1"><mxGeometry x="20" y="288" width="300" height="84" as="geometry"/></mxCell>
+        <mxCell id="n3" value="&lt;b&gt;状态价值 V&lt;sup&gt;π&lt;/sup&gt;(s)&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;E&lt;sub&gt;π&lt;/sub&gt;[ G&lt;sub&gt;t&lt;/sub&gt; | S&lt;sub&gt;t&lt;/sub&gt;=s ]&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;color:#7d7a73;font-size:11px&quot;&gt;站在 s，此后&lt;b&gt;一直照 π 走&lt;/b&gt;，&lt;br&gt;平均能拿多少&lt;/font&gt;"
+                style="rounded=1;arcSize=12;html=1;fillColor=#faf9f7;strokeColor=#e5e2dc;fontColor=#1c1b19;fontSize=13;verticalAlign=middle;spacingTop=2;spacingBottom=2;"
+                vertex="1" parent="1"><mxGeometry x="20" y="304" width="300" height="92" as="geometry"/></mxCell>
 
-        <mxCell id="n4" value="&lt;b&gt;动作价值 Q&lt;sup&gt;π&lt;/sup&gt;(s,a)&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;E&lt;sub&gt;π&lt;/sub&gt;[ G&lt;sub&gt;t&lt;/sub&gt; | S&lt;sub&gt;t&lt;/sub&gt;=s, A&lt;sub&gt;t&lt;/sub&gt;=a ]&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;站在 s，&lt;b&gt;这一步先走 a&lt;/b&gt;，&lt;br&gt;之后才照 π 走，平均能拿多少&lt;/font&gt;"
-                style="rounded=1;arcSize=12;html=1;fillColor=#faf9f7;strokeColor=#e5e2dc;fontColor=#1c1b19;fontSize=13;"
-                vertex="1" parent="1"><mxGeometry x="360" y="288" width="300" height="84" as="geometry"/></mxCell>
+        <mxCell id="n4" value="&lt;b&gt;动作价值 Q&lt;sup&gt;π&lt;/sup&gt;(s,a)&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;E&lt;sub&gt;π&lt;/sub&gt;[ G&lt;sub&gt;t&lt;/sub&gt; | S&lt;sub&gt;t&lt;/sub&gt;=s, A&lt;sub&gt;t&lt;/sub&gt;=a ]&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;color:#7d7a73;font-size:11px&quot;&gt;站在 s，&lt;b&gt;这一步先走 a&lt;/b&gt;，&lt;br&gt;之后才照 π 走，平均能拿多少&lt;/font&gt;"
+                style="rounded=1;arcSize=12;html=1;fillColor=#faf9f7;strokeColor=#e5e2dc;fontColor=#1c1b19;fontSize=13;verticalAlign=middle;spacingTop=2;spacingBottom=2;"
+                vertex="1" parent="1"><mxGeometry x="360" y="304" width="300" height="92" as="geometry"/></mxCell>
 
-        <mxCell id="n5" value="&lt;b&gt;优势 A&lt;sup&gt;π&lt;/sup&gt;(s,a)&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;A&lt;sup&gt;π&lt;/sup&gt;(s,a) = Q&lt;sup&gt;π&lt;/sup&gt;(s,a) − V&lt;sup&gt;π&lt;/sup&gt;(s)&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;在状态 s 下选动作 a，相比于&lt;b&gt;「按当前策略正常发挥」&lt;/b&gt;，&lt;br&gt;到底好多少。按策略平均必然为 0&lt;/font&gt;"
-                style="rounded=1;arcSize=12;html=1;fillColor=#faf9f7;strokeColor=#e5e2dc;fontColor=#1c1b19;fontSize=13;"
-                vertex="1" parent="1"><mxGeometry x="150" y="412" width="380" height="84" as="geometry"/></mxCell>
+        <mxCell id="n5" value="&lt;b&gt;优势 A&lt;sup&gt;π&lt;/sup&gt;(s,a)&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;A&lt;sup&gt;π&lt;/sup&gt;(s,a) = Q&lt;sup&gt;π&lt;/sup&gt;(s,a) − V&lt;sup&gt;π&lt;/sup&gt;(s)&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;color:#7d7a73;font-size:11px&quot;&gt;在状态 s 下选动作 a，相比于&lt;b&gt;「按当前策略正常发挥」&lt;/b&gt;，&lt;br&gt;到底好多少。按策略平均必然等于 0&lt;/font&gt;"
+                style="rounded=1;arcSize=12;html=1;fillColor=#faf9f7;strokeColor=#e5e2dc;fontColor=#1c1b19;fontSize=13;verticalAlign=middle;spacingTop=2;spacingBottom=2;"
+                vertex="1" parent="1"><mxGeometry x="150" y="436" width="380" height="92" as="geometry"/></mxCell>
 
-        <mxCell id="n6" value="&lt;b&gt;Bellman 期望方程&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;V&lt;sup&gt;π&lt;/sup&gt;(s) = Σ&lt;sub&gt;a&lt;/sub&gt; π(a|s) Σ&lt;sub&gt;s′&lt;/sub&gt; P(s′|s,a) [ R + γV&lt;sup&gt;π&lt;/sup&gt;(s′) ]&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;把无穷长的和&lt;b&gt;改写成「这一步 + 下一格的值」&lt;/b&gt;。&lt;br&gt;定义只能理解，方程才能计算&lt;/font&gt;"
-                style="rounded=1;arcSize=12;html=1;fillColor=#faf9f7;strokeColor=#e5e2dc;fontColor=#1c1b19;fontSize=13;"
-                vertex="1" parent="1"><mxGeometry x="100" y="536" width="480" height="84" as="geometry"/></mxCell>
+        <mxCell id="n6" value="&lt;b&gt;Bellman 期望方程&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;V&lt;sup&gt;π&lt;/sup&gt;(s) = Σ&lt;sub&gt;a&lt;/sub&gt; π(a|s) Σ&lt;sub&gt;s′&lt;/sub&gt; P(s′|s,a) [ R + γV&lt;sup&gt;π&lt;/sup&gt;(s′) ]&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;color:#7d7a73;font-size:11px&quot;&gt;把无穷长的和&lt;b&gt;改写成「这一步 + 下一格的值」&lt;/b&gt;。&lt;br&gt;定义只能拿来理解，方程才能拿来计算&lt;/font&gt;"
+                style="rounded=1;arcSize=12;html=1;fillColor=#faf9f7;strokeColor=#e5e2dc;fontColor=#1c1b19;fontSize=13;verticalAlign=middle;spacingTop=2;spacingBottom=2;"
+                vertex="1" parent="1"><mxGeometry x="100" y="568" width="480" height="92" as="geometry"/></mxCell>
 
-        <mxCell id="n7" value="&lt;b&gt;最优值函数 V⋆ / Q⋆&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;V⋆(s) = max&lt;sub&gt;a&lt;/sub&gt; [ R + γ Σ&lt;sub&gt;s′&lt;/sub&gt; P(s′|s,a) V⋆(s′) ]&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;所有走法里&lt;b&gt;最好的那一种&lt;/b&gt;能拿多少。&lt;br&gt;与上式只差一处：Σ&lt;sub&gt;a&lt;/sub&gt;π 换成 max&lt;sub&gt;a&lt;/sub&gt;，于是变成非线性&lt;/font&gt;"
-                style="rounded=1;arcSize=12;html=1;fillColor=#f3ece3;strokeColor=#8a5a2b;fontColor=#1c1b19;fontSize=13;"
-                vertex="1" parent="1"><mxGeometry x="100" y="660" width="480" height="84" as="geometry"/></mxCell>
+        <mxCell id="n7" value="&lt;b&gt;最优值函数 V⋆ / Q⋆&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;V⋆(s) = max&lt;sub&gt;a&lt;/sub&gt; [ R + γ Σ&lt;sub&gt;s′&lt;/sub&gt; P(s′|s,a) V⋆(s′) ]&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;color:#7d7a73;font-size:11px&quot;&gt;所有走法里&lt;b&gt;最好的那一种&lt;/b&gt;能拿多少。&lt;br&gt;与上式只差一处：Σ&lt;sub&gt;a&lt;/sub&gt;π 换成 max&lt;sub&gt;a&lt;/sub&gt;，于是变成非线性&lt;/font&gt;"
+                style="rounded=1;arcSize=12;html=1;fillColor=#f3ece3;strokeColor=#8a5a2b;fontColor=#1c1b19;fontSize=13;verticalAlign=middle;spacingTop=2;spacingBottom=2;"
+                vertex="1" parent="1"><mxGeometry x="100" y="700" width="480" height="92" as="geometry"/></mxCell>
 
-        <mxCell id="n8" value="&lt;b&gt;最优策略 π⋆&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;π⋆(s) = argmax&lt;sub&gt;a&lt;/sub&gt; Q⋆(s,a)&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;有了 Q⋆，选动作只剩&lt;b&gt;「这一行里挑最大」&lt;/b&gt;。&lt;br&gt;max 取的是值，argmax 取的是动作&lt;/font&gt;"
-                style="rounded=1;arcSize=12;html=1;fillColor=#f3ece3;strokeColor=#8a5a2b;fontColor=#1c1b19;fontSize=13;"
-                vertex="1" parent="1"><mxGeometry x="180" y="784" width="320" height="84" as="geometry"/></mxCell>
+        <mxCell id="n8" value="&lt;b&gt;最优策略 π⋆&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-family:Georgia,serif;font-size:12px&quot;&gt;π⋆(s) = argmax&lt;sub&gt;a&lt;/sub&gt; Q⋆(s,a)&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;color:#7d7a73;font-size:11px&quot;&gt;有了 Q⋆，选动作只剩&lt;b&gt;「这一行里挑最大」&lt;/b&gt;。&lt;br&gt;max 取的是值，argmax 取的是动作&lt;/font&gt;"
+                style="rounded=1;arcSize=12;html=1;fillColor=#f3ece3;strokeColor=#8a5a2b;fontColor=#1c1b19;fontSize=13;verticalAlign=middle;spacingTop=2;spacingBottom=2;"
+                vertex="1" parent="1"><mxGeometry x="180" y="832" width="320" height="92" as="geometry"/></mxCell>
 
-        <mxCell id="e1" value="要先说清按谁的走法算" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a5a2b;strokeWidth=1.6;endArrow=blockThin;endFill=1;fontSize=11;fontColor=#7d7a73;"
+        <mxCell id="e1" value="要先说清按谁的走法算" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a5a2b;strokeWidth=1.6;endArrow=blockThin;endFill=1;fontSize=11;fontColor=#7d7a73;labelBackgroundColor=none;"
                 edge="1" parent="1" source="n1" target="n2"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e2" value="对 G 取期望" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a5a2b;strokeWidth=1.6;endArrow=blockThin;endFill=1;fontSize=11;fontColor=#7d7a73;"
+        <mxCell id="e2" value="对 G 取期望" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a5a2b;strokeWidth=1.6;endArrow=blockThin;endFill=1;fontSize=11;fontColor=#7d7a73;labelBackgroundColor=none;"
                 edge="1" parent="1" source="n2" target="n3"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e3" value="多钉死第一步" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a5a2b;strokeWidth=1.6;endArrow=blockThin;endFill=1;fontSize=11;fontColor=#7d7a73;"
+        <mxCell id="e3" value="多钉死第一步" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a5a2b;strokeWidth=1.6;endArrow=blockThin;endFill=1;fontSize=11;fontColor=#7d7a73;labelBackgroundColor=none;"
                 edge="1" parent="1" source="n2" target="n4"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e4" value="相减" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#e5e2dc;strokeWidth=1.4;endArrow=blockThin;dashed=1;fontSize=11;fontColor=#7d7a73;"
+        <mxCell id="e4" value="相减" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#e5e2dc;strokeWidth=1.4;endArrow=blockThin;dashed=1;fontSize=11;fontColor=#7d7a73;labelBackgroundColor=none;"
                 edge="1" parent="1" source="n4" target="n5"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e5" value="当基准" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#e5e2dc;strokeWidth=1.4;endArrow=blockThin;dashed=1;fontSize=11;fontColor=#7d7a73;"
+        <mxCell id="e5" value="当基准" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#e5e2dc;strokeWidth=1.4;endArrow=blockThin;dashed=1;fontSize=11;fontColor=#7d7a73;labelBackgroundColor=none;"
                 edge="1" parent="1" source="n3" target="n5"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e6" value="展开一步，写成递推" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a5a2b;strokeWidth=1.6;endArrow=blockThin;endFill=1;fontSize=11;fontColor=#7d7a73;"
+        <mxCell id="e6" value="展开一步，写成递推" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a5a2b;strokeWidth=1.6;endArrow=blockThin;endFill=1;fontSize=11;fontColor=#7d7a73;labelBackgroundColor=none;"
                 edge="1" parent="1" source="n5" target="n6"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e7" value="Σ&lt;sub&gt;a&lt;/sub&gt;π 换成 max&lt;sub&gt;a&lt;/sub&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a5a2b;strokeWidth=1.6;endArrow=blockThin;endFill=1;fontSize=11;fontColor=#a8551f;"
+        <mxCell id="e7" value="Σ&lt;sub&gt;a&lt;/sub&gt;π 换成 max&lt;sub&gt;a&lt;/sub&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a5a2b;strokeWidth=1.6;endArrow=blockThin;endFill=1;fontSize=11;fontColor=#a8551f;labelBackgroundColor=none;"
                 edge="1" parent="1" source="n6" target="n7"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e8" value="取 argmax" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a5a2b;strokeWidth=1.6;endArrow=blockThin;endFill=1;fontSize=11;fontColor=#7d7a73;"
+        <mxCell id="e8" value="取 argmax" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a5a2b;strokeWidth=1.6;endArrow=blockThin;endFill=1;fontSize=11;fontColor=#7d7a73;labelBackgroundColor=none;"
                 edge="1" parent="1" source="n7" target="n8"><mxGeometry relative="1" as="geometry"/></mxCell>
 
       </root>

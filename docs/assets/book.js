@@ -142,6 +142,9 @@
   (function(){
     var root=document.querySelector('.content'); if(!root) return;
     var RE=/(?:第\s*(\d+)\s*课\s*)?§\s*(\d+)(?:\.(\d+))?/g;
+    /* 讲义页在 docs/，每日一问在 docs/daily/，跨章链接要带上对应前缀 */
+    var css=document.querySelector('link[rel="stylesheet"]');
+    var PRE=(css&&/^\.\.\//.test(css.getAttribute('href')))?'../':'';
     var SKIP={A:1,CODE:1,H1:1,H2:1,H3:1,SCRIPT:1,STYLE:1,BUTTON:1};
     var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null), nodes=[], n;
     while((n=walker.nextNode())){
@@ -156,7 +159,7 @@
         out.appendChild(document.createTextNode(t.nodeValue.slice(last,m.index)));
         var ch=m[1], sec=m[2], sub=m[3];
         var id='sec-'+sec+(sub?'-'+sub:'');
-        var href=ch!==undefined ? 'ch'+ch+'.html#'+id : '#'+id;
+        var href=ch!==undefined ? PRE+'ch'+ch+'.html#'+id : '#'+id;
         /* 本页链接：目标不存在就不加链接，避免死链 */
         if(ch===undefined && !document.getElementById(id)){
           out.appendChild(document.createTextNode(m[0])); last=RE.lastIndex; continue;

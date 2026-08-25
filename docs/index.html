@@ -94,7 +94,7 @@
 
 <section class="stage" id="s0">
   <div class="stage-head"><span class="num">STAGE 0</span><h2>马尔可夫决策过程与动态规划</h2></div>
-  <p class="why">这一阶段建立语言、算法与<b>全部数学工具</b>：概率与期望、线性代数、分析与优化、信息论与贝叶斯都在这里交代清楚，后面各阶段随用随查。不学任何「花哨算法」，只建立语言和唯一一台机器。90% 的 RL 论文看不懂，是因为这一层没有推熟，而不是因为网络结构没见过。<b>Stage 1 往后的每一个算法，都是在这台机器上做减法。</b></p>
+  <p class="why">这一阶段建立语言、算法与<b>全部数学工具</b>：概率与期望、线性代数、分析与优化、信息论与贝叶斯都在这里交代清楚，后面各阶段随用随查。不学任何「花哨算法」，只建立语言和那一个算子。90% 的 RL 论文看不懂，是因为这一层没有推熟，而不是因为网络结构没见过。<b>Stage 1 往后的每一个算法，都是在这台机器上做减法。</b></p>
 
   <div class="block">
     <h4>核心概念</h4>
@@ -130,7 +130,7 @@
       <li><b>时序差分 TD(0)</b>：只走一步，用 r + γV(s′) 当目标——<b>没走完的部分用自己的旧估计顶上</b>（自举）。有偏，但方差小、能在线、不需要终止</li>
       <li><b>自举的四个后果</b>：有偏 · 方差小 · 能在线 · 以及它是致命三角的第二条腿。看任何算法先找它的目标里有没有「自己」</li>
       <li><b>步长 α 与 Robbins–Monro 条件</b>：∑α<sub>t</sub> = ∞、∑α<sub>t</sub>² &lt; ∞；什么时候必须衰减，什么时候固定也行</li>
-      <li><b>certainty equivalence</b>：TD 为什么往往比 MC 快——它免费用上了马尔可夫结构</li>
+      <li><b>certainty equivalence</b>：TD 为什么往往比 MC 快——它额外用上了马尔可夫结构</li>
     </ul>
     <div class="substep" id="s0-5">⑤ SARSA：on-policy 控制　<span class="loc">第 4 课 · 待写</span></div>
     <ul class="algos">
@@ -143,7 +143,7 @@
 <div class="substep" id="s0-6">⑥ 数学工具 · 概率与期望　<span class="loc">随用随查</span></div>
     <ul class="algos">
       <li><b>期望 E[X]</b>：Bellman 方程里那个 E 就是它。转移带随机时「落点的值」不是一个数，是一组数按概率加权——<b>P(s′|s,a) 对固定的 (s,a) 求和等于 1</b>，这条保证了加权平均落回一个具体的数</li>
-      <li><b>期望的线性性</b>：E[aX + b] = aE[X] + b。γ-压缩证明里「−1 那一笔抵消、0.9 提到括号外」靠的就是它</li>
+      <li><b>期望的线性性</b>：E[aX + b] = aE[X] + b。γ-压缩证明里「−1 那一项抵消、0.9 提到括号外」靠的就是它</li>
       <li><b>条件期望与全期望公式</b>：E[X] = E[ E[X | Y] ]。「先走一步、再看剩下的」之所以能拆开写，全靠这一条——Bellman 方程本身就是它的一个实例</li>
       <li><b>马尔可夫性</b>：给定当前状态，未来与历史无关。它是「值只写成 s 的函数」这件事成立的前提；一旦不成立，就是 POMDP</li>
       <li><b>大数定律</b>：样本均值收敛到期望。蒙特卡罗为什么能用真实回报当目标，理由只有这一条</li>
@@ -153,7 +153,7 @@
     <ul class="algos">
       <li><b>矩阵乘向量</b>：固定策略时 T<sup>π</sup> 就是一次矩阵乘加一个常向量</li>
       <li><b>解线性方程组</b>：策略评估的闭式解 (I − γP<sup>π</sup>)V = r<sup>π</sup></li>
-      <li><b>范数</b>：L1 / L2 / <b>sup 范数 ‖·‖<sub>∞</sub></b>。收缩证明只在 sup 范数下成立，换成加权 L2 就是 Stage 1 出事的地方</li>
+      <li><b>范数</b>：L1 / L2 / <b>sup 范数 ‖·‖<sub>∞</sub></b>。收缩证明只在 sup 范数下成立，换成加权 L2 就是 Stage 1 失效的地方</li>
     </ul>
     <div class="substep" id="s0-8">⑧ 数学工具 · 分析与优化　<span class="loc">随用随查</span></div>
     <ul class="algos">
@@ -230,7 +230,7 @@
       <li><b><span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -1.126ex;" xmlns="http://www.w3.org/2000/svg" width="3.909ex" height="3.083ex" role="img" focusable="false" viewBox="0 -864.9 1727.6 1362.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mfrac"><g data-mml-node="mn" transform="translate(687,394) scale(0.707)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g><g data-mml-node="mrow" transform="translate(220,-345) scale(0.707)"><g data-mml-node="mn"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g><g data-mml-node="mo" transform="translate(500,0)"><use data-c="2212" xlink:href="#MJX-TEX-N-2212"></use></g><g data-mml-node="mi" transform="translate(1278,0)"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g><rect width="1487.6" height="60" x="120" y="220"></rect></g></g></g></svg></span> 是所有近似误差的公共放大器</b>——<span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span>=0.9 时它是 9 倍、0.99 时是 99 倍。迭代没刷够、网格太粗、模型不准，误差最后都要乘上它才是值函数上的误差；<span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> 越接近 1，你对每一处近似的容忍度就越低。</li>
       <li><b>确定性时值迭代是有限步精确收敛，随机之后才真是「几何逼近」</b>——4×4 仓库里确定性 7 遍到底，地面加上 10% 打滑就要 32 遍，而且永远差一点点。<b>期望一进来，你就必须知道转移概率</b>——<b>把这一样拿掉，正是第 3 课（蒙特卡罗与时序差分）要做的第一件事</b>。</li>
       <li><b>策略改进定理只保证「逐格不降」，不保证一步到位</b>——对「一律往右」改进一次，10 个格子换了方向、每一格的值都没变差，但左上角仍然是 −10（从撞墙变成绕圈）。它是策略迭代收敛的全部依据，也是 actor-critic 里「actor 朝 critic 指的方向挪」的原始版本。</li>
-      <li><b>轮数少 ≠ 算得少</b>——4×4 仓库里策略迭代 5 轮收敛、值迭代 7 轮；但按「一次动作评估」统一记账，策略迭代花了 3796 次，值迭代只花 364 次，差 10 倍。「轮」不是统一的计量单位：策略迭代<b>光第一轮就要 264 次评估扫描</b>，值迭代的一轮只有一次。</li>
+      <li><b>轮数少 ≠ 算得少</b>——4×4 仓库里策略迭代 5 轮收敛、值迭代 7 轮；但按「一次动作评估」<b>同一个口径</b>数，策略迭代花了 3796 次，值迭代只花 364 次，差 10 倍。「轮」不是统一的计量单位：策略迭代<b>光第一轮就要 264 次评估扫描</b>，值迭代的一轮只有一次。</li>
     </ul>
   </div>
 
@@ -251,8 +251,8 @@
     <div class="substep" id="s1-1">① Q-learning 与 off-policy　<span class="loc">第 5 课 · 待写</span></div>
     <ul class="algos">
       <li><b>一个符号的差别</b>：SARSA 的目标用<b>采样到的</b> a′，Q-learning 换成 <b>max<sub>a′</sub></b>。行为策略与学习目标从此分家——这就是 <b>off-policy</b></li>
-      <li><b>它买到了什么</b>：可以用任意来源的数据学最优策略——旧策略的、别人的、存在盘里的。<b>replay buffer、离线 RL、示教数据全都建立在这条上</b></li>
-      <li><b>为什么不用重要性采样</b>：一步目标里的 max 是查表不是采样，没有「按策略平均」这件事需要重新称重。<b>这份免费只到一步为止</b></li>
+      <li><b>它换来了什么</b>：可以用任意来源的数据学最优策略——旧策略的、别人的、存在盘里的。<b>replay buffer、离线 RL、示教数据全都建立在这条上</b></li>
+      <li><b>为什么不用重要性采样</b>：一步目标里的 max 是查表不是采样，没有「按策略平均」这件事需要重新称重。<b>这个便利只到一步为止</b></li>
       <li><b>最大化偏差</b>：E[max] ≥ max E（Jensen）。max 作用在带噪估计上会系统性偏乐观</li>
       <li><b>Double Q-learning</b>：把「选哪个」和「值多少」拆给两张表——后面 Double DQN 的表格原型</li>
       <li><b>收敛条件</b>：表格情形下 Q-learning 依概率 1 收敛到 Q⋆，需要的条件比想象的严（每个 (s,a) 被访问无穷多次）</li>
@@ -262,11 +262,11 @@
     <ul class="algos">
       <li><b>n-step TD 与 TD(<span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.027ex;" xmlns="http://www.w3.org/2000/svg" width="1.319ex" height="1.597ex" role="img" focusable="false" viewBox="0 -694 583 706" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D706" xlink:href="#MJX-TEX-I-1D706"></use></g></g></g></svg></span>)</b>：资格迹、前向视角 ↔ 后向视角等价性证明</li>
       <li><b>前向视角 ↔ 后向视角</b>：资格迹是「把惊讶发回给走过的每一格」</li>
-      <li><b>Dyna-Q</b>：第一次接触「模型」的用法，为后面「基于模型的强化学习」那一节埋线</li>
-      <li><b>优先扫描</b>：更新顺序值多少钱，以及它什么时候不值钱</li>
+      <li><b>Dyna-Q</b>：第一次接触「模型」的用法，为后面「基于模型的强化学习」那一节做铺垫</li>
+      <li><b>优先扫描</b>：换一个更新顺序能省下多少次备份，以及它什么时候省不下来</li>
       <li><b>重要性采样</b>：ordinary vs weighted IS，方差可以无穷大的例子</li>
       <li><b>per-decision IS</b> 与 Retrace(λ) / V-trace / Tree Backup 的统一框架</li>
-      <li><b>Q-learning 为什么不用 IS</b>：max 是免费的特例解——replay buffer 能成立全靠这条</li>
+      <li><b>Q-learning 为什么不用 IS</b>：max 是不需要重新称重的特例——replay buffer 能成立全靠这条</li>
     </ul>
     <div class="substep" id="s1-3">③ 值函数逼近　<span class="loc">第 7 课 · 待写</span></div>
     <ul class="algos">
@@ -307,7 +307,7 @@
       <li><b>SARSA 与 Q-learning 学的不是同一个东西</b>：一个学「含探索的自己」，一个学「一个它并没有在执行的策略」。</li>
       <li><b>n 和 λ 是同一把旋钮的两种拧法</b>，而最优的永远在中间——两个极端都不是。</li>
       <li><b>致命三角不是「三条腿齐了必炸」，是一条危险性提示</b>：同一份代码只换随机种子，可能 7 个炸、1 个稳。</li>
-      <li><b>泛化是红利，天花板是账单</b>：逼近器能让你用更少参数追平表格法，也能让学出来的值整团越过数学上限。</li>
+      <li><b>泛化是收益，越过数学上限是代价</b>：逼近器能让你用更少参数追平表格法，也能让学出来的值整团越过数学上限。</li>
       <li><b>DQN 三个补丁各修一处</b>：target network 补收敛性本身，replay 补数据分布，Double 补 max 的偏差。</li>
     </ul>
   </div>

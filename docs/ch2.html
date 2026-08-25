@@ -455,6 +455,8 @@
 
 <div class="math"><span class="plainmath">π<sub>0</sub> &nbsp;<span style="color:var(--ink-3)">—评估→</span>&nbsp; <i>V</i><sup>π<sub>0</sub></sup> &nbsp;<span style="color:var(--ink-3)">—改进→</span>&nbsp; π<sub>1</sub> &nbsp;<span style="color:var(--ink-3)">—评估→</span>&nbsp; <i>V</i><sup>π<sub>1</sub></sup> &nbsp;<span style="color:var(--ink-3)">—改进→</span>&nbsp; ⋯ &nbsp;→&nbsp; π⋆<br>停机条件：&nbsp; π<sub>k+1</sub> = π<sub>k</sub> &nbsp;⟺&nbsp; <i>V</i><sup>π<sub>k</sub></sup> 已满足 Bellman <b>最优</b>方程</span></div>
 
+<p>这条链读一遍就够了：<b>先给一个随便的策略，算出它的值表；照着值表把策略改好；再算新策略的值表，再改……直到某一轮改完策略一个格子都没变，就停。</b></p>
+
 <p class="small">停机条件那一步值得多看一眼：策略不再变，说明它已经<b>对自己的分数表贪心</b>，即 π(s) = argmax<sub>a</sub> <i>Q</i><sup>π</sup>(s,a)，于是 <i>V</i><sup>π</sup>(s) = max<sub>a</sub> <i>Q</i><sup>π</sup>(s,a)——这正是 Bellman 最优方程。<b>「策略不动」和「拿到最优解」是同一件事</b>，不是近似。</p>
 
 <p>两件事凑成一个循环：<b>评估到底 → 贪心改一次 → 再评估到底 → 再改一次……</b>直到某一轮改进后策略一个格子都没变，就说明它已经对自己的分数表贪心了——那正是 Bellman 最优方程的定义，答案到手。</p>

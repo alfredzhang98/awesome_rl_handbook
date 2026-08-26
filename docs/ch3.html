@@ -51,17 +51,16 @@
 .plainmath sup,.plainmath sub{font-size:.68em}
 .plainmath i{font-style:italic;padding-right:.04em}
 .mtx{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;max-width:250px;margin:0 auto}
-.mtx .c{position:relative;aspect-ratio:1;border:1px solid var(--line-2);border-radius:7px;
+.mtx .c{position:relative;overflow:hidden;aspect-ratio:1;border:1px solid var(--line-2);border-radius:7px;
  display:flex;align-items:center;justify-content:center;font-size:13px;font-variant-numeric:tabular-nums;
  background:var(--accent-soft);color:var(--ink)}
 .mtx .c.shelf{background:var(--line);color:var(--ink-3);font-size:10px}
 .mtx .c.goal{border-color:var(--accent);border-width:2px}
 .mtx .c.now{outline:2px solid var(--accent);outline-offset:1px}
-.mtx .c i{position:absolute;top:2px;left:4px;font-size:9px;font-style:normal;color:var(--ink-3);z-index:1}
-.mtx .c .bg{position:absolute;inset:0;border-radius:6px;background:var(--accent);opacity:0}
-.mtx .c>span.bg+i,.mtx .c{position:relative}
-.mtx .c{z-index:0}
-.mtx .c .bg~*{position:relative;z-index:1}
+.mtx .c i{position:absolute;top:3px;left:5px;font-size:9px;font-style:normal;
+ color:var(--ink-3);line-height:1;z-index:2}
+.mtx .c .bg{position:absolute;inset:0;background:var(--accent);opacity:0;z-index:0}
+.mtx .c .v{position:relative;z-index:2}
 .mtwo{display:flex;gap:26px;flex-wrap:wrap;justify-content:center;margin:6px 0 12px}
 .mcol{flex:1 1 250px;max-width:290px}
 .mcol .cap{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);
@@ -578,7 +577,7 @@
     var err=Math.min(1,Math.abs(V[k]-TRUE[k])/5.2);
     var cls='c'+(k===GOAL?' goal':'');
     return '<div class="'+cls+'"><span class="bg" style="opacity:'+(err*0.55).toFixed(3)+'"></span>'+
-           '<i>'+k+'</i>'+(k===GOAL?'0':V[k].toFixed(2))+'</div>';
+           '<i>'+k+'</i><span class="v">'+(k===GOAL?'0':V[k].toFixed(2))+'</span></div>';
   }
   function draw(){
     var a='',b='';

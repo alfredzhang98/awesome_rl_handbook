@@ -41,7 +41,7 @@
 <header>
   <div class="kicker">第三课 · Stage 0</div>
   <h1>蒙特卡罗与时序差分</h1>
-  <div class="from"><span class="fa">承接</span>第 2 课那副<b>骨架</b>。<span class="sep">·</span>这一课松开第 <b>①</b> 处——<b>模型 P 不给了</b>，期望只能靠采样估；骨架的其余部分一个字不动。</div>
+  <div class="from"><span class="fa">承接</span>第 2 课那副<b>骨架</b>。<span class="sep">·</span>这一课换掉第 <b>①</b> 处——<b>转移概率 <i>P</i> 不再已知</b>，期望只能靠采样估；骨架的其余部分一个字不动。</div>
   <p class="lede"><b>第 2 课那四个算法，每一个都要查一次 <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>)。</b>真机上没有人会把这张表交给你——地面多滑、轮子打不打转，只有真的走一趟才知道。<b>这一课把 <i>P</i> 拿走，别的一个字不改</b>：同一间仓库、同一个策略、同一张真值表，只是算法不再被允许查转移概率，只能看采样出来的轨迹。两条路各走一遍——<strong>蒙特卡罗</strong>等整条轨迹跑完再算，<strong>时序差分</strong>只走一步就更新——它们的差别，正是后面每一个算法都要重新称一次的那杆秤：<strong>偏差与方差</strong>。</p>
 </header>
 

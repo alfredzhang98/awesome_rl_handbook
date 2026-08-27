@@ -48,6 +48,12 @@ h1{font-size:28px;line-height:1.32;margin:0 0 12px;letter-spacing:-.01em}
 .from b{color:var(--ink-2);font-weight:600}
 .from .sep{margin:0 9px;opacity:.5}
 
+/* 节首承接：上一节交出了什么，这一节接着解决什么 */
+.lead{margin:-4px 0 20px;padding-left:13px;border-left:2px solid var(--line-2);
+ font-size:13.5px;line-height:1.95;color:var(--ink-3)}
+.lead b{color:var(--ink-2);font-weight:600}
+
+
 
 p{margin:14px 0}
 h3{font-size:16px;margin:30px 0 6px}

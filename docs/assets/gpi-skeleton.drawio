@@ -1,0 +1,39 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="gpi-skeleton" id="0">
+    <mxGraphModel dx="1200" dy="900" grid="0" page="0" background="none">
+      <root>
+        <mxCell id="0"/><mxCell id="1" parent="0"/>
+
+        <mxCell id="hub" value="&lt;b&gt;这一课交出的骨架&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:12px&quot;&gt;策略评估 &amp;#8646; 策略改进，交替到策略不再变&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;广义策略迭代（generalized policy iteration）&lt;/font&gt;"
+                style="rounded=1;arcSize=12;html=1;fillColor=#f3ece3;strokeColor=#8a5a2b;fontColor=#1c1b19;fontSize=13;verticalAlign=middle;"
+                vertex="1" parent="1"><mxGeometry x="120" y="14" width="440" height="82" as="geometry"/></mxCell>
+
+        <mxCell id="b1" value="&lt;b&gt;① 评估的目标从哪来&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#8a5a2b&quot; style=&quot;font-size:10.5px&quot;&gt;本课&lt;/font&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;　查转移概率 P，算出精确的期望&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#8a5a2b&quot; style=&quot;font-size:10.5px&quot;&gt;第 3 课&lt;/font&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;　整幕的真实回报 G（蒙特卡罗）／ 一步的 R + γV(s′)（时序差分）&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#8a5a2b&quot; style=&quot;font-size:10.5px&quot;&gt;Stage 1&lt;/font&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;　往前看 n 步、TD(λ)——把 1 步和整幕之间填满&lt;/font&gt;"
+                style="rounded=1;arcSize=10;html=1;fillColor=#faf9f7;strokeColor=#e5e2dc;fontColor=#1c1b19;fontSize=13;align=left;spacingLeft=14;verticalAlign=middle;"
+                vertex="1" parent="1"><mxGeometry x="62" y="128" width="600" height="92" as="geometry"/></mxCell>
+
+        <mxCell id="b2" value="&lt;b&gt;② 每轮评估做多少&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#8a5a2b&quot; style=&quot;font-size:10.5px&quot;&gt;本课&lt;/font&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;　∞ 遍（策略迭代）↔ 1 遍（值迭代），§8.1 那根旋钮 m&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#8a5a2b&quot; style=&quot;font-size:10.5px&quot;&gt;Stage 2&lt;/font&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;　critic 只做几步不完全的评估——actor-critic 就是 m 很小的那一档&lt;/font&gt;"
+                style="rounded=1;arcSize=10;html=1;fillColor=#faf9f7;strokeColor=#e5e2dc;fontColor=#1c1b19;fontSize=13;align=left;spacingLeft=14;verticalAlign=middle;"
+                vertex="1" parent="1"><mxGeometry x="62" y="232" width="600" height="92" as="geometry"/></mxCell>
+
+        <mxCell id="b3" value="&lt;b&gt;③ 改进怎么做&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#8a5a2b&quot; style=&quot;font-size:10.5px&quot;&gt;本课&lt;/font&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;　对 V 取 argmax——但挑动作还要查 P&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#8a5a2b&quot; style=&quot;font-size:10.5px&quot;&gt;第 4 课&lt;/font&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;　改成对 Q 取 argmax，不再需要 P；再套上 ε-greedy 兼顾探索&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#8a5a2b&quot; style=&quot;font-size:10.5px&quot;&gt;Stage 2&lt;/font&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;　不再取 max：把策略当参数，沿梯度挪一点&lt;/font&gt;"
+                style="rounded=1;arcSize=10;html=1;fillColor=#faf9f7;strokeColor=#e5e2dc;fontColor=#1c1b19;fontSize=13;align=left;spacingLeft=14;verticalAlign=middle;"
+                vertex="1" parent="1"><mxGeometry x="62" y="336" width="600" height="92" as="geometry"/></mxCell>
+
+        <mxCell id="b4" value="&lt;b&gt;④ 值表怎么存&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#8a5a2b&quot; style=&quot;font-size:10.5px&quot;&gt;本课&lt;/font&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;　14 个格子，一格一个数，能印在纸上&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#8a5a2b&quot; style=&quot;font-size:10.5px&quot;&gt;Stage 1&lt;/font&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;　线性逼近 → 神经网络（DQN）；状态可以很大甚至连续&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#a8551f&quot; style=&quot;font-size:10.5px&quot;&gt;代价&lt;/font&gt;&lt;font color=&quot;#7d7a73&quot; style=&quot;font-size:11px&quot;&gt;　函数逼近 + 自举 + off-policy 凑齐，收敛保证全部失效&lt;/font&gt;"
+                style="rounded=1;arcSize=10;html=1;fillColor=#faf9f7;strokeColor=#e5e2dc;fontColor=#1c1b19;fontSize=13;align=left;spacingLeft=14;verticalAlign=middle;"
+                vertex="1" parent="1"><mxGeometry x="62" y="440" width="600" height="92" as="geometry"/></mxCell>
+
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#e5e2dc;strokeWidth=1.4;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0;entryY=0.5;"
+                edge="1" parent="1" source="hub" target="b1"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="30" y="112"/><mxPoint x="30" y="174"/></Array></mxGeometry></mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#e5e2dc;strokeWidth=1.4;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0;entryY=0.5;"
+                edge="1" parent="1" source="hub" target="b2"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="30" y="112"/><mxPoint x="30" y="278"/></Array></mxGeometry></mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#e5e2dc;strokeWidth=1.4;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0;entryY=0.5;"
+                edge="1" parent="1" source="hub" target="b3"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="30" y="112"/><mxPoint x="30" y="382"/></Array></mxGeometry></mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#e5e2dc;strokeWidth=1.4;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0;entryY=0.5;"
+                edge="1" parent="1" source="hub" target="b4"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="30" y="112"/><mxPoint x="30" y="486"/></Array></mxGeometry></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

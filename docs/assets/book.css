@@ -42,6 +42,14 @@ header{border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:34p
 h1{font-size:28px;line-height:1.32;margin:0 0 12px;letter-spacing:-.01em}
 .lede,.sub{color:var(--ink-2);font-size:15.5px;margin:0}
 .meta{color:var(--ink-3);font-size:13px;margin-top:16px}
+/* 每课开头「本课围绕」：一句话点明这一课动的是哪一格 */
+.focus{margin:20px 0 2px;padding:11px 16px;border:1px solid var(--line-2);border-radius:10px;
+ background:var(--panel);color:var(--ink-2);font-size:14.5px;line-height:1.85}
+.focus b{color:var(--ink)}
+.focus .fk{display:inline-block;font-size:11px;letter-spacing:.08em;font-weight:700;
+ color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:1px 10px;
+ margin-right:10px;vertical-align:1px;white-space:nowrap}
+
 p{margin:14px 0}
 h3{font-size:16px;margin:30px 0 6px}
 ul,ol{padding-left:22px;margin:14px 0}

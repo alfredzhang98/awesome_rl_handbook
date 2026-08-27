@@ -13,6 +13,8 @@
   <button class="menu-btn" id="menuBtn" aria-label="目录">☰</button>
   <span class="tb-title">动态规划</span>
 </header>
+
+<div class="focus"><span class="fk">本课围绕</span><b>把那两个方程改写成能跑的更新规则</b>，由此得到一副骨架：<b>评估 ↔ 改进，交替到策略不再变</b>。§11.1 会把这副骨架画出来——<b>后面每一课都不换骨架，只换其中一个零件</b>。</div>
 <aside class="sidebar" id="sidebar">
   <div class="sb-brand"><a href="index.html">Awesome RL Handbook</a><a class="sb-sub" href="https://github.com/alfredzhang98" target="_blank" rel="noopener">@alfredzhang98</a></div>
   <nav class="sb-nav">
@@ -597,6 +599,31 @@
 <li><b>DP 是后面所有方法的模板</b>，不是一个会被淘汰的老算法。它的两个限制——<b>要有完整的 P</b>、<b>每次扫描都要碰遍整个状态空间</b>——决定了后面每一步在改什么：蒙特卡罗<b>去掉模型</b>，改用整条轨迹的真实回报；时序差分<b>留下自举</b>，但只用一条采样的转移；Q-learning 把这里的<b>最优备份原样搬到采样出来的动作价值上</b>。<b>换掉的是「怎么拿到那一步的信息」，没换的是这一课的更新骨架。</b></li>
 </ol>
 
+
+<h3>11.1　后面每一课在改哪一格</h3>
+
+<p><b>这一课交出的不是四个算法，是一副骨架：评估 ↔ 改进，交替到策略不再变。</b>后面每一课都不换骨架，<b>只换其中一个零件</b>。哪一个零件被换掉，就是那一课真正的主题——先看图，再看表：</p>
+
+<div class="gpiwrap"><svg class="gpisvg" viewBox="0 0 680 552" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="广义策略迭代骨架，以及后面每一课在改哪一个零件"><defs><marker id="gpa" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs><rect class="bx hi" x="120" y="14" width="440" height="82" rx="10"/><text class="t c" x="340" y="36">这一课交出的骨架</text><text class="f c" x="340" y="60">策略评估 &#8646; 策略改进，交替到策略不再变</text><text class="d c" x="340" y="80">广义策略迭代（generalized policy iteration）</text><path class="ln" d="M340,96 L340,112 M30,112 L340,112 M30,112 L30,486"/><path class="ln" d="M30,174 L56,174" marker-end="url(#gpa)"/><rect class="bx" x="62" y="128" width="600" height="92" rx="10"/><text class="t" x="80" y="152">① 评估的目标从哪来</text><text class="lb" x="80" y="174">本课</text><text class="d" x="140" y="174">查转移概率 P，算出精确的期望</text><text class="lb" x="80" y="192">第 3 课</text><text class="d" x="140" y="192">整幕的真实回报 G（蒙特卡罗）／ 一步的 R + γV(s′)（时序差分）</text><text class="lb" x="80" y="210">Stage 1</text><text class="d" x="140" y="210">往前看 n 步、TD(λ)——把 1 步和整幕之间填满</text><path class="ln" d="M30,278 L56,278" marker-end="url(#gpa)"/><rect class="bx" x="62" y="232" width="600" height="92" rx="10"/><text class="t" x="80" y="256">② 每轮评估做多少</text><text class="lb" x="80" y="278">本课</text><text class="d" x="140" y="278">∞ 遍（策略迭代）↔ 1 遍（值迭代），§8.1 那根旋钮 m</text><text class="lb" x="80" y="296">Stage 2</text><text class="d" x="140" y="296">critic 只做几步不完全的评估——actor-critic 就是 m 很小的那一档</text><path class="ln" d="M30,382 L56,382" marker-end="url(#gpa)"/><rect class="bx" x="62" y="336" width="600" height="92" rx="10"/><text class="t" x="80" y="360">③ 改进怎么做</text><text class="lb" x="80" y="382">本课</text><text class="d" x="140" y="382">对 V 取 argmax——但挑动作还要查 P</text><text class="lb" x="80" y="400">第 4 课</text><text class="d" x="140" y="400">改成对 Q 取 argmax，不再需要 P；再套上 ε-greedy 兼顾探索</text><text class="lb" x="80" y="418">Stage 2</text><text class="d" x="140" y="418">不再取 max：把策略当参数，沿梯度挪一点</text><path class="ln" d="M30,486 L56,486" marker-end="url(#gpa)"/><rect class="bx" x="62" y="440" width="600" height="92" rx="10"/><text class="t" x="80" y="464">④ 值表怎么存</text><text class="lb" x="80" y="486">本课</text><text class="d" x="140" y="486">14 个格子，一格一个数，能印在纸上</text><text class="lb" x="80" y="504">Stage 1</text><text class="d" x="140" y="504">线性逼近 → 神经网络（DQN）；状态可以很大甚至连续</text><text class="lb" x="80" y="522">代价</text><text class="d" x="140" y="522">函数逼近 + 自举 + off-policy 凑齐，收敛保证全部失效</text></svg></div>
+
+<p class="small" style="text-align:center">源文件 <code>docs/assets/gpi-skeleton.drawio</code>（draw.io 打开可改）。</p>
+
+<div class="tscroll">
+<table>
+<tr><th>在哪</th><th>换掉的是哪一格</th><th>换成什么</th><th>换来什么 / 代价</th></tr>
+<tr><td><b>本课</b></td><td><b>骨架本身</b></td><td>评估 ↔ 改进交替</td><td>收敛有保证、停机界算得出；但要完整的 <i>P</i>，每轮还要扫遍全部状态</td></tr>
+<tr><td><b>第 3 课</b><br>MC / TD</td><td>① 评估的目标</td><td>查 <i>P</i> 算期望 → 采样：整幕的 <i>G</i> 或一步的 <i>R</i>+γ<i>V</i></td><td>不再需要 <i>P</i>；换来的新问题是偏差与方差</td></tr>
+<tr><td><b>第 4 课</b><br>SARSA</td><td>③ 改进怎么做<br>（顺带把 V 换成 Q）</td><td>对 <i>Q</i> 取 argmax + ε-greedy</td><td>选动作彻底不用 <i>P</i>；但学到的是「含探索在内的自己」</td></tr>
+<tr><td><b>Stage 1</b><br>Q-learning</td><td>① 评估目标里的那个动作</td><td>采样到的 <i>a</i>′ → max<sub><i>a</i>′</sub></td><td>行为与目标分家（off-policy）；带来最大化偏差</td></tr>
+<tr><td><b>Stage 1</b><br>n 步 / TD(λ)</td><td>① 评估往前看几步</td><td>1 步 → <i>n</i> 步 → 加权平均</td><td>偏差-方差之间多了一个旋钮</td></tr>
+<tr><td><b>Stage 1</b><br>函数逼近 / DQN</td><td>④ 值表怎么存</td><td>查表 → 线性逼近 → 神经网络</td><td>状态可以很大甚至连续；但收敛保证全部失效（致命三角）</td></tr>
+<tr><td><b>Stage 2</b><br>策略梯度 / AC</td><td>③ 改进怎么做<br>② 每轮评估做多少</td><td>argmax → 沿梯度挪；critic 只做几步评估</td><td>连续动作可解；但方差大、数据用一次就作废</td></tr>
+</table>
+</div>
+
+<div class="key"><b>把这张表倒过来读，就是每一课的主题句。</b>第 3 课不是「又来两个新算法」，是<b>把①换掉</b>；DQN 不是「加了个神经网络」，是<b>把④换掉之后去收拾烂摊子</b>。<b>骨架从这一课起就没再变过</b>——这就是 §11 第 8 条说的「DP 是后面所有方法的模板」的准确含义。</div>
+
+
 <footer>
 下一阶段（Stage 1）把转移概率 P 彻底拿走，只留下一条条真跑出来的轨迹。你会看到本课的「评估 ↔ 改进」骨架怎么在只有样本的条件下继续成立，而这一课的 V<sup>⋆</sup> 与 Q<sup>⋆</sup> 正好当那把量误差的尺子。<br>
 本课所有数字与插图都由随附的 <code>code/01_dp.ipynb</code>（§1 那张 3×4 网格的逐层 dp 表、贪心与暴力的对照）和 <code>code/grid_dp.py</code> 生成（策略评估的两条路、策略改进定理的逐格验证、策略迭代与值迭代的备份计数、Q 表）。整跑不到 1 秒。
@@ -668,6 +695,20 @@ table.gridtab td.shelf{color:var(--ink-3)}
 .gw-cell.now{outline:2px solid var(--accent);outline-offset:1px}
 .gw-cell.fin{border-color:var(--ink-3)}
 .gw-cell i{position:absolute;top:3px;left:5px;font-size:9px;font-style:normal;color:var(--ink-3)}
+</style>
+<style>
+.gpiwrap{margin:22px 0}
+.gpisvg{width:100%;max-width:680px;display:block;margin:0 auto;color:var(--accent)}
+.gpisvg text{text-anchor:start;dominant-baseline:middle}
+.gpisvg text.c{text-anchor:middle}
+.gpisvg .bx{fill:var(--panel);stroke:var(--line-2);stroke-width:1}
+.gpisvg .bx.hi{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.4}
+.gpisvg .t{fill:var(--ink);font-size:13.5px;font-weight:700}
+.gpisvg .f{fill:var(--ink);font-size:12.5px;font-weight:600}
+.gpisvg .lb{fill:var(--accent);font-size:10.5px;font-weight:700}
+.gpisvg .d{fill:var(--ink-3);font-size:11px}
+.gpisvg .ln{stroke:var(--line-2);stroke-width:1.4;fill:none}
+@media(max-width:620px){.gpiwrap{overflow-x:auto}.gpisvg{min-width:600px}}
 </style>
 </section>
 </div>

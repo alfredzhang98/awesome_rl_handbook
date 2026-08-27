@@ -536,7 +536,7 @@
 <tr><td>SARSA</td><td><i>R</i> + γ<i>Q</i>(<i>s</i>′,<i>a</i>′)，<i>a</i>′ 是<b>采样</b>来的</td><td>自己（含探索）</td><td><i>Q</i></td><td>下一课</td></tr>
 <tr><td>Q-learning</td><td><i>R</i> + γ <b>max</b><sub><i>a</i>′</sub> <i>Q</i>(<i>s</i>′,<i>a</i>′)</td><td>最优策略</td><td><i>Q</i></td><td>Stage 1</td></tr>
 <tr><td>DQN</td><td>同 Q-learning，只是 <i>Q</i> 换成网络</td><td>最优策略</td><td><i>Q</i>（参数）</td><td>Stage 1</td></tr>
-<tr><td>Actor-Critic</td><td>critic 做<b>几步不完全</b>的评估</td><td>自己</td><td><i>V</i>/<i>Q</i> ＋ 显式的 π</td><td>Stage 2</td></tr>
+<tr><td>Actor-Critic</td><td>critic <b>只刷几步</b>就交给 actor</td><td>自己</td><td><i>V</i>/<i>Q</i> ＋ 显式的 π</td><td>Stage 2</td></tr>
 </table>
 </div>
 

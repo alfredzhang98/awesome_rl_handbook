@@ -21,6 +21,38 @@
 - `h1`：**两行**。第一行白话现象（「没有模型的时候」「把表换成函数」），第二行术语或副题。
 - `.lede`：3 句以内。第一句接住上一课，第二句说这一课拿掉/加上了什么，第三句给一个「你会看到」。
 
+## 1b. `.from` / `.lead` / `.nx` 三条连接线
+
+把「一课接一课、一节接一节」落到版面上的三个小组件，都是灰字小号，不抢正文。
+
+```html
+<!-- h1 下面：这一课接住上一课的什么 -->
+<div class="from"><span class="fa">承接</span>上一课那两个<b>方程</b>。<span class="sep">·</span>这一课把方程改写成能跑的更新规则。</div>
+
+<!-- 每个 h2 下面：上一节交出了什么 / 还缺什么 / 这一节干什么 -->
+<div class="lead">§5 让值迭代跑起来了，7 遍之后表就不再变——<b>可那是实测结果，不是保证</b>。这一节给出保证。</div>
+
+<!-- 节末：这一节的做法往后在哪一步被换掉 -->
+<div class="nx"><span class="h">往下会被换掉的地方</span>
+<b>这一节的评估靠 Σ P(s′|s,a) 成立。</b>真机上没人给你这张表……</div>
+```
+
+```css
+.from{margin:10px 0 16px;font-size:13px;color:var(--ink-3);line-height:1.9}
+.from .fa{color:var(--accent);font-weight:700;margin-right:8px}
+.lead{margin:-4px 0 20px;padding-left:13px;border-left:2px solid var(--line-2);
+ font-size:13.5px;line-height:1.95;color:var(--ink-3)}
+.lead b{color:var(--ink-2);font-weight:600}
+.nx{background:var(--accent-soft);border-left:3px solid var(--accent);
+ border-radius:0 10px 10px 0;padding:14px 18px;margin:22px 0;
+ font-size:14.5px;line-height:1.95;color:var(--ink-2)}
+.nx .h{display:block;font-size:11px;letter-spacing:.09em;font-weight:700;
+ color:var(--accent);margin-bottom:5px}
+```
+
+- `.lead` 每节都有（习题、小结除外）；`.nx` 只给「这一节的做法后面会被替换」的那几节。
+- 三者都不许和正文首段说同一句话——重了就把首段那句挪进来。
+
 ## 2. `.big` 领读句
 
 把定义翻译成大白话，通常带 `＝`。一节最多一个，放在正式定义**之前**。

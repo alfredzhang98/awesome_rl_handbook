@@ -41,6 +41,7 @@
 <header>
   <div class="kicker">第二课 · Stage 0</div>
   <h1>动态规划</h1>
+  <div class="from"><span class="fa">承接</span>第 1 课那<b>两个方程</b>。<span class="sep">·</span>这一课把方程改写成能跑的更新规则，交出全书的骨架：<b>评估 &#8646; 改进</b>。§11.1 会把它和后面所有内容的关系画出来。</div>
   <p class="lede"><b>第 1 课交出的是一组方程</b>——Bellman 期望方程与最优方程，它们说的是「值必须满足什么」。但方程本身<b>算不出任何一个数</b>：未知量在等号两边同时出现，你没法照着它把表填出来。<b>这一课做的就是一件事：把那些方程改写成「更新规则」，反复用，直到表不再变。</b>这就是<strong>动态规划</strong>——它不是与 MDP 并列的另一套理论，而是<b>把 MDP 的方程变成可执行算法的第一种办法</b>。讲全之后会发现，<strong>策略评估、策略改进、策略迭代、值迭代</strong>这四个算法都卡在同一样东西上：<strong>转移规则</strong>。</p>
 </header>
 
@@ -438,6 +439,13 @@
 
 <p class="small">既然能一次解出来，为什么还要迭代？因为消元的代价是状态数的三次方（14 格无所谓，百万格就免谈），而且<b>一旦转移规则不在手里，方程根本列不出来</b>——迭代那条路只需要「能采样」，这就是它能一直延续到深度强化学习的原因。</p>
 
+<div class="nx"><span class="h">往下会被换掉的地方</span>
+<b>这一节的评估靠一样东西成立：<i>Σ</i><sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>)。</b>只有把转移概率一个个查出来，那个期望才算得成一个精确的数。<b>可真机上没有人会给你这张表</b>——地面今天多滑、货架有没有被挪走，都不写在任何地方。
+于是<b>第 3 课把期望换成采样</b>：跑完一整幕、用真实拿到的回报 <i>G</i> 当目标（蒙特卡罗），或者只走一步、用 <i>R</i>+γ<i>V</i>(<i>s</i>′) 当目标（时序差分）。<b>P 就此退场。</b>
+<b>但采样自己带来一对新麻烦：偏差与方差。</b>蒙特卡罗无偏，可单条轨迹抖得厉害；时序差分抖得小，可它引用的 <i>V</i>(<i>s</i>′) 本身还没算准，是有偏的。
+<b>于是又有了在两者之间调的办法</b>：往前看 <i>n</i> 步、TD(λ)、GAE——把「看一步」和「看整幕」之间填满，让你自己选一个折中点。
+<b>剩下的限制</b>：不管换成哪一种，评估都还要为<b>每一个状态存一个数</b>。状态一多就存不下——那是 §11.1 里第 ⑤ 支的事（值函数逼近、DQN）。</div>
+
 <h2><span class="n">§ 6</span>策略改进</h2>
 
 <p><b>这一节走的是 4.4 那张表的第二行：右边照的还是同一条式子，但结果写回<u>策略表</u>而不是值表。</b></p>
@@ -467,6 +475,14 @@
 
 <p class="small">注意一个反直觉的细节：这一次改进之后，左上角的值<b>还是 -10.0</b>。10 个格子改了方向，但改完仍然到不了桩——只是从「撞墙」变成了「绕圈」。<b>改进保证不变差，可没保证一步到位。</b></p>
 
+<div class="nx"><span class="h">往下会被换掉的地方</span>
+<b>这一节的改进也卡在 <i>P</i> 上，而且卡得更死。</b>看那个 argmax 里的方括号：要比较四个动作，就得先知道每个动作会落到哪、概率各是多少。<b>就算评估那一步已经换成了采样，只要还用 <i>V</i> 挑动作，就仍然绕不开 <i>P</i>。</b>
+<b>所以第 4 课把 <i>V</i> 换成 <i>Q</i></b>：<span class="plainmath">π(<i>s</i>) = argmax<sub><i>a</i></sub> <i>Q</i>(<i>s</i>,<i>a</i>)</span> 只在这一格的四个数里挑最大，不再需要 <i>P</i>。<b>代价是表大了 4 倍</b>（52 个数对 14 个数）。
+<b>可一旦要自己产生数据，新问题就来了：不试就没有数据。</b>全按当前最优走，没试过的动作永远不会被试，你也就永远不知道它是不是更好。
+<b>于是有了 ε-greedy</b>：大部分时候按最优走，留一点概率随便试。<b>但它又带来第三个问题</b>——这样学到的是「<b>含探索在内的自己</b>」（SARSA），不是那个最优策略。
+<b>Q-learning 才把这一条解开</b>：把目标里那个采样来的动作换成 max，<b>行为可以随便探索，学到的却是最优策略</b>（Stage 1）。
+<b>剩下的限制</b>：argmax 要求动作能一个个枚举。动作一连续就枚举不了——那时只能换成「把策略当参数、沿梯度挪」（Stage 2）。</div>
+
 <h2><span class="n">§ 7</span>策略迭代</h2>
 
 <p><b>这一节走的是 4.4 那张表的第三行：前两节那两步交替做，两张表轮流被改。</b>写成定义：</p>
@@ -488,6 +504,12 @@
 <b>五轮收敛，但前三轮左上角一直停在 −10。</b>信息是一格一格往外传的：每做一次改进，「能到桩」的区域才往外扩一圈，直到第 4 轮才连通到左上角。<b>而第 5 轮改了 0 格——策略已经稳住，这一轮纯粹是确认。</b><br><br>
 策略迭代有一个重要性质：<b>策略只有有限多种</b>（这里 13 格各 4 选 1），而每轮都严格变好、绝不回头，所以它<b>必然在有限轮内停</b>。值迭代没有这个保证，它是几何逼近，理论上永远差一点点（这间仓库因为是确定性最短路，才恰好在第 7 遍精确收敛）。
 </div>
+
+<div class="nx"><span class="h">往下会被换掉的地方</span>
+<b>这一节把评估做到底，代价上面那张表已经写清楚了：光第一轮就要 264 遍扫描。</b>而做到底其实没有必要——反正评估完马上就要改策略，把分数算到小数点后十二位再改，前面那些位白算了。
+<b>所以 §8 的值迭代把评估减到一遍</b>，§8.1 再把「每轮评估几遍」抽成一根旋钮 <i>m</i>：<b>1 是值迭代，∞ 是策略迭代，中间连续可调。</b>
+<b>这根旋钮后面一直在用。</b>Stage 2 的 actor-critic 就是 <i>m</i> 很小的那一档——critic 做几步不完全的评估，actor 做一次不彻底的改进，交替往前推。
+<b>剩下的限制</b>：这根旋钮在采样的世界里还成立，但两端的代价会重新洗牌。查表时「评估到底」只是多扫几遍；<b>换成采样之后，「到底」意味着要多跑成百上千幕</b>，于是实践中几乎没人再把 <i>m</i> 调到大。</div>
 
 <h2><span class="n">§ 8</span>值迭代</h2>
 
@@ -521,6 +543,14 @@
 <p>这条轴有个名字：<b>广义策略迭代（generalized policy iteration）</b>。<b>评估想让值表配得上当前策略，改进想让策略配得上当前值表</b>。两件事互相打断——<b>一方刚做完，另一方的结果就不再准确</b>，于是只能交替往前推。至于每次各做多少，是可以调的。<b>后面的算法只是把这个旋钮调到不同位置</b>：值迭代调到最小，而 Stage 1 之后的方法连「扫全表」都做不到，只能拿采样到的几条转移做很少几次评估。</p>
 
 <p class="small">「备份」在这一课的口径统一成<b>一次动作评估</b>——算一次「<i>r</i> + γ·落点的值」。所以：评估扫一遍 = 13 次（每格只算它选定的那个动作），取最大或改进一遍 = 52 次（每格 4 个动作全试）。<b>这和上一课的说法不同</b>：上一课把「一格上 4 个动作试一遍、取最大写回」整体叫<b>一次备份</b>；这一课改按单个动作计，是为了让<b>没有 max 的评估</b>和<b>有 max 的改进</b>能放在同一把尺子上比。换算是固定的：上一课的一次备份 ＝ 这里的 4 次。</p>
+
+<div class="nx"><span class="h">往下会被换掉的地方</span>
+<b>值迭代把这一课压到了最短，但那个 max 里面仍然坐着 <i>Σ</i><sub><i>s</i>′</sub> <i>P</i>。</b>
+<b>把它搬到 <i>Q</i> 上、再把期望换成采样，就是 Q-learning</b>——所以 <b>Q-learning 就是值迭代的采样版</b>，正如 SARSA 是 <i>m</i> = 1 那一档策略迭代的采样版。这两组对应关系值得直接记住。
+<b>可 max 一旦作用在带噪的估计上，就会系统性地偏乐观</b>：E[max] ≥ max E（Jensen 不等式）。查表时每个数都是精确的，看不出来；采样之后每个 <i>Q</i> 都带噪，取最大等于专挑那些「运气好、被高估」的动作。
+<b>于是有了 Double Q-learning</b>：把「选哪个动作」和「那个动作值多少」拆给两张表，谁也别既当选手又当裁判。后面 Double DQN 就是它的网络版。
+<b>再往后，状态一多表存不下</b>，只能把表换成网络（DQN）。<b>而这一换，函数逼近、自举、off-policy 三样凑齐——收敛保证全部失效，就是致命三角。</b>replay buffer 与 target network 这两个补丁是拿来按住它的。
+<b>剩下的限制</b>：<b>补丁不是定理。</b>这一课那条「必然收敛、还能算出离答案多远」的保证，从换成网络那一刻起就再也没有回来过。</div>
 
 <h2><span class="n">§ 9</span>计算代价：轮数与总更新次数</h2>
 
@@ -578,29 +608,38 @@
 </ol>
 
 
-<h3>11.1　后面每一课在改哪一格</h3>
+<h3>11.1　这一课在整本书里的位置</h3>
 
-<p><b>这一课交出的不是四个算法，是一副骨架：评估 ↔ 改进，交替到策略不再变。</b>后面每一课都不换骨架，<b>只换其中一个零件</b>。哪一个零件被换掉，就是那一课真正的主题——先看图，再看表：</p>
+<p><b>这一课交出的不是四个算法，是一副骨架：在一个 MDP 上，用某种数据，反复做「评估 &#8646; 改进」。</b>后面所有的方法——一直到 RLHF——都没有换掉这副骨架，<b>只是把其中某一处松开</b>。整本书一共只松六处：</p>
 
-<div class="gpiwrap"><svg class="gpisvg" viewBox="0 0 680 552" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="广义策略迭代骨架，以及后面每一课在改哪一个零件"><defs><marker id="gpa" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs><rect class="bx hi" x="120" y="14" width="440" height="82" rx="10"/><text class="t c" x="340" y="36">这一课交出的骨架</text><text class="f c" x="340" y="60">策略评估 &#8646; 策略改进，交替到策略不再变</text><text class="d c" x="340" y="80">广义策略迭代（generalized policy iteration）</text><path class="ln" d="M340,96 L340,112 M30,112 L340,112 M30,112 L30,486"/><path class="ln" d="M30,174 L56,174" marker-end="url(#gpa)"/><rect class="bx" x="62" y="128" width="600" height="92" rx="10"/><text class="t" x="80" y="152">① 评估的目标从哪来</text><text class="lb" x="80" y="174">本课</text><text class="d" x="140" y="174">查转移概率 P，算出精确的期望</text><text class="lb" x="80" y="192">第 3 课</text><text class="d" x="140" y="192">整幕的真实回报 G（蒙特卡罗）／ 一步的 R + γV(s′)（时序差分）</text><text class="lb" x="80" y="210">Stage 1</text><text class="d" x="140" y="210">往前看 n 步、TD(λ)——把 1 步和整幕之间填满</text><path class="ln" d="M30,278 L56,278" marker-end="url(#gpa)"/><rect class="bx" x="62" y="232" width="600" height="92" rx="10"/><text class="t" x="80" y="256">② 每轮评估做多少</text><text class="lb" x="80" y="278">本课</text><text class="d" x="140" y="278">∞ 遍（策略迭代）↔ 1 遍（值迭代），§8.1 那根旋钮 m</text><text class="lb" x="80" y="296">Stage 2</text><text class="d" x="140" y="296">critic 只做几步不完全的评估——actor-critic 就是 m 很小的那一档</text><path class="ln" d="M30,382 L56,382" marker-end="url(#gpa)"/><rect class="bx" x="62" y="336" width="600" height="92" rx="10"/><text class="t" x="80" y="360">③ 改进怎么做</text><text class="lb" x="80" y="382">本课</text><text class="d" x="140" y="382">对 V 取 argmax——但挑动作还要查 P</text><text class="lb" x="80" y="400">第 4 课</text><text class="d" x="140" y="400">改成对 Q 取 argmax，不再需要 P；再套上 ε-greedy 兼顾探索</text><text class="lb" x="80" y="418">Stage 2</text><text class="d" x="140" y="418">不再取 max：把策略当参数，沿梯度挪一点</text><path class="ln" d="M30,486 L56,486" marker-end="url(#gpa)"/><rect class="bx" x="62" y="440" width="600" height="92" rx="10"/><text class="t" x="80" y="464">④ 值表怎么存</text><text class="lb" x="80" y="486">本课</text><text class="d" x="140" y="486">14 个格子，一格一个数，能印在纸上</text><text class="lb" x="80" y="504">Stage 1</text><text class="d" x="140" y="504">线性逼近 → 神经网络（DQN）；状态可以很大甚至连续</text><text class="lb" x="80" y="522">代价</text><text class="d" x="140" y="522">函数逼近 + 自举 + off-policy 凑齐，收敛保证全部失效</text></svg></div>
+<div class="gpiwrap"><svg class="gpisvg" viewBox="0 0 760 833" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="整本书的框架：六个可动的地方，以及每一支下面对应的方法"><defs><marker id="gpa" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs><rect class="bx hi" x="150" y="14" width="460" height="86" rx="10"/><text class="t c" x="380" y="38">整本书都在做同一件事</text><text class="f c" x="380" y="62">在一个 MDP 上，用某种数据，反复做「评估 &#8646; 改进」</text><text class="d c" x="380" y="82">下面六处各松开一次，就长出后面全部的方法</text><path class="ln" d="M380,100 L380,116 M30,116 L380,116 M30,116 L30,770"/><path class="ln" d="M30,178 L58,178" marker-end="url(#gpa)"/><rect class="bx" x="64" y="134" width="680" height="89" rx="10"/><text class="t" x="82" y="156">① 模型 P 给不给</text><text class="lb" x="82" y="178">给了</text><text class="d" x="280" y="178">动态规划：策略评估 / 改进 / 策略迭代 / 值迭代</text><text class="wh" x="728" y="178">第 2 课</text><text class="lb" x="82" y="195">不给，只能采样</text><text class="d" x="280" y="195">蒙特卡罗、时序差分、SARSA、Q-learning</text><text class="wh" x="728" y="195">第 3 课起</text><text class="lb" x="82" y="212">不给，但自己学一个</text><text class="d" x="280" y="212">Dyna、PILCO、Dreamer——学完再回到这一支的第一行</text><text class="wh" x="728" y="212">专题</text><path class="ln" d="M30,281 L58,281" marker-end="url(#gpa)"/><rect class="bx" x="64" y="237" width="680" height="89" rx="10"/><text class="t" x="82" y="259">② 评估怎么做：看多远、做几遍</text><text class="lb" x="82" y="281">目标看多远</text><text class="d" x="280" y="281">一步（TD(0)）· n 步 · 整幕（MC）· 加权平均（TD(λ)、GAE）</text><text class="wh" x="728" y="281">第 3 课 / Stage 1</text><text class="lb" x="82" y="298">做几遍再改进</text><text class="d" x="280" y="298">旋钮 m：1 遍是值迭代，∞ 遍是策略迭代</text><text class="wh" x="728" y="298">第 2 课 §8.1</text><text class="lb" x="82" y="315">只做几步不完全的评估</text><text class="d" x="280" y="315">actor-critic 里的 critic</text><text class="wh" x="728" y="315">Stage 2</text><path class="ln" d="M30,393 L58,393" marker-end="url(#gpa)"/><rect class="bx" x="64" y="340" width="680" height="106" rx="10"/><text class="t" x="82" y="362">③ 改进怎么做</text><text class="lb" x="82" y="384">对值表取 argmax</text><text class="d" x="280" y="384">策略改进、值迭代——但挑动作要查 P</text><text class="wh" x="728" y="384">第 2 课</text><text class="lb" x="82" y="401">对 Q 取 argmax，留一点探索</text><text class="d" x="280" y="401">ε-greedy、SARSA——挑动作不再要 P</text><text class="wh" x="728" y="401">第 4 课</text><text class="lb" x="82" y="418">不再取 max，把策略当参数沿梯度挪</text><text class="d" x="280" y="418">策略梯度、A2C/A3C——连续动作只能这样</text><text class="wh" x="728" y="418">Stage 2</text><text class="lb" x="82" y="435">给这一步套上约束</text><text class="d" x="280" y="435">TRPO、PPO、GRPO——限制一次别改太多</text><text class="wh" x="728" y="435">Stage 2</text><path class="ln" d="M30,513 L58,513" marker-end="url(#gpa)"/><rect class="bx" x="64" y="460" width="680" height="106" rx="10"/><text class="t" x="82" y="482">④ 数据从哪来</text><text class="lb" x="82" y="504">自己按当前策略采</text><text class="d" x="280" y="504">on-policy：SARSA、REINFORCE、PPO——数据用一次就作废</text><text class="wh" x="728" y="504">第 4 课 / Stage 2</text><text class="lb" x="82" y="521">用旧的、别人的</text><text class="d" x="280" y="521">off-policy：Q-learning、replay buffer、重要性采样</text><text class="wh" x="728" y="521">Stage 1</text><text class="lb" x="82" y="538">只有一个固定数据集，不能再交互</text><text class="d" x="280" y="538">离线 RL：BCQ、CQL、IQL</text><text class="wh" x="728" y="538">进阶</text><text class="lb" x="82" y="555">怎么采才采得到</text><text class="d" x="280" y="555">探索：ε-greedy、UCB、内在奖励</text><text class="wh" x="728" y="555">进阶</text><path class="ln" d="M30,641 L58,641" marker-end="url(#gpa)"/><rect class="bx" x="64" y="580" width="680" height="123" rx="10"/><text class="t" x="82" y="602">⑤ 值与策略怎么表示</text><text class="lb" x="82" y="624">一格一个数</text><text class="d" x="280" y="624">表格法——能印在纸上，收敛有保证</text><text class="wh" x="728" y="624">第 0–4 课</text><text class="lb" x="82" y="641">线性组合 / 神经网络</text><text class="d" x="280" y="641">值函数逼近、DQN 家族——状态可以很大甚至连续</text><text class="wh" x="728" y="641">Stage 1</text><text class="lb" x="82" y="658">存的不是一个数而是一个分布</text><text class="d" x="280" y="658">C51、QR-DQN、IQN</text><text class="wh" x="728" y="658">Stage 1</text><text class="lb" x="82" y="675">策略本身也参数化</text><text class="d" x="280" y="675">策略网络——动作连续时唯一的出路</text><text class="wh" x="728" y="675">Stage 2</text><text class="lb" x="82" y="692">代价</text><text class="d" x="280" y="692">函数逼近 + 自举 + off-policy 凑齐 ＝ 致命三角，收敛保证全失效</text><text class="wh" x="728" y="692">Stage 1</text><path class="ln" d="M30,770 L58,770" marker-end="url(#gpa)"/><rect class="bx" x="64" y="717" width="680" height="106" rx="10"/><text class="t" x="82" y="739">⑥ 奖励 r 从哪来</text><text class="lb" x="82" y="761">人手写</text><text class="d" x="280" y="761">前面全部——仓库里那个「每走一步 −1」就是手写的</text><text class="wh" x="728" y="761">第 0–4 课</text><text class="lb" x="82" y="778">从示范里反推</text><text class="d" x="280" y="778">行为克隆、逆强化学习</text><text class="wh" x="728" y="778">进阶</text><text class="lb" x="82" y="795">从偏好数据里学一个</text><text class="d" x="280" y="795">RLHF、DPO</text><text class="wh" x="728" y="795">专题</text><text class="lb" x="82" y="812">把「多探索」也写进目标</text><text class="d" x="280" y="812">最大熵 RL、SAC</text><text class="wh" x="728" y="812">Stage 2</text></svg></div>
 
 <p class="small" style="text-align:center">源文件 <code>docs/assets/gpi-skeleton.drawio</code>（draw.io 打开可改）。</p>
 
+<p><b>这六支不是并列的六个话题，是有先后的。</b>前三支（模型、评估、改进）是骨架内部的事，这一课已经把它们的「有模型」那一档做完了；后三支（数据、表示、奖励）是骨架外部的前提，<b>每松开一条，就多一类新方法，也多一类新麻烦</b>：</p>
+
 <div class="tscroll">
 <table>
-<tr><th>在哪</th><th>换掉的是哪一格</th><th>换成什么</th><th>换来什么 / 代价</th></tr>
-<tr><td><b>本课</b></td><td><b>骨架本身</b></td><td>评估 ↔ 改进交替</td><td>收敛有保证、停机界算得出；但要完整的 <i>P</i>，每轮还要扫遍全部状态</td></tr>
-<tr><td><b>第 3 课</b><br>MC / TD</td><td>① 评估的目标</td><td>查 <i>P</i> 算期望 → 采样：整幕的 <i>G</i> 或一步的 <i>R</i>+γ<i>V</i></td><td>不再需要 <i>P</i>；换来的新问题是偏差与方差</td></tr>
-<tr><td><b>第 4 课</b><br>SARSA</td><td>③ 改进怎么做<br>（顺带把 V 换成 Q）</td><td>对 <i>Q</i> 取 argmax + ε-greedy</td><td>选动作彻底不用 <i>P</i>；但学到的是「含探索在内的自己」</td></tr>
-<tr><td><b>Stage 1</b><br>Q-learning</td><td>① 评估目标里的那个动作</td><td>采样到的 <i>a</i>′ → max<sub><i>a</i>′</sub></td><td>行为与目标分家（off-policy）；带来最大化偏差</td></tr>
-<tr><td><b>Stage 1</b><br>n 步 / TD(λ)</td><td>① 评估往前看几步</td><td>1 步 → <i>n</i> 步 → 加权平均</td><td>偏差-方差之间多了一个旋钮</td></tr>
-<tr><td><b>Stage 1</b><br>函数逼近 / DQN</td><td>④ 值表怎么存</td><td>查表 → 线性逼近 → 神经网络</td><td>状态可以很大甚至连续；但收敛保证全部失效（致命三角）</td></tr>
-<tr><td><b>Stage 2</b><br>策略梯度 / AC</td><td>③ 改进怎么做<br>② 每轮评估做多少</td><td>argmax → 沿梯度挪；critic 只做几步评估</td><td>连续动作可解；但方差大、数据用一次就作废</td></tr>
+<tr><th>松开哪一处</th><th>换来什么</th><th>代价 / 新问题</th><th>在哪</th></tr>
+<tr><td><b>① 模型 P 不给了</b></td><td>不用再要转移概率表，能上真机</td><td>期望只能靠采样估——偏差与方差第一次登场</td><td>第 3 课</td></tr>
+<tr><td><b>③ 改进换成对 Q 取 argmax</b></td><td>连挑动作都不用 P 了</td><td>必须自己制造数据，于是要探索；学到的是「含探索在内的自己」</td><td>第 4 课</td></tr>
+<tr><td><b>④ 数据可以是别人的</b></td><td>旧经验能反复用（replay）、别人的数据也能学</td><td>行为与目标分家，max 作用在带噪估计上会系统性偏乐观</td><td>Stage 1</td></tr>
+<tr><td><b>⑤ 表换成函数</b></td><td>状态可以很大甚至连续，见过一个能泛化到附近</td><td><b>和 ①④ 凑齐就是致命三角</b>——收敛保证全部失效</td><td>Stage 1</td></tr>
+<tr><td><b>③ 改进换成沿梯度挪</b></td><td>动作连续也能做，策略可以是随机的</td><td>方差极大、on-policy、步子迈大了策略会崩</td><td>Stage 2</td></tr>
+<tr><td><b>⑥ 奖励也不给了</b></td><td>写不出奖励函数的任务也能做（示范、偏好）</td><td>奖励模型本身会被策略钻空子</td><td>进阶 / 专题</td></tr>
 </table>
 </div>
 
-<div class="key"><b>把这张表倒过来读，就是每一课的主题句。</b>第 3 课不是「又来两个新算法」，是<b>把①换掉</b>；DQN 不是「加了个神经网络」，是<b>把④换掉之后去收拾烂摊子</b>。<b>骨架从这一课起就没再变过</b>——这就是 §11 第 8 条说的「DP 是后面所有方法的模板」的准确含义。</div>
+<div class="key"><b>把这张表当成后面每一课的读法：先问它松开了哪一处，再问它拿什么去补新出来的麻烦。</b>第 3 课不是「又来两个新算法」，是<b>松开①</b>；DQN 不是「加了个神经网络」，是<b>松开⑤之后拿三个补丁去按住致命三角</b>。<b>骨架从这一课起就没再变过</b>——这是第 8 条那句「DP 是后面所有方法的模板」的准确含义。</div>
 
+<div class="nx"><span class="h">这本书剩下的部分怎么读</span>
+<b>到这里为止，全部保证都还在：解唯一、必然收敛、离答案多远算得出来。</b>代价是三个前提——<i>P</i> 在手、状态能枚举、动作能枚举。<b>后面每一课都是在拆其中一条，然后收拾拆完之后的后果。</b>
+<b>先拆「<i>P</i> 在手」</b>（第 3 课）：期望换成采样，换来能上真机，代价是偏差与方差。
+<b>再拆「挑动作也要 <i>P</i>」</b>（第 4 课）：<i>V</i> 换成 <i>Q</i>，代价是必须自己探索，而探索又让你学到「含探索的自己」；Q-learning 用一个 max 把这一条解开，代价是最大化偏差。
+<b>再拆「状态能枚举」</b>（Stage 1）：表换成网络，换来连续状态，代价是致命三角——<b>而这一步同时把前面拆开的两条也牵了进来，三样凑齐才出事。</b>
+<b>最后拆「动作能枚举」</b>（Stage 2）：argmax 换成沿梯度挪，换来连续控制，代价是方差极大、数据用一次就作废。
+<b>更外面还有两层</b>：奖励也写不出来时（模仿学习、逆强化学习、RLHF），以及模型不给但自己学一个时（Dyna、Dreamer）——后者绕一圈又回到这一课的四个算法。
+<b>所以这一课不是「老方法」，是那把尺子。</b>后面每一个技巧要么在补它被拆掉的某一条，要么在告诉你补不回来。</div>
 
 <footer>
 下一阶段（Stage 1）把转移概率 P 彻底拿走，只留下一条条真跑出来的轨迹。你会看到本课的「评估 ↔ 改进」骨架怎么在只有样本的条件下继续成立，而这一课的 V<sup>⋆</sup> 与 Q<sup>⋆</sup> 正好当那把量误差的尺子。<br>
@@ -676,7 +715,7 @@ table.gridtab td.shelf{color:var(--ink-3)}
 </style>
 <style>
 .gpiwrap{margin:22px 0}
-.gpisvg{width:100%;max-width:680px;display:block;margin:0 auto;color:var(--accent)}
+.gpisvg{width:100%;max-width:760px;display:block;margin:0 auto;color:var(--accent)}
 .gpisvg text{text-anchor:start;dominant-baseline:middle}
 .gpisvg text.c{text-anchor:middle}
 .gpisvg .bx{fill:var(--panel);stroke:var(--line-2);stroke-width:1}
@@ -685,8 +724,9 @@ table.gridtab td.shelf{color:var(--ink-3)}
 .gpisvg .f{fill:var(--ink);font-size:12.5px;font-weight:600}
 .gpisvg .lb{fill:var(--accent);font-size:10.5px;font-weight:700}
 .gpisvg .d{fill:var(--ink-3);font-size:11px}
+.gpisvg .wh{fill:var(--accent);font-size:10px;text-anchor:end;opacity:.85}
 .gpisvg .ln{stroke:var(--line-2);stroke-width:1.4;fill:none}
-@media(max-width:620px){.gpiwrap{overflow-x:auto}.gpisvg{min-width:600px}}
+@media(max-width:780px){.gpiwrap{overflow-x:auto}.gpisvg{min-width:700px}}
 </style>
 </section>
 </div>

@@ -41,8 +41,8 @@
 <header>
   <div class="kicker">第二课 · Stage 0</div>
   <h1>动态规划</h1>
-  <div class="from"><span class="fa">承接</span>第 1 课那<b>两个方程</b>。<span class="sep">·</span>这一课把方程改写成能跑的更新规则，交出全书的骨架：<b>评估 &#8646; 改进</b>。§11.1 会把它和后面所有内容的关系画出来。</div>
-  <p class="lede"><b>第 1 课交出的是一组方程</b>——Bellman 期望方程与最优方程，它们说的是「值必须满足什么」。但方程本身<b>算不出任何一个数</b>：未知量在等号两边同时出现，你没法照着它把表填出来。<b>这一课做的就是一件事：把那些方程改写成「更新规则」，反复用，直到表不再变。</b>这就是<strong>动态规划</strong>——它不是与 MDP 并列的另一套理论，而是<b>把 MDP 的方程变成可执行算法的第一种办法</b>。讲全之后会发现，<strong>策略评估、策略改进、策略迭代、值迭代</strong>这四个算法都卡在同一样东西上：<strong>转移规则</strong>。</p>
+  <div class="from"><span class="fa">承接</span>上一课那<b>两个方程</b>。<span class="sep">·</span>这一课把方程改写成能跑的更新规则，交出全书的骨架：<b>评估 &#8646; 改进</b>。§11.1 会把它和后面所有内容的关系画出来。</div>
+  <p class="lede"><b>上一课交出的是一组方程</b>——Bellman 期望方程与最优方程，它们说的是「值必须满足什么」。但方程本身<b>算不出任何一个数</b>：未知量在等号两边同时出现，你没法照着它把表填出来。<b>这一课做的就是一件事：把那些方程改写成「更新规则」，反复用，直到表不再变。</b>这就是<strong>动态规划</strong>——它不是与 MDP 并列的另一套理论，而是<b>把 MDP 的方程变成可执行算法的第一种办法</b>。讲全之后会发现，<strong>策略评估、策略改进、策略迭代、值迭代</strong>这四个算法都卡在同一样东西上：<strong>转移规则</strong>。</p>
 </header>
 
 <style>
@@ -214,12 +214,12 @@
 
 <p><b>值迭代本身就是一种 dp</b>，两者不对立。差别只有两处：<b>表有几张</b>，<b>每格装什么</b>。</p>
 
-<p><b>一、表有几张——看「还剩几步」是不是一个变量。</b>本节的 K 是题目规定的，改了 K 答案就变（K=5 最优 18 分停在终点，K=6 最优 20 分反而不停），所以每层是一个独立的答案，得全留着。第 1 课没有步数上限，γ &lt; 1 让远处的影响按 γ<sup>k</sup> 衰减，逼到某一步「剩几步」就不再影响答案——于是只剩「你在哪一格」，一张表反复覆写就够。<b>现成的证据：仓库里最远的格子离桩 6 步，值迭代 7 遍就精确收敛，再多给步数一个数都不会变。</b></p>
+<p><b>一、表有几张——看「还剩几步」是不是一个变量。</b>本节的 K 是题目规定的，改了 K 答案就变（K=5 最优 18 分停在终点，K=6 最优 20 分反而不停），所以每层是一个独立的答案，得全留着。上一课没有步数上限，γ &lt; 1 让远处的影响按 γ<sup>k</sup> 衰减，逼到某一步「剩几步」就不再影响答案——于是只剩「你在哪一格」，一张表反复覆写就够。<b>现成的证据：仓库里最远的格子离桩 6 步，值迭代 7 遍就精确收敛，再多给步数一个数都不会变。</b></p>
 
 <p><b>二、每格装什么——决定你最后拿到什么。</b></p>
 
 <div class="dpx-code">本节的前向 dp   dp[k+1][s′] = max( dp[k+1][s′], dp[k][s] + r )   ← 存<b>已经攒到的分</b>，max 在比多条<b>来路</b>
-第 1 课的值迭代  V(s)        = max<sub>a</sub> [ r + γ V(s′) ]              ← 存<b>今后能拿的值</b>，max 在比多个<b>动作</b></div>
+上一课的值迭代  V(s)        = max<sub>a</sub> [ r + γ V(s′) ]              ← 存<b>今后能拿的值</b>，max 在比多个<b>动作</b></div>
 
 <table>
 <tr><th></th><th>前向 dp</th><th>值迭代</th></tr>
@@ -244,7 +244,7 @@
 
 <p class="small"><b>§2 和 §3 只做一件事：把两个方程摆出来备用。</b>它们的定义、每个记号的含义、怎么从值函数一步步推出来，<b>上一课已经逐条讲过，这里不重复</b>。之所以要摆出来，是因为后面四个算法<b>各自都是把其中一个方程原样改写成更新规则</b>——不把式子放在眼前，改写那一步看不出改在哪儿。</p>
 
-<p>第 1 课的结论是这一行，它说的是「最优值必须自洽」：</p>
+<p>上一课的结论是这一行，它说的是「最优值必须自洽」：</p>
 
 <div class="math"><span class="mj mjd"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -1.625ex;" xmlns="http://www.w3.org/2000/svg" width="44.655ex" height="4.225ex" role="img" focusable="false" viewBox="0 -1149.5 19737.3 1867.6" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,413) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="mo" transform="translate(1264.9,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(1653.9,0)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(2122.9,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="mo" transform="translate(2789.6,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="munder" transform="translate(3845.4,0)"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g><g data-mml-node="mi" transform="translate(743.5,-611) scale(0.707)"><use data-c="1D44E" xlink:href="#MJX-TEX-I-1D44E"></use></g></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(5873.1,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="7B" xlink:href="#MJX-TEX-LO-7B"></use></g></g><g data-mml-node="mi" transform="translate(6540.1,0)"><use data-c="1D45F" xlink:href="#MJX-TEX-I-1D45F"></use></g><g data-mml-node="mo" transform="translate(6991.1,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(7380.1,0)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(7849.1,0)"><use data-c="2C" xlink:href="#MJX-TEX-N-2C"></use></g><g data-mml-node="mi" transform="translate(8293.7,0)"><use data-c="1D44E" xlink:href="#MJX-TEX-I-1D44E"></use></g><g data-mml-node="mo" transform="translate(8822.7,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="mo" transform="translate(9434,0)"><use data-c="2B" xlink:href="#MJX-TEX-N-2B"></use></g><g data-mml-node="mi" transform="translate(10434.2,0)"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g><g data-mml-node="mstyle" transform="translate(10977.2,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="msub" transform="translate(11144.2,0)"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D53C" xlink:href="#MJX-TEX-D-1D53C"></use></g></g><g data-mml-node="TeXAtom" transform="translate(700,-150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(502,289) scale(0.707)"><use data-c="2032" xlink:href="#MJX-TEX-V-2032"></use></g></g></g></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(12422,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="5B" xlink:href="#MJX-TEX-SO-5B"></use></g></g><g data-mml-node="msup" transform="translate(12839,0)"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mo" transform="translate(861.3,413) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="mo" transform="translate(14103.9,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="msup" transform="translate(14492.9,0)"><g data-mml-node="mi"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g><g data-mml-node="mo" transform="translate(502,413) scale(0.707)"><use data-c="2032" xlink:href="#MJX-TEX-V-2032"></use></g></g><g data-mml-node="mo" transform="translate(15239.3,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(15628.3,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="5D" xlink:href="#MJX-TEX-SO-5D"></use></g></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(16045.3,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="7D" xlink:href="#MJX-TEX-LO-7D"></use></g></g><g data-mml-node="mstyle" transform="translate(16712.3,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="mi" transform="translate(18712.3,0)"><use data-c="2200" xlink:href="#MJX-TEX-N-2200"></use></g><g data-mml-node="mi" transform="translate(19268.3,0)"><use data-c="1D460" xlink:href="#MJX-TEX-I-1D460"></use></g></g></g></svg></span></div>
 
@@ -281,7 +281,7 @@
 <ul style="margin:8px 0 0">
 <li><b>把 <span class="mj"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="4.21ex" height="1.038ex" role="img" focusable="false" viewBox="0 -448 1861 459" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g></g></g></svg></span> 换成「照某个策略办」</b>，方程会变成什么样、还能不能解？—— §3、§5 <b>策略评估</b></li>
 <li><b>手上有了一张分数表，怎么用它改出更好的策略</b>，凭什么保证不会改坏？—— §6 <b>策略改进</b></li>
-<li><b>评估与改进交替做，和第 1 课那个「取最大写回去」是什么关系？</b>—— §7、§8、§9</li>
+<li><b>评估与改进交替做，和上一课那个「取最大写回去」是什么关系？</b>—— §7、§8、§9</li>
 </ul>
 </div>
 
@@ -331,7 +331,7 @@
 </table>
 </div>
 
-<div class="key"><b>Bellman 方程就是「最优子结构」在 MDP 上的写法。</b>最后一行是两边唯一实质的差别，也是第 1 课为什么要花整节证 γ-压缩的原因。</div>
+<div class="key"><b>Bellman 方程就是「最优子结构」在 MDP 上的写法。</b>最后一行是两边唯一实质的差别，也是上一课为什么要花整节证 γ-压缩的原因。</div>
 
 <h3>4.3　从方程到算法：把等号换成赋值</h3>
 
@@ -373,7 +373,7 @@
 </table>
 </div>
 
-<p class="small">所以第 1 课其实是<b>抄了近路</b>：它跳过评估与改进，直接端出「用最优方程、每格更新一次」这一条，因为那是最短、最快能算出一张表的路。这一课把跳过的部分补回来。</p>
+<p class="small">所以上一课其实是<b>抄了近路</b>：它跳过评估与改进，直接端出「用最优方程、每格更新一次」这一条，因为那是最短、最快能算出一张表的路。这一课把跳过的部分补回来。</p>
 
 <hr>
 
@@ -426,12 +426,12 @@
 <div class="key">
 <b>10 个格子的值正好是 −10，一个不多一个不少。</b>因为「一律往右」在这张图上<b>根本到不了充电桩</b>——除了最底下那一行能一路向右滑进去，其余格子要么撞墙原地打转，要么撞货架卡住。永远走不到终点，就是每一步都亏 1、一直亏下去：
 <div class="math"><span class="plainmath">−1 − 0.9 − 0.9² − ⋯ = −1 / (1 − 0.9) = <b>−10</b></span></div>
-<b>这正是第 1 课那个 1/(1−γ) 又一次现身</b>：它既是「有效视野」，也是「一直每步 −1 能累计到多少」的下界。折扣把无穷长的失败压成了一个有限的数——这也是为什么 <span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> < 1 时，再烂的策略也有一个明确的分数。
+<b>这正是上一课那个 1/(1−γ) 又一次现身</b>：它既是「有效视野」，也是「一直每步 −1 能累计到多少」的下界。折扣把无穷长的失败压成了一个有限的数——这也是为什么 <span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> < 1 时，再烂的策略也有一个明确的分数。
 </div>
 
 <h3>5.2　迭代求解与直接求解</h3>
 
-<p><b>路一：反复代入。</b>随便填一张表，然后照着策略一遍遍刷，直到不动。这就是把 <span class="mj"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.819ex" height="1.532ex" role="img" focusable="false" viewBox="0 -677 1246.1 677" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mi" transform="translate(793,363) scale(0.707)"><use data-c="1D70B" xlink:href="#MJX-TEX-I-1D70B"></use></g></g></g></g></svg></span> 反复作用——和第 1 课一模一样的收缩论证，所以它必然收敛。这次花了 <b>264 轮</b>。</p>
+<p><b>路一：反复代入。</b>随便填一张表，然后照着策略一遍遍刷，直到不动。这就是把 <span class="mj"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.819ex" height="1.532ex" role="img" focusable="false" viewBox="0 -677 1246.1 677" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mi" transform="translate(793,363) scale(0.707)"><use data-c="1D70B" xlink:href="#MJX-TEX-I-1D70B"></use></g></g></g></g></svg></span> 反复作用——和上一课一模一样的收缩论证，所以它必然收敛。这次花了 <b>264 轮</b>。</p>
 
 <p><b>路二：直接解方程。</b>既然 <span class="mj"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.819ex" height="1.532ex" role="img" focusable="false" viewBox="0 -677 1246.1 677" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mi" transform="translate(793,363) scale(0.707)"><use data-c="1D70B" xlink:href="#MJX-TEX-I-1D70B"></use></g></g></g></g></svg></span> 是线性的，那 <i>V</i><sup>π</sup> = <i>T</i><sup>π</sup><i>V</i><sup>π</sup> 就是一组普通的线性方程，14 个未知数、14 条式子，高斯消元一次出结果。</p>
 
@@ -441,7 +441,7 @@
 
 <div class="nx"><span class="h">往下会被换掉的地方</span>
 <b>这一节的评估靠一样东西成立：<i>Σ</i><sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>)。</b>只有把转移概率一个个查出来，那个期望才算得成一个精确的数。<b>可真机上没有人会给你这张表</b>——地面今天多滑、货架有没有被挪走，都不写在任何地方。
-于是<b>第 3 课把期望换成采样</b>：跑完一整幕、用真实拿到的回报 <i>G</i> 当目标（蒙特卡罗），或者只走一步、用 <i>R</i>+γ<i>V</i>(<i>s</i>′) 当目标（时序差分）。<b>P 就此退场。</b>
+于是<b>下一课把期望换成采样</b>：跑完一整幕、用真实拿到的回报 <i>G</i> 当目标（蒙特卡罗），或者只走一步、用 <i>R</i>+γ<i>V</i>(<i>s</i>′) 当目标（时序差分）。<b>P 就此退场。</b>
 <b>但采样自己带来一对新麻烦：偏差与方差。</b>蒙特卡罗无偏，可单条轨迹抖得厉害；时序差分抖得小，可它引用的 <i>V</i>(<i>s</i>′) 本身还没算准，是有偏的。
 <b>于是又有了在两者之间调的办法</b>：往前看 <i>n</i> 步、TD(λ)、GAE——把「看一步」和「看整幕」之间填满，让你自己选一个折中点。
 <b>剩下的限制</b>：不管换成哪一种，评估都还要为<b>每一个状态存一个数</b>。状态一多就存不下——那是 §11.1 里第 ⑤ 支的事（值函数逼近、DQN）。</div>
@@ -452,7 +452,7 @@
 
 <div class="big"><b>策略改进</b>：给定一张值表 <i>V</i><sup>π</sup>，在每一格重新把 4 个动作试一遍，<b>谁的「这一步的奖励 + 打折后的落点值」最大就改选谁</b>。<b>它不改值表</b>，只换动作。</div>
 
-<p>这一步叫<b>贪心改进</b>。它和第 1 课那次备份算的是同一个量，区别只在结果写去哪里——<b>备份写回值表，改进写回策略</b>。评估与改进恰好互为反向，下一节把它们接成一个循环。写成定义：</p>
+<p>这一步叫<b>贪心改进</b>。它和上一课那次备份算的是同一个量，区别只在结果写去哪里——<b>备份写回值表，改进写回策略</b>。评估与改进恰好互为反向，下一节把它们接成一个循环。写成定义：</p>
 
 <div class="math"><span class="plainmath">π′(<i>s</i>) = argmax<sub><i>a</i></sub> [ <i>r</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i><sup>π</sup>(<i>s</i>′) ] = argmax<sub><i>a</i></sub> <i>Q</i><sup>π</sup>(<i>s</i>,<i>a</i>)</span></div>
 
@@ -515,11 +515,11 @@
 
 <p><b>这一节走的是 4.4 那张表的最后一行：右边改照 Bellman <u>最优</u>方程写，结果仍旧写回<u>值表</u>。</b></p>
 
-<p><b>值迭代第 1 课就用过了，这里再出现一次不是重讲——是它的身份变了。</b>第 1 课把它当作「解 Bellman 最优方程的一个办法」直接端出来，你只知道它管用；放进这一节的序列里才看得清楚：<b>它是策略迭代把评估减到只剩一次的产物</b>，不是另外冒出来的一个算法。顺带把层级也摆正：<b>dp 是一类做法</b>（把 Bellman 方程当更新规则反复用），<b>值迭代只是其中一个成员</b>，策略评估、策略改进、策略迭代是另外几个。</p>
+<p><b>值迭代上一课就用过了，这里再出现一次不是重讲——是它的身份变了。</b>上一课把它当作「解 Bellman 最优方程的一个办法」直接端出来，你只知道它管用；放进这一节的序列里才看得清楚：<b>它是策略迭代把评估减到只剩一次的产物</b>，不是另外冒出来的一个算法。顺带把层级也摆正：<b>dp 是一类做法</b>（把 Bellman 方程当更新规则反复用），<b>值迭代只是其中一个成员</b>，策略评估、策略改进、策略迭代是另外几个。</p>
 
 <p>策略迭代每一轮都要把评估<b>做到底</b>。可你想想：既然评估完马上就要改策略，那把分数算到那么准并没有必要。</p>
 
-<p><b>值迭代就是把这一步减到最短</b>：只评估一次，立刻改进；而且因为「评估一次 + 取最大」可以写成同一个动作，它连策略都不用显式存——每一轮直接对值表取 <span class="mj"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="4.21ex" height="1.038ex" role="img" focusable="false" viewBox="0 -448 1861 459" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g></g></g></svg></span> 就行。这正是第 1 课那个 <span class="mj"><svg style="vertical-align: -0.471ex;" xmlns="http://www.w3.org/2000/svg" width="12.449ex" height="2.069ex" role="img" focusable="false" viewBox="0 -706.7 5502.6 914.6" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mi" transform="translate(616,-150) scale(0.707)"><use data-c="1D458" xlink:href="#MJX-TEX-I-1D458"></use></g></g><g data-mml-node="mo" transform="translate(1312.2,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="msup" transform="translate(2368,0)"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mo" transform="translate(793,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="msub" transform="translate(3564.5,0)"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="TeXAtom" transform="translate(616,-150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D458" xlink:href="#MJX-TEX-I-1D458"></use></g><g data-mml-node="mo" transform="translate(521,0)"><use data-c="2212" xlink:href="#MJX-TEX-N-2212"></use></g><g data-mml-node="mn" transform="translate(1299,0)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g></g></g></g></g></svg></span>。</p>
+<p><b>值迭代就是把这一步减到最短</b>：只评估一次，立刻改进；而且因为「评估一次 + 取最大」可以写成同一个动作，它连策略都不用显式存——每一轮直接对值表取 <span class="mj"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="4.21ex" height="1.038ex" role="img" focusable="false" viewBox="0 -448 1861 459" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="6D" xlink:href="#MJX-TEX-N-6D"></use><use data-c="61" xlink:href="#MJX-TEX-N-61" transform="translate(833,0)"></use><use data-c="78" xlink:href="#MJX-TEX-N-78" transform="translate(1333,0)"></use></g></g></g></svg></span> 就行。这正是上一课那个 <span class="mj"><svg style="vertical-align: -0.471ex;" xmlns="http://www.w3.org/2000/svg" width="12.449ex" height="2.069ex" role="img" focusable="false" viewBox="0 -706.7 5502.6 914.6" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="mi" transform="translate(616,-150) scale(0.707)"><use data-c="1D458" xlink:href="#MJX-TEX-I-1D458"></use></g></g><g data-mml-node="mo" transform="translate(1312.2,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="msup" transform="translate(2368,0)"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mo" transform="translate(793,363) scale(0.707)"><use data-c="22C6" xlink:href="#MJX-TEX-N-22C6"></use></g></g><g data-mml-node="msub" transform="translate(3564.5,0)"><g data-mml-node="mi"><use data-c="1D449" xlink:href="#MJX-TEX-I-1D449"></use></g><g data-mml-node="TeXAtom" transform="translate(616,-150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D458" xlink:href="#MJX-TEX-I-1D458"></use></g><g data-mml-node="mo" transform="translate(521,0)"><use data-c="2212" xlink:href="#MJX-TEX-N-2212"></use></g><g data-mml-node="mn" transform="translate(1299,0)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g></g></g></g></g></svg></span>。</p>
 
 <p><b>写成定义：</b>把评估那一步的 Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>) 直接换成 max<sub><i>a</i></sub>，评估与改进就合并成了一个动作：</p>
 

@@ -53,7 +53,7 @@
 
 <p>一条路好不好，本来取决于往后所有步。值函数把这一整条未来折算成一个数，写在格子里。有了它，选动作就从「想清楚整盘棋」退化成<b>「看一眼邻居谁的数大」</b>——深谋远虑变成一次局部比较。后面主线上几乎每一个算法——动态规划、蒙特卡罗、时序差分、Q-learning、DQN、Actor-Critic 里的 critic——估的都是这个数，<b>区别只在用什么数据、按什么规则更新</b>。<b>值函数是它们共同的对象</b>：这个定义清楚了，后面各算法的差异才有可比的基准。</p>
 
-<p><b>那为什么不先讲 MDP 的定义？</b>五元组 <i>(S, A, P, r, γ)</i> 是<b>形式</b>，值函数是<b>目的</b>。先给形式，那些记号会显得没有来由；先把目的说清楚，第 1 课再补形式，<b>那时每个符号都能对上一个你已经算过的量</b>。</p>
+<p><b>那为什么不先讲 MDP 的定义？</b>五元组 <i>(S, A, P, r, γ)</i> 是<b>形式</b>，值函数是<b>目的</b>。先给形式，那些记号会显得没有来由；先把目的说清楚，下一课再补形式，<b>那时每个符号都能对上一个你已经算过的量</b>。</p>
 
 <p><b>两个名字先摆在这儿，这一课从头到尾都在算它们。</b></p>
 
@@ -67,7 +67,7 @@
 
 <p>两行读一遍：<b>上一行说「照这个走法走，平均能拿多少」；下一行说「所有走法里最好的那一种，能拿多少」。</b><i>G</i><sub>t</sub> 是从此刻起往后所有奖励折现相加，叫<b>回报</b>，§10 会展开写；E 表示取平均，因为落点可能带随机。</p>
 
-<div class="key"><b>这一课的例子，正好把这两行的差别消掉了——这是故意的。</b>那条链上每个状态<b>只有一条路可走</b>，没有第二种走法，所以 <i>V</i><sup>π</sup> 和 <i>V</i>⋆ <b>是同一组数</b>。于是「该选哪个动作」这件事整课不出现，你可以先把<b>「值」本身</b>看清楚：它是什么、怎么一遍遍算出来、为什么会停下来。等到第 1 课那间每格有 4 个动作的仓库，两者才真正分家。</div>
+<div class="key"><b>这一课的例子，正好把这两行的差别消掉了——这是故意的。</b>那条链上每个状态<b>只有一条路可走</b>，没有第二种走法，所以 <i>V</i><sup>π</sup> 和 <i>V</i>⋆ <b>是同一组数</b>。于是「该选哪个动作」这件事整课不出现，你可以先把<b>「值」本身</b>看清楚：它是什么、怎么一遍遍算出来、为什么会停下来。等到下一课那间每格有 4 个动作的仓库，两者才真正分家。</div>
 
 <p>所以这一课只用<b>一条 5 个状态的链、一个 γ、一张能手算的表</b>。<b>每个数都小到能在纸上验一遍。</b></p>
 
@@ -384,7 +384,7 @@
 
 <p>两行读一遍：<b>上一行——这一格的值，就是它所有动作里最好的那个动作值</b>；<b>下一行——最优策略在这一格该走的，就是取到那个最好值的动作</b>。一个交出<u>数</u>，一个交出<u>动作</u>。</p>
 
-<p class="small">这条链上每个状态只有一个动作，所以 <i>Q</i>⋆(<span class="sym">s<sub>0</sub></span>, 前进) = <i>V</i>⋆(<span class="sym">s<sub>0</sub></span>) = 6.5610，两者完全重合，看不出差别。<b>要到第 1 课那间每格有 4 个动作的仓库里，它们才真正分开</b>——而分开之后 <i>Q</i> 会比 <i>V</i> 更好用：用 <i>V</i> 挑动作，必须先知道每个动作会落到哪；用 <i>Q</i> 只要在这一行里挑最大。</p>
+<p class="small">这条链上每个状态只有一个动作，所以 <i>Q</i>⋆(<span class="sym">s<sub>0</sub></span>, 前进) = <i>V</i>⋆(<span class="sym">s<sub>0</sub></span>) = 6.5610，两者完全重合，看不出差别。<b>要到下一课那间每格有 4 个动作的仓库里，它们才真正分开</b>——而分开之后 <i>Q</i> 会比 <i>V</i> 更好用：用 <i>V</i> 挑动作，必须先知道每个动作会落到哪；用 <i>Q</i> 只要在这一行里挑最大。</p>
 
 <p class="small"><b>带不带星也要分清。</b><i>V</i>⋆ 和 <i>Q</i>⋆ 说的是「<b>最优地</b>走下去能拿多少」；不带星的 <i>V</i> 和 <i>Q</i> 说的是「照<b>某个给定的</b>走法能拿多少」。这条链只有一种走法，所以这四个记号在这里指的是同一组数——上面那句「到 4 个动作的仓库里才分开」，对它们同样成立。</p>
 
@@ -411,7 +411,7 @@
 <p>为什么一定会不变？因为每多加一遍，新多出来的那一项是 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="4.41ex" height="2.42ex" role="img" focusable="false" viewBox="0 -853.7 1949.3 1069.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g><g data-mml-node="TeXAtom" transform="translate(627.3,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D458" xlink:href="#MJX-TEX-I-1D458"></use></g><g data-mml-node="mo" transform="translate(521,0)"><use data-c="2212" xlink:href="#MJX-TEX-N-2212"></use></g><g data-mml-node="mn" transform="translate(1299,0)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g></g></g></g></g></svg></span>，还没加的尾巴是 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="4.628ex" height="2.42ex" role="img" focusable="false" viewBox="0 -853.7 2045.7 1069.7" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mn"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use><use data-c="30" xlink:href="#MJX-TEX-N-30" transform="translate(500,0)"></use></g><g data-mml-node="msup" transform="translate(1000,0)"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g><g data-mml-node="mi" transform="translate(627.3,363) scale(0.707)"><use data-c="1D458" xlink:href="#MJX-TEX-I-1D458"></use></g></g></g></g></svg></span>。<span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="7.137ex" height="1.995ex" role="img" focusable="false" viewBox="0 -666 3154.6 882" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g><g data-mml-node="mo" transform="translate(820.8,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(1876.6,0)"><use data-c="30" xlink:href="#MJX-TEX-N-30"></use><use data-c="2E" xlink:href="#MJX-TEX-N-2E" transform="translate(500,0)"></use><use data-c="39" xlink:href="#MJX-TEX-N-39" transform="translate(778,0)"></use></g></g></g></svg></span> 时刷到第 100 遍，尾巴只剩 <span class="mj"><svg style="vertical-align:middle" fill="currentColor" style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="10.152ex" height="2.022ex" role="img" focusable="false" viewBox="0 -871.8 4487.1 893.8" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mn"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use><use data-c="2E" xlink:href="#MJX-TEX-N-2E" transform="translate(500,0)"></use><use data-c="37" xlink:href="#MJX-TEX-N-37" transform="translate(778,0)"></use></g><g data-mml-node="mo" transform="translate(1500.2,0)"><use data-c="D7" xlink:href="#MJX-TEX-N-D7"></use></g><g data-mml-node="msup" transform="translate(2500.4,0)"><g data-mml-node="mn"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use><use data-c="30" xlink:href="#MJX-TEX-N-30" transform="translate(500,0)"></use></g><g data-mml-node="TeXAtom" transform="translate(1033,393.1) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mo"><use data-c="2212" xlink:href="#MJX-TEX-N-2212"></use></g><g data-mml-node="mn" transform="translate(778,0)"><use data-c="34" xlink:href="#MJX-TEX-N-34"></use></g></g></g></g></g></svg></span>——<strong>加了等于没加</strong>。</p>
 
 <div class="warn">
-<b><p class="small"><b>先把名字的归属说清楚。</b>这条链上<b>每一格只有一个动作</b>——只能往前走，所以 §6 那个备份公式里<b>没有「取最大」</b>。在动态规划的分类里，「照一个给定策略把值刷出来」叫做<b>策略评估</b>；<b>值迭代要在「有多个动作可挑、必须取最大」时才有内容</b>，那要到第 1 课那间 4 个动作的仓库。<b>本节这套刷法，两者在这条链上恰好重合</b>——因为候选只有一个，取不取最大都是它。所以下面这些结论（收敛、尾巴 γ<sup>k</sup>、要刷几遍）<b>对两者同时成立</b>，你不必现在就分开记。</p>
+<b><p class="small"><b>先把名字的归属说清楚。</b>这条链上<b>每一格只有一个动作</b>——只能往前走，所以 §6 那个备份公式里<b>没有「取最大」</b>。在动态规划的分类里，「照一个给定策略把值刷出来」叫做<b>策略评估</b>；<b>值迭代要在「有多个动作可挑、必须取最大」时才有内容</b>，那要到下一课那间 4 个动作的仓库。<b>本节这套刷法，两者在这条链上恰好重合</b>——因为候选只有一个，取不取最大都是它。所以下面这些结论（收敛、尾巴 γ<sup>k</sup>、要刷几遍）<b>对两者同时成立</b>，你不必现在就分开记。</p>
 
 「值迭代」翻译成大白话就是：把预算一路加上去，加到再加也没用。</b><br><br>
 「收敛」的意思也很直接：<strong>预算再多也改变不了答案了。</strong><br><br>
@@ -483,7 +483,7 @@
 </ol>
 
 <footer>
-<b>你刚才做的这件事有名字，叫<u>策略评估</u></b>：给定一个策略，反复用「一步奖励 + 打折后的下一状态值」更新，把这个策略的值函数算出来。这条链上每个状态只有一条路可走，策略是退化的，所以算出来的 <i>V</i> 同时就是 <i>V</i><sup>⋆</sup>；一旦有动作可挑，两者就分家了。第 2 课会正式讲策略评估，以及怎么用它把策略改好。<br>
+<b>你刚才做的这件事有名字，叫<u>策略评估</u></b>：给定一个策略，反复用「一步奖励 + 打折后的下一状态值」更新，把这个策略的值函数算出来。这条链上每个状态只有一条路可走，策略是退化的，所以算出来的 <i>V</i> 同时就是 <i>V</i><sup>⋆</sup>；一旦有动作可挑，两者就分家了。再往后讲动态规划那一课会正式讲策略评估，以及怎么用它把策略改好。<br>
 下一课把同样的问题搬到一个真正需要做决策的环境上：4×4 的仓库网格。这条链上你只能往前走，没有选择；到了仓库里，每一格有 4 个动作可挑，于是「取最大」第一次登场，Bellman 方程也才真正有内容。<br>
 下一课有一个可以亲手一格一格刷的交互组件——那里换成了 4×4 仓库，<b>做的动作和本课这张表完全一样</b>，只是每一格多了 4 个动作要比。<br>
 本课所有数字与插图都由随附的 <code>code/ch0_chain_fig.py</code> 生成（逐遍的 V<sub>k</sub> 表、首次非零的 γ<sup>d</sup>、差距 γ<sup>k</sup>/(1−γ)、以及 §9 那张 44 / 66 / 88）。<code>python ch0_chain_fig.py --embed</code> 重画两版图，整跑不到 3 秒。

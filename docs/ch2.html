@@ -301,31 +301,98 @@
 
 <h2><span class="n">§ 4</span>「DP」的两个含义，以及四个算法的位置</h2>
 
-<p><b>先说清「DP」这个词有两个意思</b>，混用是这一课最容易卡住的地方。<b>算法课里的 DP</b> 是一门通用技术：子问题会重复，就把结果记下来别重算——背包、编辑距离、最短路、§1 那张得分网格，全在这一支。<b>强化学习书里的 DP</b> 专指其中一支：<b>已知模型的 MDP 上的规划</b>，也就是下面四节要讲的策略评估、策略改进、策略迭代与值迭代。</p>
+<p><b>先说清「DP」这个词有两个意思</b>，混用是这一课最容易卡住的地方。<b>一个是通用的算法思想</b>——§1 那张得分网格用的就是它，你在算法课上做过的那些 dp 题也在这一层。<b>另一个是强化学习书里说的 DP</b>，专指其中一支：<b>已知模型的 MDP 上的规划</b>，也就是下面四节的策略评估、策略改进、策略迭代与值迭代。</p>
 
+<p><b>下面三步走完，这两层的关系就完整了</b>：先把 §1 那张网格做的事抽成两条，再看这两条在 MDP 上为什么同样成立，最后说清楚为什么搬过来之后<b>一个 dp 变成了四个算法</b>。</p>
 
+<h3>4.1　dp 的思想：两条，§1 已经演示过</h3>
 
-<div class="dpx-code">动态规划（算法技术）── 子问题会重复，就记下来别重算
-  ├─ 网格 / 序列 dp、背包、编辑距离、最短路 …    ← §1 那张得分网格在这儿
-  └─ MDP 上的动态规划 ── 把 Bellman 方程当成更新规则，反复用
-        ├─ 策略评估   用期望方程，Σ_a π 加权 ── 给定策略，把它的值表刷出来
-        ├─ 策略改进   对着值表取 argmax ────── 给定值表，把策略改好
-        ├─ 策略迭代   评估到底 → 改进 → 再评估 ── 两者交替
-        └─ 值迭代     用最优方程，max_a ────── 评估只做一次，与改进合并</div>
+<p><b>§1 那张 3×4 网格上做的事，抽出来只有两条。</b>不用记新东西，你已经见过了：</p>
 
-<p>下面四节讲的是<b>第二支里的四个成员</b>。<b>它们不是并列的四种发明，是同一个动作在两个开关下的四种组合</b>：<b>用哪个方程</b>（期望方程 / 最优方程）、<b>每轮评估做多少</b>。<b>值迭代不是和 DP 平级的东西，它是这四个里的一个</b>——这一点最容易搞混。</p>
+<div class="big"><b>① 最优子结构</b>：<b>大问题的最优解，可以由子问题的最优解拼出来。</b><br>
+「走满 5 步能拿的最高分」这个问题，答案由「走了 4 步、站在某一格，攒到的最高分」拼出来——§1.1 那条递推 <code>dp[k+1][s′] = max(dp[k][s] + r)</code> 写的就是这件事。</div>
+
+<div class="big"><b>② 重复子问题</b>：<b>同一个子问题会被反复用到，所以只需要算一次、记下来。</b><br>
+走到第 3 步站在 <code>(1,0)</code>，有三条不同的路；但<b>从这一刻往后，三条路面对的处境完全相同</b>，区别只剩已经攒下的那个数。§1.2 就是这一步：留下最高的那个，其余当场丢弃。</div>
+
+<div class="key"><b>缺了第一条，问题拆不开；缺了第二条，拆开也不省。</b>两条同时成立，<code>4<sup>5</sup> = 1024</code> 条路径才压得进一张 12 格的小表——§1.3 那张对照表里，dp 与暴力搜索的差距全部来自这里。</div>
+
+<h3>4.2　同一套技术怎么搬到 MDP 上</h3>
+
+<p><b>值函数恰好也满足那两条</b>，所以同一套技术能原样搬过来。这不是打比方，是同一个条件在两个问题上都成立——逐项对上：</p>
+
+<div class="tscroll">
+<table>
+<tr><th></th><th>§1 的网格 dp</th><th>MDP 上的 dp</th></tr>
+<tr><td><b>子问题是什么</b></td><td>走了 <i>k</i> 步、站在 (<i>i</i>,<i>j</i>)，最多攒到多少</td><td>站在状态 <i>s</i>，今后最多还能拿多少</td></tr>
+<tr><td><b>最优子结构写成什么</b></td><td><code>dp[k+1][s′] = max(dp[k][s] + r)</code></td><td><b>Bellman 方程</b>：<span class="plainmath"><i>V</i>(<i>s</i>) = max<sub><i>a</i></sub>[ <i>r</i> + γ<i>V</i>(<i>s</i>′) ]</span></td></tr>
+<tr><td><b>重复在哪儿</b></td><td>同一步走到同一格的多条来路</td><td>经过同一个状态的<b>无数条轨迹</b>——它们此后的处境完全相同</td></tr>
+<tr><td><b>表里存什么</b></td><td>每格一个「已经攒了多少」</td><td>每格一个「今后能拿多少」</td></tr>
+<tr><td><b>怎么合并</b></td><td>多条来路取 max，只留一个数</td><td>多条轨迹的未来<b>本来就是同一个数</b>，只需算一次</td></tr>
+</table>
+</div>
+
+<div class="warn"><b>Bellman 方程就是「最优子结构」在 MDP 上的写法。</b>第 1 课花整节证明的 γ-压缩，保证的是<b>这个递推反复用下去会停</b>；§1 那张网格不需要这一步，因为它的子问题带着「还剩几步」这个自然的层次，推完 <i>K</i> 层就到头了。<b>这是两边唯一实质的差别：网格 dp 有终点，MDP 的递推靠 γ 收住。</b></div>
+
+<h3>4.3　为什么一个 dp 变成了四个算法</h3>
+
+<p><b>差别只有一样：待求的量多了一个。</b></p>
+
+<p>§1 的网格只要求<b>一个</b>东西：每格的最高分。而 MDP 上要求<b>两个</b>——<b>值表 <i>V</i></b> 和 <b>策略 π</b>，并且它们<b>互相定义</b>：<i>V</i> 要照着 π 才算得出来（§3 那条期望方程），π 要照着 <i>V</i> 才挑得出来（§6 那个 argmax）。<b>两个互相依赖的未知量，就有四种排法：</b></p>
+
+<div class="tscroll">
+<table>
+<tr><th>固定谁、求谁</th><th>叫什么</th><th>在哪一节</th></tr>
+<tr><td><b>固定 π，求 <i>V</i></b></td><td>策略评估</td><td>§5</td></tr>
+<tr><td><b>固定 <i>V</i>，求 π</b></td><td>策略改进</td><td>§6</td></tr>
+<tr><td><b>两个轮流固定，交替求</b></td><td>策略迭代</td><td>§7</td></tr>
+<tr><td><b>不显式存 π，一步同时求</b></td><td>值迭代</td><td>§8</td></tr>
+</table>
+</div>
+
+<div class="key"><b>四个算法不是四种发明，是「两个互相依赖的未知量」这一件事逼出来的四种排法。</b>值迭代不是和 DP 平级的东西，它是这四个里的一个——这一点最容易搞混。</div>
+
+<div class="dpx-code">动态规划（算法思想）── 最优子结构 + 重复子问题
+  ├─ §1 那张 3×4 得分网格          ← 子问题带「还剩几步」，推完 K 层就到头
+  └─ MDP 上的动态规划 ── 把 Bellman 方程当更新规则反复用，靠 γ 收住
+        ├─ 策略评估   固定 π 求 V ── 用期望方程，外层 Σ_a π
+        ├─ 策略改进   固定 V 求 π ── 对着值表取 argmax
+        ├─ 策略迭代   两者交替 ──── 评估到底 → 改进 → 再评估
+        └─ 值迭代     合成一步 ──── 用最优方程，外层 max_a</div>
 
 <p>前面几课的例子分别站在哪儿：</p>
 
+<div class="tscroll">
 <table>
 <tr><th>在哪一课</th><th>例子</th><th>更新式里有没有 max</th><th>属于哪一个</th></tr>
 <tr><td>第 0 课</td><td>五状态链（每格<b>只有一个动作</b>）</td><td><b>没有</b></td><td><b>策略评估</b>；因为候选只有一个，它与值迭代在那条链上完全重合，分不出来</td></tr>
 <tr><td>第 1 课</td><td>4×4 仓库（4 个动作）</td><td><b>有</b></td><td><b>值迭代</b>——max 到这里才第一次真正起作用</td></tr>
-<tr><td>本课 §1</td><td>3×4 得分网格</td><td>有，但比的是<b>来路</b></td><td><b>在上面那一支</b>（通用 dp），<b>不属于这四个</b>：它算的是「走到这儿攒了多少」，不是 MDP 的值函数。放在这一课，是为了先在没有 γ、没有期望、没有动作可挑的干扰下，把<b>「为什么能合并」</b>看一遍</td></tr>
+<tr><td>本课 §1</td><td>3×4 得分网格</td><td>有，但比的是<b>来路</b></td><td><b>在上面那一支</b>（通用 dp），<b>不属于这四个</b>：它算的是「走到这儿攒了多少」，不是 MDP 的值函数。放在这一课，是为了先在没有 γ、没有期望、没有动作可挑的干扰下，把<b>那两条</b>看一遍</td></tr>
 <tr><td>本课 §5–§8</td><td>4×4 仓库</td><td>两种都有</td><td><b>四件全齐</b></td></tr>
 </table>
+</div>
 
 <p class="small">所以第 1 课其实是<b>抄了近路</b>：它跳过评估与改进，直接端出「用最优方程、每格更新一次」这一条，因为那是最短、最快能算出一张表的路。这一课把跳过的部分补回来。</p>
+
+<h3>4.4　从方程到算法：把等号换成赋值</h3>
+
+<p><b>四个算法是同一步操作的四种用法，那一步只有一句话。</b>§2 与 §3 摆出来的两个方程都是<b>等式</b>：等号两边同时出现 <i>V</i>，所以它们只说「值必须满足什么」，照着它一个数也填不出来。<b>动态规划把等号换成赋值箭头，右边的 <i>V</i> 一律读上一稿</b>——右边就全是已知的数了，左边算得出来：</p>
+
+<div class="math"><span class="plainmath"><i>V</i>(<i>s</i>) = ⋯<i>V</i>(<i>s</i>′)⋯&nbsp;&nbsp;（方程：两边都是未知）&nbsp;&nbsp;⟶&nbsp;&nbsp; <i>V</i><sub>k+1</sub>(<i>s</i>) ← ⋯<i>V</i><sub>k</sub>(<i>s</i>′)⋯&nbsp;&nbsp;（更新规则：右边已知）</span></div>
+
+<p>这个式子读一遍就够了：<b>左边那个下标 k+1、右边那个下标 k，就是这一课全部四个算法的共同骨架。</b>剩下的差别只有两处——<b>右边照哪个方程写</b>，以及<b>算出来的结果写回哪张表</b>。</p>
+
+<div class="tscroll">
+<table>
+<tr><th></th><th>右边照哪个方程</th><th>结果写回哪儿</th><th>一轮之后得到</th></tr>
+<tr><td><b>§5 策略评估</b></td><td>Bellman <b>期望</b>方程（外层 Σ<sub><i>a</i></sub> π）</td><td><b>值表</b></td><td>更接近 <i>V</i><sup>π</sup> 的一张表</td></tr>
+<tr><td><b>§6 策略改进</b></td><td>同一条期望方程的<b>右边</b>，但取 argmax</td><td><b>策略表</b></td><td>一个不比原来差的 π′</td></tr>
+<tr><td><b>§7 策略迭代</b></td><td>上面两条<b>交替</b></td><td>两张表轮流</td><td>停下来时就是 π⋆</td></tr>
+<tr><td><b>§8 值迭代</b></td><td>Bellman <b>最优</b>方程（外层 max<sub><i>a</i></sub>）</td><td><b>值表</b></td><td>更接近 <i>V</i>⋆ 的一张表</td></tr>
+</table>
+</div>
+
+<p class="small"><b>第二列决定这一步<u>算什么</u>，第三列决定它<u>叫什么</u>。</b>算的是同一个量——「这一步的奖励 + 打折后的落点值」；<b>写回值表就叫备份（评估），写回策略表就叫改进</b>。§5–§8 就是照这张表一行一行做下来，四节的开头都会先指回它。</p>
 
 <hr>
 
@@ -333,19 +400,19 @@
 
 <p><b>后面四节回到 4×4 仓库</b>——就是画着货架和充电桩那间。先把规模摆一遍，下面每个数字都从这里来：<b>16 格去掉 2 个货架 ＝ 14 个状态</b>；右下角的充电桩是<b>终点</b>，进去就不再动、值恒为 0，所以真正要更新的是<b>另外 13 格</b>；每格 4 个动作，合起来 <b>13 × 4 ＝ 52 个状态-动作对</b>。每走一步 −1，<i>γ</i> = 0.9。</p>
 
-<p><b>策略评估要回答的是一个问题：给定一个策略 π，每一格值多少。</b>注意它<b>不改策略</b>——策略是别人给的，这一步只负责给它打分，算出来的那张表就是 <i>V</i><sup>π</sup>。</p>
 
-<p>先找个策略来评。挑一个足够简单、能一眼看穿的：<b>不管在哪一格，一律往右走</b>（撞墙就留在原地）。它的分数表长这样：</p>
 
-<div class="figwrap"><svg class="gridsvg" viewBox="0 0 316 316" xmlns="http://www.w3.org/2000/svg"><defs><marker id="gah" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--accent)"/></marker></defs><rect x="26" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="59" y="64">-10.000</text><path class="g-arrow" d="M50 79 l18 0" marker-end="url(#gah)"/><rect x="92" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="125" y="64">-10.000</text><path class="g-arrow" d="M116 79 l18 0" marker-end="url(#gah)"/><rect x="158" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="191" y="64">-10.000</text><path class="g-arrow" d="M182 79 l18 0" marker-end="url(#gah)"/><rect x="224" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="257" y="64">-10.000</text><path class="g-arrow" d="M248 79 l18 0" marker-end="url(#gah)"/><rect x="26" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="59" y="130">-10.000</text><path class="g-arrow" d="M50 145 l18 0" marker-end="url(#gah)"/><rect x="92" y="92" width="66" height="66" fill="var(--ink-3)" fill-opacity=".28" stroke="var(--line-2)"/><text class="g-lbl" x="125" y="129">货架</text><rect x="158" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="191" y="130">-10.000</text><path class="g-arrow" d="M182 145 l18 0" marker-end="url(#gah)"/><rect x="224" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="257" y="130">-10.000</text><path class="g-arrow" d="M248 145 l18 0" marker-end="url(#gah)"/><rect x="26" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="59" y="196">-10.000</text><path class="g-arrow" d="M50 211 l18 0" marker-end="url(#gah)"/><rect x="92" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="125" y="196">-10.000</text><path class="g-arrow" d="M116 211 l18 0" marker-end="url(#gah)"/><rect x="158" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="191" y="196">-10.000</text><path class="g-arrow" d="M182 211 l18 0" marker-end="url(#gah)"/><rect x="224" y="158" width="66" height="66" fill="var(--ink-3)" fill-opacity=".28" stroke="var(--line-2)"/><text class="g-lbl" x="257" y="195">货架</text><rect x="26" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.136" stroke="var(--line-2)"/><text class="g-num" x="59" y="262">-2.710</text><path class="g-arrow" d="M50 277 l18 0" marker-end="url(#gah)"/><rect x="92" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.095" stroke="var(--line-2)"/><text class="g-num" x="125" y="262">-1.900</text><path class="g-arrow" d="M116 277 l18 0" marker-end="url(#gah)"/><rect x="158" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.050" stroke="var(--line-2)"/><text class="g-num" x="191" y="262">-1.000</text><path class="g-arrow" d="M182 277 l18 0" marker-end="url(#gah)"/><rect x="224" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.000" stroke="var(--line-2)"/><circle cx="257" cy="257" r="13" fill="none" stroke="var(--accent)" stroke-width="2"/><text class="g-num" x="257" y="262">0.000</text></svg></div>
 
-<div class="key">
-<b>10 个格子的值正好是 −10，一个不多一个不少。</b>因为「一律往右」在这张图上<b>根本到不了充电桩</b>——除了最底下那一行能一路向右滑进去，其余格子要么撞墙原地打转，要么撞货架卡住。永远走不到终点，就是每一步都亏 1、一直亏下去：
-<div class="math"><span class="plainmath">−1 − 0.9 − 0.9² − ⋯ = −1 / (1 − 0.9) = <b>−10</b></span></div>
-<b>这正是第 1 课那个 1/(1−γ) 又一次现身</b>：它既是「有效视野」，也是「一直每步 −1 能累计到多少」的下界。折扣把无穷长的失败压成了一个有限的数——这也是为什么 <span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> < 1 时，再烂的策略也有一个明确的分数。
-</div>
 
-<p><b>把刚才那件事写成定义。</b>策略评估要回答的是：<b>给定一个策略 π，每一格值多少</b>。上一节的 Bellman 期望方程说的是这张表必须满足什么，把它当成一条<b>更新规则</b>反复用，就是评估算法：</p>
+
+
+
+
+<p><b>这一节走的是 4.4 那张表的第一行：右边照 Bellman <u>期望</u>方程写，算完写回<u>值表</u>。</b></p>
+
+<div class="big"><b>策略评估</b>：给定一个策略 π，算出它的值表 <i>V</i><sup>π</sup>——每一格上「照这个策略走下去能拿多少」。<b>它不改策略</b>，策略是别人给的，这一步只负责给它打分。</div>
+
+<p>§3 那条 Bellman 期望方程说的是这张表<b>必须满足什么</b>；把等号换成赋值、右边的 <i>V</i> 读上一稿，就是评估算法：</p>
 
 <div class="math"><div class="ubrow tight">
   <span class="ub"><span class="ub-t"><i>V</i><sub>k+1</sub>(<i>s</i>) =&nbsp;</span></span><span class="ub"><span class="ub-t">Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>)</span><span class="ub-b">照策略<br>平均动作</span></span><span class="ub"><span class="ub-t">&nbsp;Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>)</span><span class="ub-b">照模型<br>平均落点</span></span><span class="ub"><span class="ub-t">&nbsp;[ <i>r</i>(<i>s</i>,<i>a</i>) + γ<i>V</i><sub>k</sub>(<i>s</i>′) ]</span><span class="ub-b">这一步的奖励<br>+ 打折后的上一稿</span></span>
@@ -369,7 +436,19 @@
 
 <p class="small">其中 <i>P</i><sup>π</sup> 是 14×14 的转移矩阵（第 <i>s</i> 行第 <i>s</i>′ 列 = 照 π 走一步从 s 到 s′ 的概率），<i>r</i><sup>π</sup> 是 14 维的即时奖励向量。γ &lt; 1 保证 <i>I</i> − γ<i>P</i><sup>π</sup> 可逆，所以解<b>存在且唯一</b>。</p>
 
-<h3>5.1　迭代求解与直接求解</h3>
+<h3>5.1　例：给「一律往右」打分</h3>
+
+<p>先找个策略来评。挑一个足够简单、能一眼看穿的：<b>不管在哪一格，一律往右走</b>（撞墙就留在原地）。它的分数表长这样：</p>
+
+<div class="figwrap"><svg class="gridsvg" viewBox="0 0 316 316" xmlns="http://www.w3.org/2000/svg"><defs><marker id="gah" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--accent)"/></marker></defs><rect x="26" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="59" y="64">-10.000</text><path class="g-arrow" d="M50 79 l18 0" marker-end="url(#gah)"/><rect x="92" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="125" y="64">-10.000</text><path class="g-arrow" d="M116 79 l18 0" marker-end="url(#gah)"/><rect x="158" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="191" y="64">-10.000</text><path class="g-arrow" d="M182 79 l18 0" marker-end="url(#gah)"/><rect x="224" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="257" y="64">-10.000</text><path class="g-arrow" d="M248 79 l18 0" marker-end="url(#gah)"/><rect x="26" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="59" y="130">-10.000</text><path class="g-arrow" d="M50 145 l18 0" marker-end="url(#gah)"/><rect x="92" y="92" width="66" height="66" fill="var(--ink-3)" fill-opacity=".28" stroke="var(--line-2)"/><text class="g-lbl" x="125" y="129">货架</text><rect x="158" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="191" y="130">-10.000</text><path class="g-arrow" d="M182 145 l18 0" marker-end="url(#gah)"/><rect x="224" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="257" y="130">-10.000</text><path class="g-arrow" d="M248 145 l18 0" marker-end="url(#gah)"/><rect x="26" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="59" y="196">-10.000</text><path class="g-arrow" d="M50 211 l18 0" marker-end="url(#gah)"/><rect x="92" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="125" y="196">-10.000</text><path class="g-arrow" d="M116 211 l18 0" marker-end="url(#gah)"/><rect x="158" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="191" y="196">-10.000</text><path class="g-arrow" d="M182 211 l18 0" marker-end="url(#gah)"/><rect x="224" y="158" width="66" height="66" fill="var(--ink-3)" fill-opacity=".28" stroke="var(--line-2)"/><text class="g-lbl" x="257" y="195">货架</text><rect x="26" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.136" stroke="var(--line-2)"/><text class="g-num" x="59" y="262">-2.710</text><path class="g-arrow" d="M50 277 l18 0" marker-end="url(#gah)"/><rect x="92" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.095" stroke="var(--line-2)"/><text class="g-num" x="125" y="262">-1.900</text><path class="g-arrow" d="M116 277 l18 0" marker-end="url(#gah)"/><rect x="158" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.050" stroke="var(--line-2)"/><text class="g-num" x="191" y="262">-1.000</text><path class="g-arrow" d="M182 277 l18 0" marker-end="url(#gah)"/><rect x="224" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.000" stroke="var(--line-2)"/><circle cx="257" cy="257" r="13" fill="none" stroke="var(--accent)" stroke-width="2"/><text class="g-num" x="257" y="262">0.000</text></svg></div>
+
+<div class="key">
+<b>10 个格子的值正好是 −10，一个不多一个不少。</b>因为「一律往右」在这张图上<b>根本到不了充电桩</b>——除了最底下那一行能一路向右滑进去，其余格子要么撞墙原地打转，要么撞货架卡住。永远走不到终点，就是每一步都亏 1、一直亏下去：
+<div class="math"><span class="plainmath">−1 − 0.9 − 0.9² − ⋯ = −1 / (1 − 0.9) = <b>−10</b></span></div>
+<b>这正是第 1 课那个 1/(1−γ) 又一次现身</b>：它既是「有效视野」，也是「一直每步 −1 能累计到多少」的下界。折扣把无穷长的失败压成了一个有限的数——这也是为什么 <span class="mj"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.229ex" height="1.486ex" role="img" focusable="false" viewBox="0 -441 543 657" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D6FE" xlink:href="#MJX-TEX-I-1D6FE"></use></g></g></g></svg></span> < 1 时，再烂的策略也有一个明确的分数。
+</div>
+
+<h3>5.2　迭代求解与直接求解</h3>
 
 <p><b>路一：反复代入。</b>随便填一张表，然后照着策略一遍遍刷，直到不动。这就是把 <span class="mj"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.819ex" height="1.532ex" role="img" focusable="false" viewBox="0 -677 1246.1 677" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D447" xlink:href="#MJX-TEX-I-1D447"></use></g><g data-mml-node="mi" transform="translate(793,363) scale(0.707)"><use data-c="1D70B" xlink:href="#MJX-TEX-I-1D70B"></use></g></g></g></g></svg></span> 反复作用——和第 1 课一模一样的收缩论证，所以它必然收敛。这次花了 <b>264 轮</b>。</p>
 
@@ -381,11 +460,11 @@
 
 <h2><span class="n">§ 6</span>策略改进</h2>
 
-<p><b>策略改进要回答的是反过来的问题：给定一张值表，怎么把策略改得更好。</b>它<b>不改值表</b>——值表是上一步评估出来的，这一步只负责换动作。评估与改进恰好互为反向，下一节把它们接成一个循环。</p>
+<p><b>这一节走的是 4.4 那张表的第二行：右边照的还是同一条式子，但结果写回<u>策略表</u>而不是值表。</b></p>
 
-<p>手上有了 <i>V</i><sup>π</sup>，改策略的办法很直白：<b>在每一格重新把 4 个动作试一遍，谁的「这一步的奖励 + 打折后的落点值」最高就改选谁</b>。这一步叫<b>贪心改进</b>，它和第 1 课的一次备份是同一个动作，区别只在于结果写去哪里——备份写回值表，改进写回策略。</p>
+<div class="big"><b>策略改进</b>：给定一张值表 <i>V</i><sup>π</sup>，在每一格重新把 4 个动作试一遍，<b>谁的「这一步的奖励 + 打折后的落点值」最大就改选谁</b>。<b>它不改值表</b>，只换动作。</div>
 
-<p><b>写成定义：</b>新策略在每一格挑「这一步的奖励 + 打折后的落点值」最大的那个动作——也就是<b>对自己的分数表贪心一步</b>：</p>
+<p>这一步叫<b>贪心改进</b>。它和第 1 课那次备份算的是同一个量，区别只在结果写去哪里——<b>备份写回值表，改进写回策略</b>。评估与改进恰好互为反向，下一节把它们接成一个循环。写成定义：</p>
 
 <div class="math"><span class="plainmath">π′(<i>s</i>) = argmax<sub><i>a</i></sub> [ <i>r</i>(<i>s</i>,<i>a</i>) + γ Σ<sub><i>s</i>′</sub> <i>P</i>(<i>s</i>′|<i>s</i>,<i>a</i>) <i>V</i><sup>π</sup>(<i>s</i>′) ] = argmax<sub><i>a</i></sub> <i>Q</i><sup>π</sup>(<i>s</i>,<i>a</i>)</span></div>
 
@@ -393,7 +472,9 @@
 
 <p>方括号里那一项正是 <i>Q</i><sup>π</sup>，所以<b>「改进」就是把 Q 表的每一行取 argmax</b>，没有别的内容。它和 §2 那个 <i>V</i>⋆ 的式子长得几乎一样，差别只在：<b>max 取的是那个最大的<u>数</u>，argmax 取的是<u>达到它的那个动作</u></b>。</p>
 
-<p>对「一律往右」做一次改进，<b>10 个格子换了方向</b>：</p>
+<h3>6.1　例：对「一律往右」改一次</h3>
+
+<p>对 5.1 那张分数表做一次改进，<b>10 个格子换了方向</b>：</p>
 
 <div class="figwrap"><svg class="gridsvg" viewBox="0 0 316 316" xmlns="http://www.w3.org/2000/svg"><defs><marker id="gah" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--accent)"/></marker></defs><rect x="26" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="59" y="64">-10.000</text><path class="g-arrow" d="M59 86 l0 -14" marker-end="url(#gah)"/><rect x="92" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="125" y="64">-10.000</text><path class="g-arrow" d="M125 86 l0 -14" marker-end="url(#gah)"/><rect x="158" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="191" y="64">-10.000</text><path class="g-arrow" d="M191 86 l0 -14" marker-end="url(#gah)"/><rect x="224" y="26" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="257" y="64">-10.000</text><path class="g-arrow" d="M257 86 l0 -14" marker-end="url(#gah)"/><rect x="26" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="59" y="130">-10.000</text><path class="g-arrow" d="M59 152 l0 -14" marker-end="url(#gah)"/><rect x="92" y="92" width="66" height="66" fill="var(--ink-3)" fill-opacity=".28" stroke="var(--line-2)"/><text class="g-lbl" x="125" y="129">货架</text><rect x="158" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="191" y="130">-10.000</text><path class="g-arrow" d="M191 152 l0 -14" marker-end="url(#gah)"/><rect x="224" y="92" width="66" height="66" fill="var(--accent)" fill-opacity="0.500" stroke="var(--line-2)"/><text class="g-num" x="257" y="130">-10.000</text><path class="g-arrow" d="M257 152 l0 -14" marker-end="url(#gah)"/><rect x="26" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.172" stroke="var(--line-2)"/><text class="g-num" x="59" y="196">-3.439</text><path class="g-arrow" d="M59 204 l0 14" marker-end="url(#gah)"/><rect x="92" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.136" stroke="var(--line-2)"/><text class="g-num" x="125" y="196">-2.710</text><path class="g-arrow" d="M125 204 l0 14" marker-end="url(#gah)"/><rect x="158" y="158" width="66" height="66" fill="var(--accent)" fill-opacity="0.095" stroke="var(--line-2)"/><text class="g-num" x="191" y="196">-1.900</text><path class="g-arrow" d="M191 204 l0 14" marker-end="url(#gah)"/><rect x="224" y="158" width="66" height="66" fill="var(--ink-3)" fill-opacity=".28" stroke="var(--line-2)"/><text class="g-lbl" x="257" y="195">货架</text><rect x="26" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.136" stroke="var(--line-2)"/><text class="g-num" x="59" y="262">-2.710</text><path class="g-arrow" d="M50 277 l18 0" marker-end="url(#gah)"/><rect x="92" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.095" stroke="var(--line-2)"/><text class="g-num" x="125" y="262">-1.900</text><path class="g-arrow" d="M116 277 l18 0" marker-end="url(#gah)"/><rect x="158" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.050" stroke="var(--line-2)"/><text class="g-num" x="191" y="262">-1.000</text><path class="g-arrow" d="M182 277 l18 0" marker-end="url(#gah)"/><rect x="224" y="224" width="66" height="66" fill="var(--accent)" fill-opacity="0.000" stroke="var(--line-2)"/><circle cx="257" cy="257" r="13" fill="none" stroke="var(--accent)" stroke-width="2"/><text class="g-num" x="257" y="262">0.000</text></svg></div>
 
@@ -408,7 +489,7 @@
 
 <h2><span class="n">§ 7</span>策略迭代</h2>
 
-<p><b>写成定义：</b>评估与改进交替，直到策略不再变化：</p>
+<p><b>这一节走的是 4.4 那张表的第三行：前两节那两步交替做，两张表轮流被改。</b>写成定义：</p>
 
 <div class="math"><span class="plainmath">π<sub>0</sub> &nbsp;<span style="color:var(--ink-3)">—评估→</span>&nbsp; <i>V</i><sup>π<sub>0</sub></sup> &nbsp;<span style="color:var(--ink-3)">—改进→</span>&nbsp; π<sub>1</sub> &nbsp;<span style="color:var(--ink-3)">—评估→</span>&nbsp; <i>V</i><sup>π<sub>1</sub></sup> &nbsp;<span style="color:var(--ink-3)">—改进→</span>&nbsp; ⋯ &nbsp;→&nbsp; π⋆<br>停机条件：&nbsp; π<sub>k+1</sub> = π<sub>k</sub> &nbsp;⟺&nbsp; <i>V</i><sup>π<sub>k</sub></sup> 已满足 Bellman <b>最优</b>方程</span></div>
 
@@ -430,6 +511,8 @@
 
 <h2><span class="n">§ 8</span>值迭代</h2>
 
+<p><b>这一节走的是 4.4 那张表的最后一行：右边改照 Bellman <u>最优</u>方程写，结果仍旧写回<u>值表</u>。</b></p>
+
 <p><b>值迭代第 1 课就用过了，这里再出现一次不是重讲——是它的身份变了。</b>第 1 课把它当作「解 Bellman 最优方程的一个办法」直接端出来，你只知道它管用；放进这一节的序列里才看得清楚：<b>它是策略迭代把评估减到只剩一次的产物</b>，不是另外冒出来的一个算法。顺带把层级也摆正：<b>dp 是一类做法</b>（把 Bellman 方程当更新规则反复用），<b>值迭代只是其中一个成员</b>，策略评估、策略改进、策略迭代是另外几个。</p>
 
 <p>策略迭代每一轮都要把评估<b>做到底</b>。可你想想：既然评估完马上就要改策略，那把分数算到那么准并没有必要。</p>
@@ -444,7 +527,9 @@
 
 <p><b>和评估式逐字对比，差别只有一处</b>：<span class="plainmath">Σ<sub><i>a</i></sub> π(<i>a</i>|<i>s</i>)</span> 换成了 <span class="plainmath">max<sub><i>a</i></sub></span>。这也是为什么值迭代<b>不需要显式存策略</b>——策略藏在那个 max 里，最后才取出来一次。</p>
 
-<p>把「每轮评估几次」当成一个旋钮 <i>m</i>，几个算法就排在同一条轴上。<i>m</i> 卡在两端之间的那一档有自己的名字——<b>改进策略迭代</b>（modified policy iteration）：<b>评估不做到底，只刷 <i>m</i> 遍就去改进</b>。</p>
+<h3>8.1　广义策略迭代：把「每轮评估几次」当旋钮</h3>
+
+<p>把「每轮评估几次」当成一个旋钮 <i>m</i>，前面四节的算法就排在同一条轴上。<i>m</i> 卡在两端之间的那一档有自己的名字——<b>改进策略迭代</b>（modified policy iteration）：<b>评估不做到底，只刷 <i>m</i> 遍就去改进</b>。</p>
 
 <table>
 <tr><th>每轮评估次数 <i>m</i></th><th>是什么</th><th>轮数</th><th>总备份</th></tr>
